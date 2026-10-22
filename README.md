@@ -1,90 +1,93 @@
 # agent-kit
 
-Ядро скиллов Claude Code для работы над задачей от начала до конца: задача → план → тикеты → оркестратор → TDD →
-ревью → коммит. Скиллы не знают ничего о проекте: все факты они читают из `docs/agents/*.md` самого проекта.
+**English** · [Русский](README.ru.md)
 
-## Что внутри
+A core of Claude Code skills for taking a task end to end: task → plan → tickets → orchestrator → TDD → review →
+commit. The skills know nothing about a project: they read every project fact from the project's own
+`docs/agents/*.md`.
 
-| Папка | Что | Куда попадает в проекте |
+## What's inside
+
+| Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 13 скиллов и `bootstrap`, `sync` | `.claude/skills/<префикс>-*`; `bootstrap` и `sync` не копируются |
-| `contract/` | заготовки `docs/agents/*.md`; `<!-- fill: ... -->` — что заполняет проект | `docs/agents/` |
-| `packs/` | правила стека: `python`, `django` | дописываются в `code-rules.md`, `hygiene.md`, `testing.md` |
-| `repo/` | разделы `CONTRIBUTING.md`, сниппет `CLAUDE.md`, `.claude/settings.json`, pre-commit хуки | корень проекта |
-| `scripts/render.sh` | ядро на нужном коммите с подставленным префиксом | используют `bootstrap` и `sync` |
-| `examples/tg-sales-bot/` | заполненный контракт живого проекта | образец для заполнения |
+| `skills/` | 13 skills plus `bootstrap` and `sync` | `.claude/skills/<prefix>-*`; `bootstrap` and `sync` are not copied |
+| `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
+| `packs/` | stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
+| `repo/` | `CONTRIBUTING.md` sections, a `CLAUDE.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
+| `scripts/render.sh` | the core at a given commit with the prefix filled in | used by `bootstrap` and `sync` |
+| `examples/tg-sales-bot/` | the filled contract of a live project | a sample to fill from |
 
-### Контракт: docs/agents/
+### The contract: docs/agents/
 
-| Файл | Что в нём |
+| File | What it holds |
 | --- | --- |
-| `domain.md` | `CONTEXT.md`, ADR, глоссарий |
-| `issue-tracker.md` | трекер, ключ задач, инструменты, язык задач, где лежат рабочие файлы |
-| `product.md` | документ с поведением, акторы, что видно только руками, E2E-актор |
-| `stack.md` | стек, раскладка кода, команды `check` / `unit` / `e2e` / `one-test` / `migrate`, подсчёт строк |
-| `git.md` | формат коммита, основная ветка, ветка батча, как открыть PR, авторство агента, метки ревью |
-| `code-rules.md` | слои, где лежит код, нарезка тикетов, правила кода |
-| `hygiene.md` | чеклист проверки изменённых файлов |
-| `testing.md` | стек тестов, БД, моки, размещение файлов, E2E-харнесс, эталонные тесты |
+| `domain.md` | `CONTEXT.md`, ADRs, glossary |
+| `issue-tracker.md` | tracker, task key, tools, task language, where working files live |
+| `product.md` | behaviour spec, actors, what only a manual check shows, the E2E actor |
+| `stack.md` | stack, code layout, the `check` / `unit` / `e2e` / `one-test` / `migrate` commands, line counting |
+| `git.md` | commit format, main branch, batch branch, how to open a PR, agent identity, review tags |
+| `code-rules.md` | layers, where code goes, ticket slicing, code rules |
+| `hygiene.md` | the checklist for changed files |
+| `testing.md` | test stack, database, mocks, file placement, E2E harness, reference tests |
 
-## Подготовить под новый проект
+## Set up a new project
 
-1. Склонируй ядро, если его ещё нет:
+1. Clone the core if it isn't there yet:
 
    ```bash
    git clone git@github.com:DmitryTokyo/agent-kit.git ~/dev/personal/agent-kit
    ```
 
-2. Закоммить всё в проекте: установка ложится одним диффом.
-3. Открой Claude Code в корне проекта и напиши:
+2. Commit everything in the project: the install lands as one diff.
+3. Open Claude Code in the project root and say:
 
-   > Прочитай `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` и следуй ему.
+   > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it.
 
-4. `bootstrap` прочитает проект и задаст вопросы одним сообщением: префикс скиллов, ключ задач, трекер, основная
-   ветка и PR, стек и пакеты, команды, поведение и акторы, модули. Префикс и ключ выбираешь ты сам.
-5. Он покажет список файлов. После твоего «да» поставит скиллы, заполнит `docs/agents/`, допишет `CLAUDE.md`,
-   `CONTRIBUTING.md`, `.claude/settings.json`, `.pre-commit-config.yaml` и запишет `.claude/agent-kit.json`.
-6. Донастройка руками:
-   - пройди `<!-- fill -->`, которые остались, — `bootstrap` перечислит их в отчёте;
+4. `bootstrap` reads the project and asks its questions in one message: skill prefix, task key, tracker, main branch
+   and pull requests, stack and packs, commands, behaviour and actors, modules. You pick the prefix and the key.
+5. It lists the files. After your yes it installs the skills, fills `docs/agents/`, extends `CLAUDE.md`,
+   `CONTRIBUTING.md`, `.claude/settings.json`, `.pre-commit-config.yaml`, and writes `.claude/agent-kit.json`.
+6. Finish by hand:
+   - go through the `<!-- fill -->` marks left — `bootstrap` lists them in its report;
    - `pre-commit install --hook-type commit-msg`;
-   - проверь `git diff` и закоммить.
+   - review `git diff` and commit.
 
-### Модули
+### Modules
 
-По умолчанию выключены, `bootstrap` спрашивает про каждый:
+Off by default; `bootstrap` asks about each:
 
-- `business-questions` — темы вопросов к бизнесу в трекере и правило «не закрывать задачу, пока ответы не пришли».
-  Для своих проектов не нужен.
-- `codegraph` — раздел «Code search» в `CLAUDE.md`; предлагается, только если в проекте есть `.codegraph/`.
+- `business-questions` — business question themes in the tracker and the rule «a task isn't closed until the answers
+  are in». Not needed for personal projects.
+- `codegraph` — the «Code search» section of `CLAUDE.md`; offered only when the project has `.codegraph/`.
 
-### Стек без пакета
+### A stack without a pack
 
-Пакет есть для Python и Django. Для другого стека (FastAPI, Go) `bootstrap` заполнит `code-rules.md`, `hygiene.md`
-и `testing.md` с твоих слов и по коду. Когда правила устоятся, попроси `sync` сделать из них пакет — второй проект
-на том же стеке получит их сразу.
+Packs exist for Python and Django. For another stack (FastAPI, Go) `bootstrap` fills `code-rules.md`, `hygiene.md`
+and `testing.md` from your answers and the code. Once the rules settle, ask `sync` to turn them into a pack — the
+next project on that stack gets them right away.
 
-## Синхронизировать
+## Sync
 
-В корне установленного проекта:
+In the root of an installed project:
 
-> Прочитай `~/dev/personal/agent-kit/skills/sync/SKILL.md` и следуй ему.
+> Read `~/dev/personal/agent-kit/skills/sync/SKILL.md` and follow it.
 
-- **Правки проекта → ядро.** `sync` покажет каждую правку скиллов и пакетов с прошлой синхронизации. На каждую ты
-  отвечаешь: `в ядро`, `оставить` (только в этом проекте) или `откатить`. Правки `в ядро` становятся коммитом в
-  `agent-kit`; push — после твоего «да».
-- **Ядро → проект.** Изменения ядра вливаются трёхсторонним слиянием поверх твоих локальных правок, конфликты
-  `sync` покажет и спросит. Изменения `contract/` и `repo/` придут предложениями.
+- **Project edits → core.** `sync` shows every edit to skills and packs since the last sync. For each you answer
+  `в ядро` (to the core), `оставить` (keep in this project only) or `откатить` (revert). Edits sent to the core
+  become a commit in `agent-kit`; pushed after your yes.
+- **Core → project.** Core changes merge three-way on top of your local edits; `sync` shows conflicts and asks.
+  Changes to `contract/` and `repo/` arrive as proposals.
 
-Факт о проекте — путь, команда, имя трекера — в ядро не попадает: его место в `docs/agents/`.
+A project fact — a path, a command, a tracker name — never goes into the core: it belongs in `docs/agents/`.
 
-## Плейсхолдеры и метки
+## Placeholders and markers
 
-| Метка | Где | Чем заменяется |
+| Mark | Where | Replaced by |
 | --- | --- | --- |
-| `{{p}}` | skills, contract, repo | префикс скиллов проекта |
-| `{{KEY}}`, `{{key}}`, `{{main}}` | repo | ключ задач, он же строчными, основная ветка |
-| `<KEY>`, `<key>` | skills | не заменяется: скилл читает ключ из `docs/agents/issue-tracker.md` |
-| `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | текст пакета; по меткам `sync` находит его в проекте |
-| `<!-- module:NAME -->…<!-- /module:NAME -->` | contract, repo | остаётся или вырезается вместе с модулем |
+| `{{p}}` | skills, contract, repo | the project's skill prefix |
+| `{{KEY}}`, `{{key}}`, `{{main}}` | repo | the task key, its lowercase form, the main branch |
+| `<KEY>`, `<key>` | skills | stays: the skill reads the key from `docs/agents/issue-tracker.md` |
+| `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | the pack's text; `sync` finds it in the project by the markers |
+| `<!-- module:NAME -->…<!-- /module:NAME -->` | contract, repo | kept or cut out along with the module |
 
-В `examples/` пустая пара `<!-- pack:NAME -->` означает «здесь текст пакета».
+In `examples/`, an empty `<!-- pack:NAME -->` pair stands for the pack's text.
