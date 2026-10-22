@@ -1,3 +1,36 @@
+## Commit messages
+
+Every commit message uses this format:
+
+```text
+{{KEY}}-<number>: <type>: <description>
+```
+
+Write the description in English, imperative mood, and keep the whole message
+to 72 characters or fewer.
+
+| Type | Use for |
+| --- | --- |
+| `feat` | New functionality |
+| `fix` | Bug fixes |
+| `refactor` | Code changes without behaviour changes |
+| `test` | Adding or changing tests |
+| `docs` | Documentation |
+| `chore` | Other technical maintenance, configuration, or tools |
+| `build` | Build system or dependency changes |
+| `ci` | CI/CD changes |
+| `perf` | Performance improvements |
+| `style` | Formatting, linting, or whitespace without logic changes |
+
+Examples:
+
+```text
+{{KEY}}-1: feat: Add product catalog
+{{KEY}}-1: fix: Handle expired payment link
+{{KEY}}-1: docs: Document local setup
+{{KEY}}-1: chore: Configure pre-commit
+```
+
 ## Feature workflow
 
 A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `.ai/tasks/{{key}}-N-<slug>/`.
