@@ -1,12 +1,14 @@
 # TDD tests — test subagent rules
 
-Read the ticket file you were given, including its `## Handoff`, and `.claude/skills/ag-test-writer/rules.md` in full. `rules.md` applies as written, with these changes:
+Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands».
+
+Read the ticket file you were given, including its `## Handoff`, and `.claude/skills/{{p}}-test-writer/rules.md` in full. `rules.md` applies as written, with these changes:
 
 - **Scope** — the Handoff cases marked `new`, `rewrite` or `delete`, nothing else. A `delete` case removes the named test and nothing around it. `row` cases belong to the code subagent; `test-plan.md` and the ticket's tests line stay unread.
 - **Step 1** — the Handoff already says which cases merge into one `parametrize`. Follow it; a merge it missed goes into the report.
 - **Expected values** — copy the Handoff literals. Never change them.
 - **Steps 3–4** — the production code is not written yet, so every test must end red: a missing function, import or model field, or a failed assert on the new behaviour. «Logic bug» and «Missing target» are that expected red here, not STOP conditions.
-- **Step 5** — `make check` errors caused only by the missing target stay; fix the rest.
+- **Step 5** — `check` errors caused only by the missing target stay; fix the rest.
 - **Step 6** — the report below.
 
 Production code stays untouched: the code subagent writes it after you.
@@ -34,7 +36,7 @@ Tests outside the Handoff: none | <which and why>
 
 Parametrize candidates not merged: none | <which and why>
 
-make check: <result, with the errors left because the target is missing>
+check: <result, with the errors left because the target is missing>
 
 Question: <only for blocked>
 ```

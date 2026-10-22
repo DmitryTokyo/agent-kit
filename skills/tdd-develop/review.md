@@ -1,6 +1,6 @@
 # TDD review — review subagent rules
 
-You review one ticket's work before it is committed: the uncommitted worktree against `HEAD` (`git diff HEAD`, plus `git status --porcelain` for new files). Read the ticket file you were given, including its `## Handoff`, `.claude/skills/ag-test-writer/rules.md` and `.claude/skills/ag-develop/SKILL.md` in full.
+You review one ticket's work before it is committed: the uncommitted worktree against `HEAD` (`git diff HEAD`, plus `git status --porcelain` for new files). Read the ticket file you were given, including its `## Handoff`, `.claude/skills/{{p}}-test-writer/rules.md` and `.claude/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 ## Checks
 
@@ -9,8 +9,8 @@ You review one ticket's work before it is committed: the uncommitted worktree ag
 - Test literals match the Handoff.
 - The tests against `rules.md` «Testing rules» and «Parametrize», rule by rule. E2E ticket → «E2E scenarios», rule by rule.
 - No redundant assert: each one can fail on its own.
-- The diff against `/ag-develop`, rule by rule.
-- The checks in `.claude/skills/ag-hygiene-review/SKILL.md` «Subagent prompt» on the changed files, run by you.
+- The diff against `docs/agents/code-rules.md`, rule by rule.
+- The checks in `docs/agents/hygiene.md` on the changed files, run by you.
 - The ticket's acceptance checklist: every item done.
 
 ## Fixes

@@ -1,32 +1,35 @@
 ---
-name: ag-to-tickets
-description: Split .ai/tasks/ag-N-<slug>/plan.md into commit-sized ticket files under tickets/ and a map of batches, each part ending with an E2E ticket and a manual check ticket.
+name: {{p}}-to-tickets
+description: Split .ai/tasks/<key>-N-<slug>/plan.md into commit-sized ticket files under tickets/ and a map of batches, each part ending with an E2E ticket and a manual check ticket.
 disable-model-invocation: true
 ---
 
 # To tickets
 
-Break `.ai/tasks/ag-<N>-<slug>/plan.md` into **tickets**: one ticket = one commit, at most 100 lines of production code (migrations and tests not counted).
+`<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
+
+Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands». Actors: `docs/agents/product.md` «Actors».
+
+Break `.ai/tasks/<key>-<N>-<slug>/plan.md` into **tickets**: one ticket = one commit, at most 100 lines of production code (migrations and tests not counted).
 
 ## Process
 
 ### 1. Gather context
 
-Read `plan.md`, `research.md`, `test-plan.md` from the task folder and the Linear issue `AG-N` (acceptance criteria). Ask for the key if the folder is unclear.
+Read `plan.md`, `research.md`, `test-plan.md` from the task folder and the tracker issue `<KEY>-N` (acceptance criteria). Ask for the key if the folder is unclear.
 
 ### 2. Draft tickets
 
-- Slice along the plan's sections. There are no feature flags: every commit keeps the bot working. Layer slices are fine while the new code is unreachable — the ticket that wires it into a handler comes last in its part.
+- Slice along the plan's sections. Every commit keeps the product working, without feature flags unless `docs/agents/issue-tracker.md` allows them. Layer slices are fine while the new code is unreachable — the ticket that wires it into a handler comes last in its part.
 - Estimate lines per ticket. Over 100 lines → split in two.
-- A domain service and the `bot/` screen that uses it are separate tickets.
-- An FSM scenario splits by step or by behaviour (input + validation, `Назад`, skip for saved data).
+- The rules of `docs/agents/code-rules.md` «Ticket slicing».
 - Each development ticket gets a **Режим**: `TDD` or `без тестов`. `без тестов` only for: a one-off data migration,
-  declarative admin config (`list_display`, an inline without logic), documentation. Everything else is `TDD` and is
+  declarative config without logic (an admin listing, a settings entry), documentation. Everything else is `TDD` and is
   developed against the unit cases of `test-plan.md`. Not decided during development: the mode is fixed here.
 - A ticket where one part is `TDD` and another `без тестов`, and the parts can be delivered and committed separately →
   split in two. A part that only supports the other (a schema migration for a model) stays in the `TDD` ticket.
 - Each ticket lists its **blockers**: only tickets that genuinely gate it.
-- Parts: take them from plan.md «Parts» (older plans: «Branches»). No such section → one part, or propose parts (core, then parts independent of each other, each checkable in the bot on its own) and ask the user. A part is a logical unit of the map; its git branch is made per batch by `/ag-orchestrate`.
+- Parts: take them from plan.md «Parts» (older plans: «Branches»). No such section → one part, or propose parts (core, then parts independent of each other, each checkable in the product on its own) and ask the user. A part is a logical unit of the map; its git branch is made per batch by `/{{p}}-orchestrate`.
 - Each part closes with three levels in this order: development tickets → one E2E ticket → one check ticket.
   - The E2E ticket has **Режим** `E2E`, carries the part's scenarios from `test-plan.md` «E2E scenarios» and is blocked by every development ticket of the part. No scenarios for the part in `test-plan.md` → no E2E ticket.
   - The check ticket is blocked by the E2E ticket alone; without one — by every development ticket of the part. Its cases come from plan.md «Manual checks» for that part.
@@ -70,14 +73,14 @@ Write `tickets/00-map.md` per «Map».
 
 ## Map
 
-`tickets/00-map.md` is the order of work and its progress; the user and `/ag-orchestrate` read it instead of the
+`tickets/00-map.md` is the order of work and its progress; the user and `/{{p}}-orchestrate` read it instead of the
 ticket files. One section is one **batch**: the development tickets of a part, then its E2E ticket, closed by
 three **gates**.
 
 ```markdown
-# AG-N — карта
+# <KEY>-N — карта
 
-`/ag-orchestrate AG-N` берёт первую партию с неотмеченным тикетом. Начинает её, когда у партий из «После» отмечены
+`/{{p}}-orchestrate <KEY>-N` берёт первую партию с неотмеченным тикетом. Начинает её, когда у партий из «После» отмечены
 все проверки.
 
 ## 01 core
@@ -108,11 +111,11 @@ three **gates**.
 - [ ] Ручная проверка → `02-summary-03-check.md`
 ```
 
-- Ticket line: `- [ ] <ID> <title>`, in file order. `/ag-tdd-develop` (or `/ag-develop` for `без тестов`) ticks it; `/ag-orchestrate` also appends ` — <short commit hash>`.
+- Ticket line: `- [ ] <ID> <title>`, in file order. `/{{p}}-tdd-develop` (or `/{{p}}-develop` for `без тестов`) ticks it; `/{{p}}-orchestrate` also appends ` — <short commit hash>`.
 - «После» — the sections whose gates gate this one, by part name; `—` for none.
 - A batch whose only tickets are `без тестов` documentation: the third gate reads `Документация просмотрена`.
 - Gates, in this order, each ticked by:
-  - `Ревью агентом` — `/ag-develop` after it closes every finding of the review file, or `/ag-code-review` when the
+  - `Ревью агентом` — `/{{p}}-develop` after it closes every finding of the review file, or `/{{p}}-code-review` when the
     review has none;
   - `Ревью разработчиком` — the user; a user who skips their review ticks it unreviewed;
   - `Ручная проверка` — the user, once every case of the check ticket is ticked.
@@ -122,7 +125,7 @@ three **gates**.
 ```markdown
 # <ID> — <Title>
 
-**What to do:** behaviour from the Buyer's or seller's perspective, not a layer-by-layer list.
+**What to do:** behaviour from an actor's perspective, not a layer-by-layer list.
 
 **Plan:** plan.md edits <N, M>.
 
@@ -144,7 +147,7 @@ three **gates**.
 ```markdown
 # <ID> — E2E scenarios <part>
 
-**What to do:** the part's behaviour is checked by `make e2e`.
+**What to do:** the part's behaviour is checked by `e2e`.
 
 **Plan:** test-plan.md «E2E scenarios», <the part's headings>.
 
@@ -158,13 +161,13 @@ three **gates**.
 
 - [ ] **<what the scenario checks, in plain words>**
   - Given: <data, and what the steps can't be followed without>
-  - Steps: <the Buyer's commands and buttons>
-  - Expected: <what the bot sent, what is in the DB>
+  - Steps: <the actor's commands and buttons>
+  - Expected: <what the product sent, what is in the DB>
 - [ ] Every scenario marked `xfail` with this ticket's ID rewritten or deleted, marker removed.
-- [ ] `make e2e` green.
+- [ ] `e2e` green.
 ```
 
-One checklist item per scenario, copied from `test-plan.md` with its title and sub-bullets. `/ag-tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
+One checklist item per scenario, copied from `test-plan.md` with its title and sub-bullets. `/{{p}}-tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
 
 ## Check ticket template
 
@@ -180,7 +183,7 @@ One checklist item per scenario, copied from `test-plan.md` with its title and s
 - [ ] <экран → действие → ожидаемый результат>
 ```
 
-The user ticks every case in the bot. A failed case becomes a new ticket of the same part. The Linear issue `AG-N` moves to Done only after every gate of the map is ticked — the user does that, not the agent.
+The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every gate of the map is ticked — the user does that, not the agent.
 
 ## Ticket rules
 
@@ -189,7 +192,7 @@ The user ticks every case in the bot. A failed case becomes a new ticket of the 
   part; existing files are not renumbered. Its line goes at the end of its section's ticket list, and that section's
   gates are unticked.
 - Manual cases live only in check tickets, so one file holds everything to click before Done. E2E scenarios live only in E2E tickets.
-- The tests line is a list of candidates to discuss before starting: behaviours only, per «Test observable behavior» in `.claude/skills/ag-test-writer/rules.md`. An implementation property (query count, prefetch) is an acceptance criterion at most. `без тестов` is set by the mode, not by the tests line.
-- English content; bot texts, button labels and the whole check ticket stay Russian. Wrapped at 120 characters.
+- The tests line is a list of candidates to discuss before starting: behaviours only, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md`. An implementation property (query count, prefetch) is an acceptance criterion at most. `без тестов` is set by the mode, not by the tests line.
+- English content; UI texts, button labels and the whole check ticket stay Russian. Wrapped at 120 characters.
 
 _Last modified: 2026-10-21_

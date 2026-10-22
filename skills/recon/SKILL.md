@@ -1,6 +1,6 @@
 ---
-name: ag-recon
-description: Map the code relevant to a task in an Explore subagent and return a compact context summary. Use before implementing a feature or fix that touches unfamiliar code paths in tg-sales-bot.
+name: {{p}}-recon
+description: Map the code relevant to a task in an Explore subagent and return a compact context summary. Use before implementing a feature or fix that touches unfamiliar code paths.
 ---
 
 # Recon
@@ -25,10 +25,8 @@ Spawn an Explore subagent to map the code relevant to the task. The subagent rea
 ## Subagent prompt
 
 ````
-You are a code exploration agent for tg-sales-bot (Python 3.13, Django 5.2, aiogram 3, Celery).
-Django apps live in tg_sales_bot/ (catalog, customers, orders, payments, delivery, core, bot);
-settings, Celery and URLs in config/. Domain terms come from CONTEXT.md; bot screens and texts
-from docs/bot-design.md.
+You are a code exploration agent. The stack and the layout: docs/agents/stack.md «Stack» and
+«Layout». Domain terms come from CONTEXT.md; behaviour from the spec docs/agents/product.md names.
 
 Task to prepare context for:
 {TASK}
@@ -36,9 +34,9 @@ Task to prepare context for:
 Find all code relevant to this task and return a COMPACT summary. Explore and report only: the
 caller implements from your report, so what you leave out, the caller does not know.
 
-1. Locate relevant code with CodeGraph: `codegraph explore <task words>` for the area, `codegraph callers <symbol>` and `codegraph impact <symbol>` for each symbol the task changes. Texts in `docs/` and string literals → grep.
+1. Locate relevant code. With CodeGraph indexed (`.codegraph/` in the repo root): `codegraph explore <task words>` for the area, `codegraph callers <symbol>` and `codegraph impact <symbol>` for each symbol the task changes. Without it, or for texts in `docs/` and string literals → grep.
 2. Read only the parts needed for this task.
-3. For every symbol the task changes (function, method, class, model field, callback data, bot text key), list every usage: `codegraph callers` for Python symbols, grep for string literals and `docs/`.
+3. For every symbol the task changes (function, method, class, model field, callback data, UI text key), list every usage: `codegraph callers` for code symbols when indexed, grep for string literals and `docs/`.
 4. Return the output below.
 
 Done when every symbol from step 3 has its usages listed, or is named under "Not found / unsure".

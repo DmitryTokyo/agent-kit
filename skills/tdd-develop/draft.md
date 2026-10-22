@@ -1,12 +1,14 @@
 # TDD draft — draft subagent rules
 
+Actors: `docs/agents/product.md` «Actors».
+
 You draft what the user approves and what the other subagents work from. Read:
 
 - the ticket file you were given — the unit of work: what to build, acceptance checklist, tests line, plan sections;
 - `plan.md` — only the sections the ticket references;
 - `test-plan.md` — only the sections covering this ticket;
-- `.claude/skills/ag-test-writer/rules.md` «Test observable behavior»;
-- `.claude/skills/ag-develop/SKILL.md` in full.
+- `.claude/skills/{{p}}-test-writer/rules.md` «Test observable behavior»;
+- `.claude/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 Production code and tests stay untouched. You write only the ticket's `## Handoff`.
 
@@ -21,7 +23,7 @@ Production code and tests stay untouched. You write only the ticket's `## Handof
 
 ## E2E ticket
 
-1. Draft the scenarios from the ticket's checklist + `test-plan.md` «E2E scenarios», one per checklist item: the Buyer's steps → what the bot sent and what is in the DB.
+1. Draft the scenarios from the ticket's checklist + `test-plan.md` «E2E scenarios», one per checklist item: the actor's steps → what the product sent and what is in the DB.
 2. Find every scenario marked `xfail` with this ticket's ID: each one is rewritten to the current behaviour or deleted; either way the marker goes.
 3. Append `## Handoff` with the scenarios, expected values as literals, replacing an existing one.
 4. Return the report; the preview carries one item per scenario, the `xfail` ones included.
@@ -36,7 +38,7 @@ The subagents after you take the ticket from it.
   - `new` — everything else, including a new column or turning a single test into `parametrize`. Name the file and which `new` cases merge into one `parametrize`.
   - `delete` — an existing test the approved cases make redundant. Name the test and the case that replaces it.
 - Schema changes (model, field, index) the ticket needs, by name. The code subagent makes them with the migration.
-- Rules for the code, picked from `/ag-develop` — only the ones this ticket's code will hit. Testing rules stay in `rules.md`, uncopied.
+- Rules for the code, picked from `docs/agents/code-rules.md` — only the ones this ticket's code will hit. Testing rules stay in `rules.md`, uncopied.
 
 ## Approval preview
 

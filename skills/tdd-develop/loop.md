@@ -1,5 +1,9 @@
 # TDD loop — code subagent rules
 
+`<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
+
+Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands».
+
 Read only the ticket file you were given, including its `## Handoff`. Follow the Handoff rules.
 The Handoff cases are the whole test scope: `test-plan.md` and the ticket's tests line stay unread.
 
@@ -10,14 +14,14 @@ Each Handoff case carries a mark:
 
 ## Schema
 
-Schema changes the Handoff names → make them before the loop, with the migration (`uv run manage.py makemigrations`).
+Schema changes the Handoff names → make them before the loop, with the migration (`migrate`).
 
 ## Loop
 
 One Handoff case at a time:
 
 1. `row`: add the row. `new` / `rewrite`: find the test.
-2. Run it: `uv run pytest tg_sales_bot/<app>/tests/unit/<file> -k <test> --tb=short -q`. It must fail for the expected reason.
+2. Run it with `one-test` (`docs/agents/stack.md` «Commands»). It must fail for the expected reason.
 3. Write the minimum production code to pass it.
 4. Run it again — green. Only then start the next case.
 
@@ -25,13 +29,13 @@ One Handoff case at a time:
 - Code only what the ticket asks; refactoring stays out.
 - An existing test broken by your change: minimal fix. If the fix needs a different expected value → STOP.
 - An E2E scenario broken by your change: leave it as written, mark it
-  `@pytest.mark.xfail(strict=True, reason='AG-N <ID of the branch's E2E ticket>: <what changed>')`, list it under
+  `@pytest.mark.xfail(strict=True, reason='<KEY>-N <ID of the branch's E2E ticket>: <what changed>')`, list it under
   «Tests outside the Handoff». The E2E ticket rewrites or deletes it.
 
 ## After the loop
 
-1. Ticket items no test covers (bot texts, keyboards, admin config): do them per the ticket checklist.
-2. Run the changed test files in full, then `make e2e`, then `make check`.
+1. Ticket items no test covers (UI texts, keyboards, admin config): do them per the ticket checklist.
+2. Run the changed test files in full, then `e2e`, then `check`.
 
 ## STOP
 
