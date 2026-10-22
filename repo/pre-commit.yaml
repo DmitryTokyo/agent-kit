@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    hooks:
+      - id: commit-message-ticket
+        name: commit message convention
+        entry: >-
+          bash -c 'grep -Eq "^AG-[0-9]+: (feat|fix|refactor|test|docs|chore|build|ci|perf|style): .+" "$1" || { echo "Use: AG-<number>: <type>: <description>" >&2; exit 1; }' --
+        language: system
+        stages: [commit-msg]
+      - id: no-review-comments
+        name: no review tags left in code
+        entry: '\b(FIX|NOTE|TODO):'
+        language: pygrep
+        exclude: ^(\.claude/|docs/|\.ai/|CONTRIBUTING\.md$)

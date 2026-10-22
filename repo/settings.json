@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(printf*)",
+      "Bash(git log*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git show*)",
+      "mcp__codegraph",
+      "Bash(codegraph query*)",
+      "Bash(codegraph explore*)",
+      "Bash(codegraph node*)",
+      "Bash(codegraph callers*)",
+      "Bash(codegraph callees*)",
+      "Bash(codegraph impact*)",
+      "Bash(codegraph affected*)",
+      "Bash(codegraph status*)",
+      "Bash(codegraph sync*)"
+    ],
+    "deny": [
+      "Bash(git push origin master*)",
+      "Bash(git push origin HEAD:master*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(make push*)"
+    ]
+  }
+}
