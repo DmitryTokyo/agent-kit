@@ -9,7 +9,7 @@
 
 | Папка | Что | Куда попадает в проекте |
 | --- | --- | --- |
-| `skills/` | 13 скиллов и `bootstrap`, `sync` | `.claude/skills/<префикс>-*`; `bootstrap` и `sync` не копируются |
+| `skills/` | 14 скиллов и `bootstrap`, `sync` | `.claude/skills/<префикс>-*`; `bootstrap` и `sync` не копируются |
 | `contract/` | заготовки `docs/agents/*.md`; `<!-- fill: ... -->` — что заполняет проект | `docs/agents/` |
 | `packs/` | правила стека: `python`, `django` | дописываются в `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | разделы `CONTRIBUTING.md`, сниппет `CLAUDE.md`, `.claude/settings.json`, pre-commit хуки | корень проекта |

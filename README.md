@@ -10,7 +10,7 @@ commit. The skills know nothing about a project: they read every project fact fr
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 13 skills plus `bootstrap` and `sync` | `.claude/skills/<prefix>-*`; `bootstrap` and `sync` are not copied |
+| `skills/` | 14 skills plus `bootstrap` and `sync` | `.claude/skills/<prefix>-*`; `bootstrap` and `sync` are not copied |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, a `CLAUDE.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
