@@ -15,6 +15,14 @@
 Ruff's DJ012 fixes the start of a model (fields → manager → Meta → __str__ → save → get_absolute_url);
 the class member ordering applies to the methods after that block.
 
+## ORM wrapper
+- A function or method outside a custom QuerySet or Manager whose body, besides `return`, is one ORM call or chain —
+  no branch, no call to our other code, no transformation of the result → report:
+  "ORM WRAPPER: <file>:<line> — `<name>` only wraps an ORM call; inline it at the call sites, or make it a
+  QuerySet/Manager method when it names a domain condition used in several places"
+- A test whose target is such a wrapper → report:
+  "ORM WRAPPER TEST: <file>:<line> — the test checks the ORM, not our behaviour; drop it with the wrapper"
+
 ## Buried call exceptions
 Methods of our custom QuerySet or Manager chained like ORM methods are not a BURIED CALL.
 <!-- /pack:django -->

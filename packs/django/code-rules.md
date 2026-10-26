@@ -82,4 +82,22 @@ testable without Celery.
 Library ORM chains built from scratch are fine inline: `return Product.objects.filter(...).values_list(...)`.
 Methods of our custom QuerySet or Manager (`PickupPoint.objects.selectable().filter(...)`) chain like built-in ORM
 methods.
+
+### ORM calls stay inline
+
+An ORM query is written where it is used. A function whose body is one ORM call or chain — a lookup, a filter, a
+create, an update — with no decision of its own is a **wrapper**: inline the call at its call sites.
+
+```python
+# correct
+cart = await Cart.objects.filter(customer=customer, is_open=True).afirst()
+
+# wrong
+async def get_open_cart(customer: Customer) -> Cart | None:
+    return await Cart.objects.filter(customer=customer, is_open=True).afirst()
+```
+
+A query that names a domain condition and is needed in more than one place becomes a method of the model's custom
+QuerySet or Manager, named for that condition (`selectable()`), not a free function in `services/`. A service function
+that decides, orchestrates or calls an external API is not a wrapper, whatever queries it runs.
 <!-- /pack:django -->

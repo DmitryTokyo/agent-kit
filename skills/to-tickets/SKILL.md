@@ -192,7 +192,7 @@ The user ticks every case in the product. A failed case becomes a new ticket of 
   part; existing files are not renumbered. Its line goes at the end of its section's ticket list, and that section's
   gates are unticked.
 - Manual cases live only in check tickets, so one file holds everything to click before Done. E2E scenarios live only in E2E tickets.
-- The tests line is a list of candidates to discuss before starting: behaviours only, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md`. An implementation property (query count, prefetch) is an acceptance criterion at most. `без тестов` is set by the mode, not by the tests line.
+- The tests line is a list of candidates to discuss before starting: behaviours only, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md`. An implementation property (query count, prefetch) is an acceptance criterion at most. `без тестов` is set by the mode, not by the tests line.
 - English content; UI texts, button labels and the whole check ticket stay Russian. Wrapped at 120 characters.
 
 _Last modified: 2026-10-21_

@@ -7,7 +7,7 @@ You draft what the user approves and what the other subagents work from. Read:
 - the ticket file you were given — the unit of work: what to build, acceptance checklist, tests line, plan sections;
 - `plan.md` — only the sections the ticket references;
 - `test-plan.md` — only the sections covering this ticket;
-- `.claude/skills/{{p}}-test-writer/rules.md` «Test observable behavior»;
+- `.claude/skills/{{p}}-test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
 - `.claude/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 Production code and tests stay untouched. You write only the ticket's `## Handoff`.
@@ -15,7 +15,7 @@ Production code and tests stay untouched. You write only the ticket's `## Handof
 ## TDD ticket
 
 1. Draft the cases from the ticket's tests line + `test-plan.md`. A `## Handoff` already in the ticket is a draft too, whatever it says about being agreed.
-2. Keep the cases that pass «Test observable behavior»; name each dropped case and why.
+2. Keep the cases that pass «Test observable behavior» and `testing.md`; name each dropped case and why.
 3. Open the existing test file of every seam and mark each case per «Handoff».
 4. Group the cases into behaviours.
 5. Append `## Handoff` to the end of the ticket file, replacing an existing one.

@@ -10,6 +10,10 @@
   (`afactory_batch(factory, size, **kwargs)` for N objects). Use the ORM for reads and assertions.
 - Build model instances with factories — never mock a model, its fields or relations, even when the function looks
   DB-free. Simple ORM queries, data construction and pure transformations run for real.
+- ORM behaviour is the framework's: a test never checks that a filter filters, a create creates, or `afirst()` gives
+  `None` on an empty table. A function that only wraps an ORM call gets no test: it is a finding of `hygiene.md`
+  «ORM wrapper», reported instead. A custom QuerySet or Manager method gets one test of its domain condition — the
+  rows that qualify and the ones that don't, as one `parametrize`.
 - Django settings → the `settings` fixture from pytest-django, never `override_settings` or `mocker.patch`.
 - Factories: `ProductFactory.create(...)` — always call the method; a bare `ProductFactory(...)` is forbidden.
   `.create()` persists and is the default; `.build()` for tests that do not touch the DB; `.create_batch(N)` /

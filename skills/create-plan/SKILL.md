@@ -128,7 +128,7 @@ Sibling file, own document, written for whoever runs `/{{p}}-test-writer` or `/{
 4. **Files** — existing test files to extend, or new locations per `docs/agents/testing.md` «File placement».
 5. **Edge cases** — bullets.
 
-Only behaviours worth a dedicated test: what an actor or the calling code can observe, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md`. An implementation property (query count, prefetch) belongs to the edit in `plan.md`. Same exclusions as plan.md: no justification, no finished test code.
+Only behaviours worth a dedicated test: what an actor or the calling code can observe, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md`. An implementation property (query count, prefetch) belongs to the edit in `plan.md`. Same exclusions as plan.md: no justification, no finished test code.
 
 ## Formatting
 
