@@ -11,4 +11,4 @@ repos:
         name: no review tags left in code
         entry: '\b(FIX|NOTE|TODO):'
         language: pygrep
-        exclude: ^(\.claude/|docs/|\.ai/|CONTRIBUTING\.md$)
+        exclude: ^(\.agents/|\.claude/|docs/|\.ai/|CONTRIBUTING\.md$)

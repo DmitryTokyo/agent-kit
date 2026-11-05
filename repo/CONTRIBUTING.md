@@ -63,10 +63,11 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
 
 - A **part** is a logical unit of the ticket map. A batch (a map section) gets a git branch `{{key}}-N-<part>` and a pull
   request into `{{main}}`; the developer merges it.
-- The agent never pushes `{{main}}`: it stops and asks the developer to do it. `.claude/settings.json` denies those
-  commands. Only the batch branch is pushed.
-- Whose change is whose is read from the history: the agent commits as `Claude <noreply@anthropic.com>` with a
-  `Co-Authored-By: Claude` trailer, the developer as themself. Pull requests are opened under the developer's account.
+- The agent never pushes `{{main}}`: it stops and asks the developer to do it. Each harness's permission file
+  (`docs/agents/harness.md`) denies those commands. Only the batch branch is pushed.
+- Whose change is whose is read from the history: the agent commits under its harness's identity
+  (`docs/agents/harness.md` «Agent identity»), the developer as themself. Pull requests are opened under the
+  developer's account.
 
 ## Code review
 

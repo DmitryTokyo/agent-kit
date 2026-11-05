@@ -1,6 +1,12 @@
+## Harness
+
+`AGENTS.md` is the source of truth for every harness; a harness's own file (`CLAUDE.md`) only points here and adds
+that harness's specifics. Skills live in `.agents/skills/` and name roles, tiers and actions; `docs/agents/harness.md`
+maps them for each harness.
+
 ## Git
 
-Never push to `{{main}}`: stop and tell the user to do it themselves. Push only the batch branch of `/{{p}}-orchestrate`. Agent commits are made as `Claude <noreply@anthropic.com>` with a `Co-Authored-By` trailer — never strip them, the user tells their changes from the agent's by them.
+Never push to `{{main}}`: stop and tell the user to do it themselves. Push only the batch branch of `/{{p}}-orchestrate`. Agent commits carry the identity of `docs/agents/harness.md` «Agent identity» — never strip it, the user tells their changes from the agent's by it.
 
 ## Agent skills
 

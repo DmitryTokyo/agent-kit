@@ -2,13 +2,13 @@
 
 **English** · [Русский](README.ru.md)
 
-A set of Claude Code skills with which an agent takes a task from its creation to a pull request: files it in the
-tracker, writes a plan, cuts it into small tickets, writes tests and code, checks its own work and commits. You
-approve the key steps and look at the result in the pull request.
+A set of agent skills — for Claude Code, OpenCode, pi or another harness — with which an agent takes a task from
+its creation to a pull request: files it in the tracker, writes a plan, cuts it into small tickets, writes tests and
+code, checks its own work and commits. You approve the key steps and look at the result in the pull request.
 
 The kit is for you if you:
 
-- work on a project alone and write code together with Claude Code;
+- work on a project alone and write code together with a coding agent, maybe in more than one harness;
 - want the agent to follow one process in all your projects instead of rules you explain again each time;
 - keep tasks in a tracker and want branches and commits tied to them;
 - want code to go through tests and review, and the agent never to push to the main branch.
@@ -18,7 +18,7 @@ It isn't needed for one-off edits and questions: the process only gets in the wa
 ## A starting point
 
 The kit is a starting point, not a finished set. After the install the skills are plain files in the project's
-`.claude/skills/`, and they are worth tailoring to the project: its stack, its tracker, your habits and the mistakes
+`.agents/skills/`, and they are worth tailoring to the project: its stack, its tracker, your habits and the mistakes
 the agent makes right here. Edit them in the project.
 
 Drifting away from the kit is fine. `sync` asks about each edit whether it is shared or for this project only, and an
@@ -33,7 +33,7 @@ edit kept for this project survives updates from the kit. Send to the kit only w
    ```
 
 2. Commit everything in the project: the install lands as one diff.
-3. Open Claude Code in the project root and say:
+3. Open your agent in the project root and say:
 
    > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it.
 
@@ -119,8 +119,8 @@ Ask me about this plan one question at a time.
 - **Tests before code.** You approve what the tests check before the agent writes the code.
 - **Two reviews.** First the agent checks the code against the project's rules and the task, then you leave comments
   in the code and the agent works through each one.
-- **A protected main branch.** The agent never pushes to it — `.claude/settings.json` denies it. Its commits are
-  signed `Claude`, yours by you, so the history shows who changed what.
+- **A protected main branch.** The agent never pushes to it — each harness's permission file denies it. Its commits
+  are signed by its harness (`Claude`, `OpenCode`, …), yours by you, so the history shows who changed what.
 - **Edits aren't lost.** Fix a skill in one project — `sync` offers to send the edit to the kit, and the other
   projects get it.
 
@@ -133,10 +133,10 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 14 skills plus `bootstrap` and `sync` | `.claude/skills/<prefix>-*`; `bootstrap` and `sync` are not copied |
+| `skills/` | 14 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
-| `repo/` | `CONTRIBUTING.md` sections, a `CLAUDE.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
+| `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
 | `scripts/render.sh` | the kit at a given commit with the prefix filled in | used by `bootstrap` and `sync` |
 | `examples/tg-sales-bot/` | the filled contract of a live project | a sample to fill from |
 
@@ -149,6 +149,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 | `product.md` | behaviour spec, actors, what only a manual check shows, the E2E actor |
 | `stack.md` | stack, code layout, the `check` / `unit` / `e2e` / `one-test` / `migrate` commands, line counting |
 | `git.md` | commit format, main branch, part branch, how to open a PR, agent identity, review tags |
+| `harness.md` | roles, tiers and actions mapped per harness: subagents, models, asking the user, agent identity |
 | `code-rules.md` | layers, where code goes, ticket slicing, code rules |
 | `hygiene.md` | the checklist for changed files |
 | `testing.md` | test stack, database, mocks, file placement, E2E harness, reference tests |
@@ -159,7 +160,7 @@ A module is an optional part of the kit. Modules are off by default; `bootstrap`
 
 - `business-questions` — business question themes in the tracker and the rule «a task isn't closed until the answers
   are in». Not needed for personal projects.
-- `codegraph` — the «Code search» section of `CLAUDE.md`; offered only when the project has `.codegraph/`.
+- `codegraph` — the «Code search» section of `AGENTS.md`; offered only when the project has `.codegraph/`.
 
 ### A stack without a pack
 
