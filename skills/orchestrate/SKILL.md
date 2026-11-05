@@ -58,7 +58,7 @@ agent identity (see `commit.md`), so the developer's commits and the agent's sta
 ## After the batch
 
 Nothing is pushed. Once the section's `Agent review` gate is ticked, `/{{p}}-merge-request` pushes the branch and opens
-the pull request with the review level and the consequences; the other gates are worked on it. The developer's review comments on it go through `/{{p}}-review-comments`.
+the pull request with the review level and the consequences; the other gates are worked on it. The developer's review comments on it go through the same skill.
 
 ## Output
 

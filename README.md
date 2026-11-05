@@ -66,16 +66,21 @@ Write a plan for AG-55.
 /ag-orchestrate AG-55
 ```
 
-`to-tickets` cuts the plan into tickets: one ticket is one commit of at most 100 lines of code. Tickets are grouped
-into parts, one part is one branch and one pull request. `orchestrate` takes the next part and walks each ticket
-through: you approve which behaviour the tests check, the agent writes the tests and the code, reviews them and
-commits. At the end of the part it pushes the branch and opens a pull request.
+`create-plan` first classifies the task — product value, work type, risk — and picks a route: a known local fix, or
+research first. Then it writes one short `plan.md` for you: result, criteria, boundaries, the checks behind each
+consequence, and whether you need to review the change. You approve it once; the agent comes back only on a
+deviation. A small task goes straight to `develop`. A bigger one goes through `to-tickets`: one ticket is one commit of
+at most 100 lines of code, tickets are grouped into parts, one part is one branch and one pull request.
+`orchestrate` takes the next part and walks each ticket through: subagents write the tests and the code, review them
+and commit.
 
-**Review:**
+**Review and pull request:**
 
 ```text
 /ag-code-review AG-55 pickup-step          ← in a new session, another model welcome
-I've reviewed the PR, handle my comments.  ← you left FIX: / NOTE: / TODO: in the code
+/ag-merge-request                          ← pushes and opens the pull request
+I've reviewed the PR, handle my comments.  ← you left comments on the diff
+The PR is merged.                          ← links it in the tracker, closes the task
 ```
 
 **Without tickets:**
@@ -96,16 +101,16 @@ Ask me about this plan one question at a time.
 | Skill | What it does |
 | --- | --- |
 | `create-task` | files a task in the tracker |
-| `create-plan` | writes the task's research, plan and test plan |
+| `create-plan` | classifies the task, writes its research, the developer plan and the agent instruction |
 | `to-tickets` | cuts the plan into tickets and parts |
-| `orchestrate` | walks the next part of tickets through to a pull request |
+| `orchestrate` | walks the next part of tickets through, one commit per ticket |
 | `tdd-develop` | does one ticket: test first, then code |
 | `develop` | writes code without a ticket or for a no-tests ticket |
 | `test-writer` | writes unit tests and E2E scenarios |
 | `recon` | studies unfamiliar code before a task and returns a short summary |
-| `code-review` | checks a part or a diff against the project's rules and the task |
+| `code-review` | checks a part or a diff against the rules and the plan, sets the review level and the checks |
 | `hygiene-review` | finds in changed files what the linters miss |
-| `review-comments` | works through your `FIX:` / `NOTE:` / `TODO:` and commits the fixes |
+| `merge-request` | pushes, opens the pull request, works your review comments, closes the task after the merge |
 | `git-commit-message` | splits changes into commits and proposes messages |
 | `grill-one` | asks about a plan one question at a time, looking for gaps and contradictions |
 | `business-questions` | keeps questions to the business in the tracker; a module, off by default |
@@ -114,11 +119,11 @@ Ask me about this plan one question at a time.
 
 - **One process in every project.** The skills are shared, and everything about a given project — commands, tracker,
   code rules — lives in its `docs/agents/`. A new project gets the same process after one `bootstrap`.
-- **Small steps.** A ticket is one commit, a part is one pull request with a manual check at its end. The ticket map
-  shows what is done and what is left.
-- **Tests before code.** You approve what the tests check before the agent writes the code.
-- **Two reviews.** First the agent checks the code against the project's rules and the task, then you leave comments
-  in the code and the agent works through each one.
+- **One short plan.** You read one screen before code — result, criteria, boundaries, checks — and approve it once.
+- **Small steps.** A ticket is one commit, a part is one pull request. The ticket map shows what is done and what is
+  left.
+- **Review by risk.** The agent reviews every change and says in the pull request which consequence each check
+  covers. You review only when the plan says so, and only the places it names.
 - **A protected main branch.** The agent never pushes to it — each harness's permission file denies it. Its commits
   are signed by its harness (`Claude`, `OpenCode`, …), yours by you, so the history shows who changed what.
 - **Edits aren't lost.** Fix a skill in one project — `sync` offers to send the edit to the kit, and the other
@@ -148,7 +153,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 | `issue-tracker.md` | tracker, task key, tools, task language, where working files live |
 | `product.md` | behaviour spec, actors, what only a manual check shows, the E2E actor |
 | `stack.md` | stack, code layout, the `check` / `unit` / `e2e` / `one-test` / `migrate` commands, line counting |
-| `git.md` | commit format, main branch, task and part branches, how to open a PR, agent identity, review tags |
+| `git.md` | commit format, main branch, task and part branches, how to open a PR and work its review threads, agent identity |
 | `harness.md` | roles, tiers and actions mapped per harness: subagents, models, asking the user, agent identity |
 | `code-rules.md` | layers, where code goes, ticket slicing, code rules |
 | `hygiene.md` | the checklist for changed files |

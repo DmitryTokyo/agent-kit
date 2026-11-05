@@ -29,19 +29,19 @@ and the agent's stay apart.
 
 ## Pull requests
 
-<!-- fill: the host and how a pull request into the main branch is opened — CLI (`gh pr create`) or API call with
-its URL, repository, headers and the env var holding the token (never printed). Title `<KEY>-N: <part>`, body: the
-batch's tickets, one line each, ending with the footer of `harness.md` «Agent identity» when the harness has one. -->
+Host: <!-- fill: GitHub | GitLab | …, the repository -->. Every call goes through <!-- fill: `gh` | a wrapper script
+that adds the token inside its own process (the token is never printed) -->. `/{{p}}-merge-request` runs these
+operations by name:
 
-The call fails → report the pushed branch and ask the user to open the pull request.
+| Operation | Command |
+| --- | --- |
+| find the open pull request of a branch | <!-- fill, e.g. `gh pr list --head <branch> --json number,url` --> |
+| open a pull request | <!-- fill, e.g. `gh pr create --base <main> --head <branch> --title <title> --body-file <file>` --> |
+| update its description | <!-- fill, e.g. `gh pr edit <number> --body-file <file>` --> |
+| list unresolved review threads | <!-- fill: each with its id, file, line and first comment --> |
+| reply in a thread | <!-- fill --> |
+| read its state (open, merged) | <!-- fill, e.g. `gh pr view <number> --json state` --> |
 
-## Review tags
-
-The developer's review tags (`FIX:`, `NOTE:`, `TODO:`) are found with:
-
-```bash
-git grep -nwE "(FIX|NOTE|TODO):" -- . ':!.agents' ':!.claude' ':!docs' ':!.ai' ':!CONTRIBUTING.md'
-```
-
-<!-- fill: the hook that rejects tags in commits and how the developer skips it, e.g.
-`SKIP=no-review-comments git commit`. -->
+Title `<KEY>-N: <title from plan.md>`; a part's pull request adds ` — <part>`. The body ends with the footer of
+`harness.md` «Agent identity» when the harness has one. A call fails → report the pushed branch and ask the user to
+open the pull request.

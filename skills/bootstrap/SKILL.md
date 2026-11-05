@@ -40,7 +40,8 @@ The user answers by number.
    answers, and say so: `sync` can send it to the kit.
 4. Tracker: name, team or project, URL, the tools to read, list and save issues; what an epic is.
 5. Language of task titles and descriptions.
-6. Main branch; where pull requests are opened and how (CLI or API, repository, token env var).
+6. Main branch; the host and how each operation of `<kit>/contract/git.md` «Pull requests» runs (`gh`, or an API
+   wrapper that keeps the token inside its process), repository.
 7. Stack and the packs: list `<kit>/packs/`. A stack without a pack → its rules come from the user and the code, and
    say so: `sync` can turn them into a pack later.
 8. Commands: `check`, `unit`, `e2e`, `one-test`, `migrate` — each a command or «none».
