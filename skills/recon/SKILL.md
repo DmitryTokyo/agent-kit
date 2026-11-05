@@ -1,11 +1,11 @@
 ---
 name: {{p}}-recon
-description: Map the code relevant to a task in an Explore subagent and return a compact context summary. Use before implementing a feature or fix that touches unfamiliar code paths.
+description: Map the code relevant to a task in an explorer subagent and return a compact context summary. Use before implementing a feature or fix that touches unfamiliar code paths.
 ---
 
 # Recon
 
-Spawn an Explore subagent to map the code relevant to the task. The subagent reads files; the main context receives only the compact output.
+Spawn an explorer (`docs/agents/harness.md` «Roles») to map the code relevant to the task. The subagent reads files; the main context receives only the compact output.
 
 ## When to use
 
@@ -17,7 +17,7 @@ Spawn an Explore subagent to map the code relevant to the task. The subagent rea
 ## Steps
 
 1. No task description given → ask: «Опиши задачу для recon.»
-2. Spawn `Agent(subagent_type="Explore")` with the prompt below, `{TASK}` filled in.
+2. Spawn the explorer with the prompt below, `{TASK}` filled in.
 3. Read no files before the subagent returns.
 4. Use the summary as working context. Read files yourself only where it leaves a gap: an entry under
    "Not found / unsure", or a symbol you are about to change that is missing from "Usages".
@@ -73,4 +73,4 @@ Snippets only, no full file dumps, no unrelated imports. Omit files with no rele
 State as fact only what you read in the code; everything else goes under "Not found / unsure".
 ````
 
-_Last modified: 2026-10-13_
+_Last modified: 2026-11-05_

@@ -7,8 +7,3 @@ repos:
           bash -c 'grep -Eq "^{{KEY}}-[0-9]+: (feat|fix|refactor|test|docs|chore|build|ci|perf|style): .+" "$1" || { echo "Use: {{KEY}}-<number>: <type>: <description>" >&2; exit 1; }' --
         language: system
         stages: [commit-msg]
-      - id: no-review-comments
-        name: no review tags left in code
-        entry: '\b(FIX|NOTE|TODO):'
-        language: pygrep
-        exclude: ^(\.claude/|docs/|\.ai/|CONTRIBUTING\.md$)

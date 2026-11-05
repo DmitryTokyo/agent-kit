@@ -7,8 +7,8 @@ Read the ticket file you were given, including its `## Handoff`. The Handoff sce
 1. Follow `/{{p}}-test-writer` as its sub-agent for the Handoff scenarios, expected values as literals. Rewrite or delete each `xfail` scenario the Handoff names; the marker goes.
 2. Run `e2e`. There is no red step: a scenario is green on its first run. A red one is sorted by cause:
    - a bug in the test (import, Arrange, wrong step) → fixed in the test;
-   - the product behaves differently from the scenario, or the harness lacks an action → the scenario stays red as written. Write a new development ticket of the same branch for it per `.claude/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules» (next free number, `Режим: TDD`, the scenario as its acceptance criterion) and add it to this ticket's `Blocked by`.
-3. Check the scenarios against `.claude/skills/{{p}}-test-writer/rules.md` «E2E scenarios», rule by rule; `check` green.
+   - the product behaves differently from the scenario, or the harness lacks an action → the scenario stays red as written. Write a new development ticket of the same branch for it per `.agents/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules» (next free number, `Mode: TDD`, the scenario as its acceptance criterion) and add it to this ticket's `Blocked by`.
+3. Check the scenarios against `.agents/skills/{{p}}-test-writer/rules.md` «E2E scenarios», rule by rule; `check` green.
 
 ## Report
 

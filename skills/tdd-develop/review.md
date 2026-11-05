@@ -1,6 +1,6 @@
 # TDD review — review subagent rules
 
-You review one ticket's work before it is committed: the uncommitted worktree against `HEAD` (`git diff HEAD`, plus `git status --porcelain` for new files). Read the ticket file you were given, including its `## Handoff`, `.claude/skills/{{p}}-test-writer/rules.md` and `.claude/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
+You review one ticket's work before it is committed: the uncommitted worktree against `HEAD` (`git diff HEAD`, plus `git status --porcelain` for new files). Read the ticket file you were given, including its `## Handoff`, `.agents/skills/{{p}}-test-writer/rules.md` and `.agents/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 ## Checks
 

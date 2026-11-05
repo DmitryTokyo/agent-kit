@@ -14,12 +14,15 @@
 - Assignee: the current user unless the user names another person.
 - <!-- fill: what task descriptions never carry, e.g. «no feature flags». -->
 - Blocking uses the tracker's native «blocks» relations.
+- A task description has three sections: Problem, Goal, Links. Scope and acceptance criteria live in `plan.md`.
+- Product Value and Work Type (`CONTRIBUTING.md` «Three axes») live in <!-- fill: label groups `Product Value` and
+  `Work Type` | custom fields | the Problem section, when the tracker has neither -->.
 
 ## Working files
 
-A task's working files live in `.ai/tasks/<key>-N-<slug>/`, gitignored: `research.md`, `plan.md`, `test-plan.md`,
-`notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
-review per batch with its Russian digest, `todo.md` for deferred TODOs).
+A task's working files live in `.ai/tasks/<key>-N-<slug>/`, gitignored: `research.md`, `plan.md` (the developer plan),
+`agent.md` (the agent instruction), `notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
+review rounds, per batch or for the whole task).
 
 ## When a skill says "publish to the tracker"
 

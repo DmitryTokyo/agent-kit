@@ -2,9 +2,9 @@
 
 Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands».
 
-Read the ticket file you were given, including its `## Handoff`, and `.claude/skills/{{p}}-test-writer/rules.md` in full. `rules.md` applies as written, with these changes:
+Read the ticket file you were given, including its `## Handoff`, and `.agents/skills/{{p}}-test-writer/rules.md` in full. `rules.md` applies as written, with these changes:
 
-- **Scope** — the Handoff cases marked `new`, `rewrite` or `delete`, nothing else. A `delete` case removes the named test and nothing around it. `row` cases belong to the code subagent; `test-plan.md` and the ticket's tests line stay unread.
+- **Scope** — the Handoff cases marked `new`, `rewrite` or `delete`, nothing else. A `delete` case removes the named test and nothing around it. `row` cases belong to the code subagent; `agent.md` «Tests» and the ticket's tests line stay unread.
 - **Step 1** — the Handoff already says which cases merge into one `parametrize`. Follow it; a merge it missed goes into the report.
 - **Expected values** — copy the Handoff literals. Never change them.
 - **Steps 3–4** — the production code is not written yet, so every test must end red: a missing function, import or model field, or a failed assert on the new behaviour. «Logic bug» and «Missing target» are that expected red here, not STOP conditions.

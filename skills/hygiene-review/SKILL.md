@@ -5,12 +5,12 @@ description: Scan changed or new files for hygiene issues the linters and the ty
 
 # Hygiene review
 
-Spawn an Explore subagent to scan the changed/new files against `docs/agents/hygiene.md`. Report findings; fixing needs
-a judgement call, so ask before touching.
+Spawn an explorer (`docs/agents/harness.md` «Roles») to scan the changed/new files against `docs/agents/hygiene.md`.
+Report findings; fixing needs a judgement call, so ask before touching.
 
 ## Steps
 
-1. Spawn `Agent(subagent_type="Explore")` with the prompt below, `{CHANGED_FILES}` filled in.
+1. Spawn the explorer with the prompt below, `{CHANGED_FILES}` filled in.
 2. Report each finding to the user.
 
 ## Subagent prompt
@@ -27,4 +27,4 @@ Check each file against every rule.
 Output: one line per finding, in the formats of the rules. Nothing found → "No hygiene issues found."
 ```
 
-_Last modified: 2026-10-22_
+_Last modified: 2026-11-05_
