@@ -23,7 +23,7 @@ Run the review-tags command of `docs/agents/git.md` «Review tags».
 ## 1. Pin the fixed point
 
 `<KEY>-N <part>` → a **batch**: the section of `.ai/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
-with an unticked `Ревью агентом` when no part is given). Base: the parent of the first commit hash in its ticket
+with an unticked `Agent review` when no part is given; older maps: `Ревью агентом`). Base: the parent of the first commit hash in its ticket
 lines; diff: `git diff <base> <last hash>`. A ticket line without a hash → stop: the batch is unfinished.
 
 Otherwise take the fixed point from the user; if none given, ask.
@@ -108,7 +108,7 @@ An empty tag keeps its heading with «none». End with one line: the count per t
 Report only. Fix nothing without the user's go-ahead.
 
 A batch → the report goes to `.ai/tasks/<key>-N-*/reviews/<BB>-<part>.md`, so `/{{p}}-develop` can work it without this
-session. No findings → tick `Ревью агентом` in the map; the digest is skipped.
+session. No findings → tick `Agent review` in the map; the digest is skipped.
 
 ## 6. Digest
 
