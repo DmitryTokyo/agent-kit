@@ -31,12 +31,69 @@ Examples:
 {{KEY}}-1: chore: Configure pre-commit
 ```
 
+## Classify a task before code
+
+Before any plan, the task gets a classification and a route. The agent proposes them from the task and a first look
+at the code; the developer confirms. Deciding the route needs only enough code reading to answer the questions below,
+not a solution.
+
+### Three axes
+
+Each axis is independent: Work Type implies neither value nor risk.
+
+- **Product Value** — `Core` (the product's unique value), `Supporting` (backs Core up), `Generic` (every product has
+  it; no direct value, not the same as simple).
+- **Work Type** — `Feature`, `Bug`, `Refactoring` (structure changes, behaviour does not), `Engineering` (reliability,
+  quality, technical properties), `Infrastructure` (deploy, operations), `Maintenance` (planned upkeep).
+- **Engineering Risk** — `Low`, `Medium`, `High`: how bad a mistake would be. Weigh four factors, in this order:
+  impact, blast radius (components and users reached), complexity, change size. A one-line auth condition is `High`.
+  Risk is preliminary and rises when new dependencies or consequences surface.
+
+| Example | Product Value | Work Type | Risk |
+| --- | --- | --- | --- |
+| Add a payment provider | Core | Feature | High |
+| Fix a wrong total in the cart | Core | Bug | Medium |
+| Add an export to the admin | Supporting | Feature | Medium |
+| Replace a loading spinner | Generic | Feature | Low |
+| Rework the deploy pipeline | Generic | Infrastructure | High |
+
+### First look at the code
+
+1. Is there a confirmed pattern for this change (an analogous change, or a confirmed bug cause)?
+2. Does it apply without changing contracts, behaviour rules or interactions?
+3. Which scenarios, components and states does the change reach?
+4. Which consequences are unknown, and what checks the result?
+
+"Only one line changes" is a claim to confirm in the code. Unknown boundaries → research.
+
+### Route
+
+| Workflow | When | Work |
+| --- | --- | --- |
+| 1. Known local solution | Pattern or cause confirmed, boundaries clear, no new rules or interactions | plan → change → checks → review |
+| 2. Research and plan | Behaviour is clear; affected places or consequences are not | research → plan → change → checks → review |
+| 3. Research, design and plan | Behaviour, a mechanism, a contract or an interaction has to be defined | research → design → plan → change → checks → review |
+
+Check depth follows risk, not the size of the change. A new dependency, a pattern that does not fit, or rising risk
+sends the task back to route selection. Workflow 3 has no skill support yet.
+
+Delivery: workflow 1 lands as commits without ticket files; workflow 2 may split into tickets.
+
+### Plan
+
+The developer reads one short `plan.md` and approves it before code: classification, route, result, criteria,
+boundaries, checks, stop conditions and whether the developer reviews the change. Checks are approved there, once;
+development returns to the developer only on a deviation from the plan. The tracker task holds only Problem, Goal and
+Links, plus its status and labels.
+
 ## Feature workflow
 
 A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `.ai/tasks/{{key}}-N-<slug>/`.
 
-1. `/{{p}}-create-task` — the task in the tracker.
-2. `/{{p}}-create-plan` — `plan.md` and `test-plan.md`.
+1. `/{{p}}-create-task` — the task in the tracker: Problem, Goal, Links.
+2. `/{{p}}-create-plan` — classification and route («Classify a task before code»), `research.md` for workflow 2,
+   then the developer plan `plan.md` and the agent instruction `agent.md`. `Delivery: commits` → `/{{p}}-develop`;
+   `Delivery: tickets` → step 3.
 3. `/{{p}}-to-tickets` — tickets and their map `tickets/00-map.md`: one ticket is one commit of at most 100 lines of
    production code. A section of the map is a batch: a part's development tickets, its E2E ticket and three gates —
    agent review, developer review, manual check. A part has at most 6 development tickets and is one pull request with

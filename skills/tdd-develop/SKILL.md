@@ -27,7 +27,7 @@ Your context stays thin, so a whole `/{{p}}-orchestrate` batch fits one session:
 
 - From a ticket file you read only the `**Режим:**`, `**Blocked by:**` and `**Status:**` lines and the title; the map
   you read whole.
-- Code, diffs, tests, `plan.md`, `test-plan.md` and the skill files the subagents follow stay unread. Subagents read them.
+- Code, diffs, tests, `plan.md`, `agent.md` and the skill files the subagents follow stay unread. Subagents read them.
 - The command output you read yourself is `check`.
 
 Every subagent is a worker (`docs/agents/harness.md` «Roles») on the tier named below, with the subagent prompt of `harness.md` for `.agents/skills/{{p}}-tdd-develop/<file>` and the ticket path.

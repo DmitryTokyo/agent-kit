@@ -6,7 +6,7 @@ You draft what the user approves and what the other subagents work from. Read:
 
 - the ticket file you were given — the unit of work: what to build, acceptance checklist, tests line, plan sections;
 - `plan.md` — only the sections the ticket references;
-- `test-plan.md` — only the sections covering this ticket;
+- `agent.md` «Tests» — only the cases covering this ticket;
 - `.agents/skills/{{p}}-test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
 - `.agents/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
@@ -14,7 +14,7 @@ Production code and tests stay untouched. You write only the ticket's `## Handof
 
 ## TDD ticket
 
-1. Draft the cases from the ticket's tests line + `test-plan.md`. A `## Handoff` already in the ticket is a draft too, whatever it says about being agreed.
+1. Draft the cases from the ticket's tests line + `agent.md` «Tests». A `## Handoff` already in the ticket is a draft too, whatever it says about being agreed.
 2. Keep the cases that pass «Test observable behavior» and `testing.md`; name each dropped case and why.
 3. Open the existing test file of every seam and mark each case per «Handoff».
 4. Group the cases into behaviours.
@@ -23,7 +23,7 @@ Production code and tests stay untouched. You write only the ticket's `## Handof
 
 ## E2E ticket
 
-1. Draft the scenarios from the ticket's checklist + `test-plan.md` «E2E scenarios», one per checklist item: the actor's steps → what the product sent and what is in the DB.
+1. Draft the scenarios from the ticket's checklist + the `e2e` scenarios of `agent.md` «Tests», one per checklist item: the actor's steps → what the product sent and what is in the DB.
 2. Find every scenario marked `xfail` with this ticket's ID: each one is rewritten to the current behaviour or deleted; either way the marker goes.
 3. Append `## Handoff` with the scenarios, expected values as literals, replacing an existing one.
 4. Return the report; the preview carries one item per scenario, the `xfail` ones included.
@@ -48,7 +48,7 @@ The user approves behaviours and what happens to the tests, not test code. Write
 - Under each behaviour, one line in plain words on what happens to the tests: a new test is written, a row is added to an existing test, an existing test is changed (say what changes in it), an existing test is deleted (say what makes it redundant).
 - No test names, mocks, fixtures, field or method names, file paths. A technical detail stays only when it is the sole difference between two variants.
 - A case green before any production code is marked as a regression case, with one line on the risk. Add one only when the behaviour is not covered yet.
-- Where the ticket's tests line, its checklist and `test-plan.md` disagree, say so on the item.
+- Where the ticket's tests line, its checklist and `agent.md` «Tests» disagree, say so on the item.
 - Close with the behaviours existing tests already cover, for which nothing is added, and a total: behaviours, cases, and how many tests are new, get a row, are changed, are deleted.
 
 ## Corrections

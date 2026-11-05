@@ -22,8 +22,8 @@
 
 ## Working files
 
-A task's working files live in `.ai/tasks/<key>-N-<slug>/`, gitignored: `research.md`, `plan.md`, `test-plan.md`,
-`notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
+A task's working files live in `.ai/tasks/<key>-N-<slug>/`, gitignored: `research.md`, `plan.md` (the developer plan),
+`agent.md` (the agent instruction), `notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
 review per batch with its Russian digest, `todo.md` for deferred TODOs).
 
 ## When a skill says "publish to the tracker"

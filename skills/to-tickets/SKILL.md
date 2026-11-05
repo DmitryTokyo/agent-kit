@@ -16,7 +16,7 @@ Break `.ai/tasks/<key>-<N>-<slug>/plan.md` into **tickets**: one ticket = one co
 
 ### 1. Gather context
 
-Read `plan.md`, `research.md`, `test-plan.md` from the task folder and the tracker issue `<KEY>-N` (acceptance criteria). Ask for the key if the folder is unclear.
+Read `plan.md` (its `Criteria` are the acceptance criteria, its `Checks` the tests), `agent.md` and `research.md` from the task folder, and the tracker issue `<KEY>-N` (Problem, Goal). Ask for the key if the folder is unclear.
 
 ### 2. Draft tickets
 
@@ -25,14 +25,14 @@ Read `plan.md`, `research.md`, `test-plan.md` from the task folder and the track
 - The rules of `docs/agents/code-rules.md` «Ticket slicing».
 - Each development ticket gets a **Режим**: `TDD` or `без тестов`. `без тестов` only for: a one-off data migration,
   declarative config without logic (an admin listing, a settings entry), documentation. Everything else is `TDD` and is
-  developed against the unit cases of `test-plan.md`. Not decided during development: the mode is fixed here.
+  developed against the unit cases of `agent.md` «Tests». Not decided during development: the mode is fixed here.
 - A ticket where one part is `TDD` and another `без тестов`, and the parts can be delivered and committed separately →
   split in two. A part that only supports the other (a schema migration for a model) stays in the `TDD` ticket.
 - Each ticket lists its **blockers**: only tickets that genuinely gate it.
-- Parts: take them from plan.md «Parts» (older plans: «Branches»). No such section → one part, or propose parts (core, then parts independent of each other, each checkable in the product on its own) and ask the user. A part is a logical unit of the map; its git branch is made per batch by `/{{p}}-orchestrate`.
+- Parts: take them from `agent.md` «Parts» (older plans: `plan.md` «Parts» or «Branches»). No such section → one part, or propose parts (core, then parts independent of each other, each checkable in the product on its own) and ask the user. A part is a logical unit of the map; its git branch is made per batch by `/{{p}}-orchestrate`.
 - Each part closes with three levels in this order: development tickets → one E2E ticket → one check ticket.
-  - The E2E ticket has **Режим** `E2E`, carries the part's scenarios from `test-plan.md` «E2E scenarios» and is blocked by every development ticket of the part. No scenarios for the part in `test-plan.md` → no E2E ticket.
-  - The check ticket is blocked by the E2E ticket alone; without one — by every development ticket of the part. Its cases come from plan.md «Manual checks» for that part.
+  - The E2E ticket has **Режим** `E2E`, carries the part's `e2e` scenarios from `agent.md` «Tests» and is blocked by every development ticket of the part. No scenarios for the part in `agent.md` → no E2E ticket.
+  - The check ticket is blocked by the E2E ticket alone; without one — by every development ticket of the part. Its cases are the `plan.md` «Checks» lines marked `manual` for that part (older plans: «Manual checks»).
 - A part has at most 6 development tickets: one part is one batch, one pull request and one manual check at its end.
   More → split it into two parts, each named after what it delivers (`checkout-map`, `pickup-step`), not numbered
   (`checkout (1)`). A part that can't be named as a finished piece has its boundary in the wrong place.
@@ -127,7 +127,7 @@ three **gates**.
 
 **What to do:** behaviour from an actor's perspective, not a layer-by-layer list.
 
-**Plan:** plan.md edits <N, M>.
+**Plan:** agent.md «What to fix» <N, M>.
 
 **Size:** ~<N> lines.
 
@@ -149,7 +149,7 @@ three **gates**.
 
 **What to do:** the part's behaviour is checked by `e2e`.
 
-**Plan:** test-plan.md «E2E scenarios», <the part's headings>.
+**Plan:** agent.md «Tests», the part's e2e scenarios.
 
 **Size:** 0 lines of production code, <N> scenarios.
 
@@ -167,7 +167,7 @@ three **gates**.
 - [ ] `e2e` green.
 ```
 
-One checklist item per scenario, copied from `test-plan.md` with its title and sub-bullets. `/{{p}}-tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
+One checklist item per scenario, copied from `agent.md` «Tests» with its title and sub-bullets. `/{{p}}-tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
 
 ## Check ticket template
 
