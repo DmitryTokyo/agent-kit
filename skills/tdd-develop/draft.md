@@ -7,8 +7,8 @@ You draft what the user approves and what the other subagents work from. Read:
 - the ticket file you were given — the unit of work: what to build, acceptance checklist, tests line, plan sections;
 - `plan.md` — only the sections the ticket references;
 - `test-plan.md` — only the sections covering this ticket;
-- `.claude/skills/{{p}}-test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
-- `.claude/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
+- `.agents/skills/{{p}}-test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
+- `.agents/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 Production code and tests stay untouched. You write only the ticket's `## Handoff`.
 

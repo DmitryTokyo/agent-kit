@@ -5,7 +5,7 @@ description: Write or modify code directly, without a TDD ticket — a ticket wi
 
 # Develop
 
-Project context, domain language and guardrails live in `CLAUDE.md`, `AGENTS.md` and `CONTEXT.md`. How code is written
+Project context, domain language and guardrails live in `AGENTS.md` and `CONTEXT.md`. How code is written
 lives in `docs/agents/code-rules.md`: read it in full before writing code. Commands (`check`, `unit`, `e2e`, `migrate`)
 are keys of `docs/agents/stack.md` «Commands».
 
@@ -51,4 +51,4 @@ Minimum code that solves the task: no features, abstractions, configurability or
    the final report. Ambiguous findings → ask the user before touching.
 3. After fixes, `check` again.
 
-_Last modified: 2026-10-22_
+_Last modified: 2026-11-05_

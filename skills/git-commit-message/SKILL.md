@@ -13,11 +13,10 @@ Propose one commit per logical chunk of the current diff, then stage and create 
 
 An `<KEY>-<number>` already in the conversation (any case: `<KEY>-5`, `<key>-5`) → use it, skip this step.
 
-Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `.ai/tasks/<key>-*` folder names. Ask with `AskUserQuestion` (header `Задача`, single-select):
+Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `.ai/tasks/<key>-*` folder names. Ask the user (`docs/agents/harness.md` «Actions») for the task number, a short single choice:
 
-- question: `Какой номер задачи?`
 - one option per candidate
-- fewer than 2 candidates → add an explicit `Другой номер` option
+- fewer than 2 candidates → add an explicit «another number» option
 
 Inspect no changes before the answer.
 
@@ -49,9 +48,8 @@ Validate every message against the format before asking: a hook, if `git.md` nam
 
 ## 5. Confirm
 
-Print the commits as a plain message, ask `Названия коммитов подходят?` in its last line, and end the turn;
-`AskUserQuestion` hides both the text before it and its option `preview` in the desktop app. The user's reply approves
-them or corrects them. The message lists every proposed commit, numbered, each as its full message on one line and its
+Ask the user (`docs/agents/harness.md` «Actions») with the commits, «do these commit messages fit?» in the last line.
+The user's reply approves them or corrects them. The message lists every proposed commit, numbered, each as its full message on one line and its
 file scope on the next:
 
   ```text
@@ -76,4 +74,4 @@ git commit -m "<KEY>-123: type: message"
 
 One `git add` + `git commit` pair per chunk; nothing staged before step 5. Never `git push`. Report the commits and their file scope.
 
-_Last modified: 2026-10-18_
+_Last modified: 2026-11-05_

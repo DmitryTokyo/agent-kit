@@ -47,8 +47,7 @@ Ask the user when the mode isn't clear from the conversation.
 Modes 2 and 3. Before `plan.md`, the user agrees on what will be built; the plan then details only that. The user reads
 this, not the plan: write it in Russian, in `CONTEXT.md` terms, with no file paths, function names or layers.
 
-Print it as a plain message and end the turn; `AskUserQuestion` hides both the text before it and its option `preview`
-in the desktop app. The user's reply approves it or corrects it:
+Ask the user with it (`docs/agents/harness.md` «Actions»). The user's reply approves it or corrects it:
 
 - **Что изменится** — 2–5 lines: what an actor sees now → after.
 - **Решения** — every choice the tracker issue, the behaviour spec and the ADRs leave open and you settled, one line
@@ -128,7 +127,7 @@ Sibling file, own document, written for whoever runs `/{{p}}-test-writer` or `/{
 4. **Files** — existing test files to extend, or new locations per `docs/agents/testing.md` «File placement».
 5. **Edge cases** — bullets.
 
-Only behaviours worth a dedicated test: what an actor or the calling code can observe, per «Test observable behavior» in `.claude/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md`. An implementation property (query count, prefetch) belongs to the edit in `plan.md`. Same exclusions as plan.md: no justification, no finished test code.
+Only behaviours worth a dedicated test: what an actor or the calling code can observe, per «Test observable behavior» in `.agents/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md`. An implementation property (query count, prefetch) belongs to the edit in `plan.md`. Same exclusions as plan.md: no justification, no finished test code.
 
 ## Formatting
 
@@ -150,4 +149,4 @@ the tracker issue, `research.md` and `notes.md` are for the user: Russian, `CONT
 
 Edit an existing document only after an explicit "yes" from the user.
 
-_Last modified: 2026-10-18_
+_Last modified: 2026-11-05_

@@ -2,7 +2,7 @@
 
 Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands». The behaviour spec is the document `docs/agents/product.md` «Behaviour spec» names. Actors: `docs/agents/product.md` «Actors».
 
-Read `CONTRIBUTING.md` «Code review» — the tags and the outcome each one gets — and `docs/agents/code-rules.md` in full; `.claude/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` too when a tag is on a test.
+Read `CONTRIBUTING.md` «Code review» — the tags and the outcome each one gets — and `docs/agents/code-rules.md` in full; `.agents/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` too when a tag is on a test.
 
 Find the tags with the command of `docs/agents/git.md` «Review tags». Each one is the developer's review of the code next to it, the way a reviewer leaves it on a pull request. The developer owns the code: their taste in naming, readability and structure is the rule.
 
@@ -13,7 +13,7 @@ Read the code around it and the commit that brought it (`git blame`), then give 
 - **fixed** — change the code per `docs/agents/code-rules.md`, update the tests the change touches, run them.
 - **explained** — answer in plain words, with the reason the code is so, plus the clearer version: made when it stays inside one function, proposed otherwise.
 - **objection** — the argument and the place it rests on: the behaviour spec, an ADR, `CONTEXT.md`, a rule, or the approved behaviour or test value the change would alter.
-- **ticket** — the change is beyond a review round: write a new ticket of the part per `.claude/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules», or name a tracker task when it lies outside this task.
+- **ticket** — the change is beyond a review round: write a new ticket of the part per `.agents/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules», or name a tracker task when it lies outside this task.
 
 A change that alters a test's expected value or an actor's behaviour is an **objection**, whatever the tag.
 

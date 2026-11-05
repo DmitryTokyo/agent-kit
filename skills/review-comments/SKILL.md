@@ -20,17 +20,17 @@ Current branch is the main branch or not the batch's `<key>-N-*` branch (`docs/a
 
 ## Role
 
-You are the dispatcher, on Opus: the code and the tags stay unread by you, a subagent works through them. Running on another model (see «You are powered by» in the system prompt) → stop and tell the user to switch with `/model`.
+You are the dispatcher, on the strong tier (`docs/agents/harness.md` «Tiers»): the code and the tags stay unread by you, a subagent works through them. Running on another tier → stop and tell the user to switch.
 
 ## Workflow
 
-1. Spawn the subagent: `subagent_type: general-purpose`, `model: opus`, prompt *"Read `.claude/skills/{{p}}-review-comments/fix.md` and follow it. You are the subagent — do not spawn anything, you cannot talk to the user."*
+1. Spawn a worker (`docs/agents/harness.md` «Roles»), strong tier, with the subagent prompt of `harness.md` for `.agents/skills/{{p}}-review-comments/fix.md`.
 2. Show the user its table: each tag with its outcome, explanations and objections in full.
-3. The user answers an explanation or an objection → pass the answer via `SendMessage` to the same subagent, show its new rows. Repeat until the user has nothing left to answer.
+3. The user answers an explanation or an objection → continue the same subagent with the answer (`harness.md` «continue a worker»), show its new rows. Repeat until the user has nothing left to answer.
 4. Run `check`; green → `git add -A`, commit as `docs/agents/git.md` «Agent identity» says, with `<KEY>-N: <type>: <description>` in the format of `/{{p}}-git-commit-message` step 4: one commit for the round, `refactor` unless a fix changes behaviour. Then `git push origin <the batch branch>`. No confirmation question: the user started this skill. Never push the main branch: on it stop and tell the user to do it themselves.
 
 ## Output
 
 The commit and the push, then the tags that changed nothing, each with its outcome in one line.
 
-_Last modified: 2026-10-15_
+_Last modified: 2026-11-05_

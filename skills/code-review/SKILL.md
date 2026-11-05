@@ -17,7 +17,7 @@ Two-axis review, each axis in its own parallel sub-agent. Every finding carries 
 Run the review-tags command of `docs/agents/git.md` «Review tags».
 
 - Any hit is the developer's own review (`CONTRIBUTING.md` «Code review»): read
-  `.claude/skills/{{p}}-review-comments/SKILL.md` and follow it in place of steps 1–5. Its output ends this skill.
+  `.agents/skills/{{p}}-review-comments/SKILL.md` and follow it in place of steps 1–5. Its output ends this skill.
 - No hits → step 1.
 
 ## 1. Pin the fixed point
@@ -46,11 +46,11 @@ sub-agent checks against the plan alone; say so in the report.
 
 ## 3. Collect standards sources
 
-- `CLAUDE.md`, `AGENTS.md` (Guardrails)
+- `AGENTS.md` (Guardrails)
 - `docs/adr/` — the ADRs touching the changed apps
 - `docs/agents/code-rules.md`
 - `docs/agents/hygiene.md`
-- `.claude/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` — for changed test files
+- `.agents/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` — for changed test files
 
 Plus the smell baseline below. Repo rules override it; each smell is a judgement call, labelled "possible <smell>".
 
@@ -69,7 +69,7 @@ Plus the smell baseline below. Repo rules override it; each smell is a judgement
 
 ## 4. Spawn both sub-agents in parallel
 
-`Agent(subagent_type="general-purpose")` for each, in one message.
+A reviewer (`docs/agents/harness.md` «Roles») for each, in one message.
 
 **Standards prompt** carries: diff command, commit list, the standards file paths, the smell baseline pasted in full, and:
 
@@ -112,8 +112,8 @@ session. No findings → tick `Ревью агентом` in the map; the digest
 
 ## 6. Digest
 
-The **digest** is the developer's copy: Russian, plain words, answered in place. Spawn
-`Agent(subagent_type="general-purpose", model="haiku")` with the review path and:
+The **digest** is the developer's copy: Russian, plain words, answered in place. Spawn a worker on the cheap tier
+(`docs/agents/harness.md`) with the review path and:
 
 > Write `<review path without .md>.ru.md`: one numbered item per finding, the same numbers, no checkboxes, no file
 > paths and no rule citations. Each item: a bold one-line gist; «Что видно:» — what an actor or the
@@ -124,4 +124,4 @@ The **digest** is the developer's copy: Russian, plain words, answered in place.
 **Done when:** the digest has every number of the review. In chat: the digest path, the count per tag and every `FIX`
 gist in one line each. The next step is `/{{p}}-develop` with the review file once the digest is answered.
 
-_Last modified: 2026-10-20_
+_Last modified: 2026-11-05_
