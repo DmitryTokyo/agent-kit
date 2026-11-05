@@ -112,7 +112,7 @@ batches in «After» is ticked.
 
 **Gates:**
 
-- [ ] Agent review → `../reviews/01-core.md`
+- [ ] Agent review → `../reviews/01-core-review-*.md`
 - [ ] Developer review
 - [ ] Manual check → `01-core-04-check.md`
 
@@ -126,7 +126,7 @@ batches in «After» is ticked.
 
 **Gates:**
 
-- [ ] Agent review → `../reviews/02-summary.md`
+- [ ] Agent review → `../reviews/02-summary-review-*.md`
 ```
 
 - **Branch** — per `docs/agents/git.md` «Branches»: one part → the task branch `<key>-N-<slug>`; several parts →
@@ -137,7 +137,7 @@ batches in «After» is ticked.
 - Gates, in this order, each ticked by:
   - `Agent review` — always; `/{{p}}-develop` after it closes every finding of the review file, or
     `/{{p}}-code-review` when the review has none;
-  - `Developer review` — only when `plan.md` «Developer review» is `yes`; the user ticks it;
+  - `Developer review` — only when `plan.md` «Developer review» is `yes`; the user ticks it on the pull request;
   - `Manual check` — only when the part has a check ticket; the user, once every case of it is ticked.
 
 ## Ticket template
@@ -207,7 +207,7 @@ One checklist item per scenario, copied from `agent.md` «Tests» with its title
 - [ ] <screen → action → expected result>
 ```
 
-The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every gate of the map is ticked — the user does that, not the agent.
+The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every section of the map is merged — `/{{p}}-merge-request` «After the merge» does it.
 
 ## Ticket rules
 

@@ -1,6 +1,6 @@
 ---
 name: {{p}}-code-review
-description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes: Standards (this repo's rules) and Spec (the tracker task it implements). Use when the user asks to review a branch, commits, or work in progress, or says their own review is done and the tags in the code need handling."
+description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes, Standards (this repo's rules) and Spec (the task's plan), then set the affected scope, checks and review level. Use when the user asks to review a branch, commits, or work in progress."
 ---
 
 # Code review
@@ -9,45 +9,41 @@ description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since 
 
 The behaviour spec is the document `docs/agents/product.md` «Behaviour spec» names. Actors: `docs/agents/product.md` «Actors».
 
-Two-axis review, each axis in its own parallel sub-agent. Every finding carries a review tag — `FIX`, `NOTE` or `TODO`
-— with the meaning of the table in `CONTRIBUTING.md` «Code review», the same tags the developer writes.
-
-## 0. Developer review tags
-
-Run the review-tags command of `docs/agents/git.md` «Review tags».
-
-- Any hit is the developer's own review (`CONTRIBUTING.md` «Code review»): read
-  `.agents/skills/{{p}}-review-comments/SKILL.md` and follow it in place of steps 1–5. Its output ends this skill.
-- No hits → step 1.
+Two-axis review, each axis in its own reviewer. Reports stay separate: no merging, no reranking across axes. The
+review is a file a fixer in another session works from; this skill fixes no code.
 
 ## 1. Pin the fixed point
 
 `<KEY>-N <part>` → a **batch**: the section of `.ai/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
-with an unticked `Agent review` when no part is given; older maps: `Ревью агентом`). Base: the parent of the first commit hash in its ticket
-lines; diff: `git diff <base> <last hash>`. A ticket line without a hash → stop: the batch is unfinished.
+with an unticked `Agent review` when no part is given; older maps: `Ревью агентом`). Base: the parent of the first
+commit hash in its ticket lines; diff: `git diff <base> <last hash>`. A ticket line without a hash → stop: the batch is
+unfinished.
 
 Otherwise take the fixed point from the user; if none given, ask.
 
 - Base: `git merge-base <fixed-point> HEAD`.
 - Diff: `git diff <base>` (includes uncommitted changes).
 - Commits: `git log <base>..HEAD --oneline`.
+- Untracked: `git ls-files --others --exclude-standard` — `git diff` omits them; include the relevant new source files.
 
-**Done when:** the ref resolves and the diff is non-empty. Stop here otherwise.
+**Done when:** the ref resolves and the diff or the untracked list is non-empty. Stop here otherwise.
 
 ## 2. Find the spec
 
-1. task key `<KEY>-N` from commit prefixes, or from the user.
-2. tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`.
-3. Task folder `.ai/tasks/<key>-N-*/` (case-insensitive): `research.md`, `plan.md`, `tickets/*.md`.
-4. the behaviour spec — the sections for the screens the diff touches.
+1. Task key `<KEY>-N` from commit prefixes, or from the user. No key → ask the user and wait; never skip the spec.
+2. Task folder `.ai/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `tickets/*.md`, and
+   the latest review file of this scope (step 7) — the previous round, if any.
+3. The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal. Older tasks
+   carry `## Decisions` and acceptance criteria there: they are part of the spec.
+4. The behaviour spec — the sections for the screens the diff touches.
 
-The tracker issue is required: no key → ask the user for it, and wait. The issue has no `## Decisions` → the Spec
-sub-agent checks against the plan alone; say so in the report.
+No `plan.md` → the spec is the tracker issue alone; say so in the review. Where an older issue's `## Decisions` and
+`plan.md` disagree, the issue wins: report the gap, never bend the code toward the plan.
 
 ## 3. Collect standards sources
 
 - `AGENTS.md` (Guardrails)
-- `docs/adr/` — the ADRs touching the changed apps
+- `docs/adr/` — the ADRs touching the changed areas
 - `docs/agents/code-rules.md`
 - `docs/agents/hygiene.md`
 - `.agents/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` — for changed test files
@@ -67,61 +63,100 @@ Plus the smell baseline below. Repo rules override it; each smell is a judgement
 - **Middle Man**: class/function that only delegates → call the target directly.
 - **Refused Bequest**: subclass ignores most of what it inherits → composition.
 
-## 4. Spawn both sub-agents in parallel
+## 4. Previous round
 
-A reviewer (`docs/agents/harness.md` «Roles») for each, in one message.
+With a previous round, check it first: every `[x]` item verified in the code — holds → closed; does not → reopened
+under its ID. Every unticked item carries over under its ID, its `decision` kept.
 
-**Standards prompt** carries: diff command, commit list, the standards file paths, the smell baseline pasted in full, and:
+## 5. Spawn both reviewers
 
-> Report per file:line (a) every breach of a documented rule, citing file + rule — `FIX`; (b) every baseline smell,
-> named, with the hunk quoted — `TODO`. Skip what the linter autofixes. Under 400 words.
+A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message.
 
-**Spec prompt** carries: diff command, commit list, spec file paths, the tracker issue text, and:
+**Spec prompt** carries: diff command, commit list, untracked files, spec file paths, the tracker issue text, and:
 
-> Report (a) requirements missing or partial; (b) behaviour in the diff nobody asked for (scope creep);
-> (c) requirements implemented but looking wrong, including screens or texts that differ from the behaviour spec;
-> (d) behaviour that departs from the issue's `## Decisions`; (e) defects: an input or state that crashes or gives a
-> wrong result, with that input or state. Tag each: a defect or a requirement broken for an actor —
-> `FIX`; a departure from the spec someone must decide on, or intent you cannot tell — `NOTE`, phrased as a question
-> with the options. Where the issue and plan.md disagree, the issue wins: report the gap, never bend the code toward
-> plan.md. Quote the spec line for each. Under 400 words.
+> Report (a) `plan.md` Result and Criteria missing or partial; (b) behaviour in the diff nobody asked for, or outside
+> the plan's Boundaries (scope creep); (c) requirements implemented but looking wrong, including screens or texts
+> that differ from the behaviour spec; (d) a finding from the plan's Stop conditions; (e) defects: an input or state
+> that crashes or gives a wrong result, with that input or state. Mark each `hard` (a defect, a broken requirement or
+> boundary) or `judgement` (a departure someone must decide on, or intent you cannot tell — phrase it as a question
+> with the options). Quote the spec line for each. Under 400 words.
 
-## 5. Aggregate
+**Standards prompt** carries: diff command, commit list, untracked files, the standards file paths, the smell baseline
+pasted in full, and:
 
-The review is in English: it is for the agent that works it. Open with the tracker issue link, and «no `## Decisions`,
-checked against the plan only» when the issue has none. Then the findings grouped by tag, both axes together, numbered
-straight through all three groups (1, 2, 3 …), each with its axis:
+> Report per file:line (a) every breach of a documented rule, citing file + rule — `hard`; (b) every baseline smell,
+> named, with the hunk quoted — `judgement`; (c) every check of `docs/agents/hygiene.md` that fails on the changed
+> files — `hard`. Skip what the linter autofixes. Under 400 words.
+
+**Done when:** both reviewers have reported.
+
+## 6. Scope, checks, level, criteria
+
+Inline, from the diff and its callers:
+
+1. **Consequences.** Each contract, side effect or property that changes or must stay unchanged, with who depends on
+   it and the failure it could cause.
+2. **Affected scope.** The changed module, its consumers and related components, plus one sentence on why that
+   boundary is enough. Boundary uncertain → the scope is the full suite.
+3. **Checks.** Per consequence, the check that can catch its failure: a unit test for isolated logic, `e2e` when
+   components must work together, a static or artifact check for docs and config. Run the affected-scope tests
+   (`unit` / `one-test` of `docs/agents/stack.md` «Commands»); the full suite runs in CI — read its result on the pull
+   request when there is one. A consequence whose failure no check can catch is a `hard` finding: name the missing test.
+4. **Review level.** Start from `plan.md` «Developer review»: `no` → Agent; `yes` → Focused. Raise to Full when risk
+   is High or the diff reaches past the plan's Boundaries. Focused and Full name the exact `file:line` ranges or
+   decisions the developer must read.
+5. **Criteria.** Check each `plan.md` «Criteria» item against the diff. Holds → tick it `[x]` in `plan.md`. Fails or
+   unverifiable → leave it unticked; it is a deviation.
+
+**Done when:** every consequence has a check with its result, and every criterion is ticked or listed as a deviation.
+
+## 7. Write the review file
+
+The scope's review file is `.ai/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
+otherwise; `NN` is one past the latest round of that scope (`01` for the first). The file is self-contained: a fixer in
+another session reads only it. IDs stay stable across rounds: `SPEC-n`, `STD-n`, numbering continues from the previous
+round.
 
 ```markdown
-## FIX
-- [ ] 1. `<file:line>` — <what is wrong, citing the rule or spec line> → <what to do> (Standards | Spec)
+# <KEY>-N review NN
 
-## NOTE
-- [ ] 2. `<file:line>` — <question>; options: <…> (Spec)
+Task: <tracker link>
+Base: `<base>` · Commits: `<first>..<last>`
+<"No plan.md — checked against the tracker issue only." — when there is no plan>
 
-## TODO
-- [ ] 3. `<file:line>` — possible <smell> → <what to do> (Standards)
+Fixer: fix every open item that is `hard` or `decision: fix`. Tick it `[x]` and add one `fixed:` line saying what
+changed. Leave `decision: ?` and `decision: skip` items untouched.
+
+## Previous round
+- SPEC-1 closed · STD-2 reopened: <why>
+
+## Spec
+- [ ] **SPEC-3** hard · `path/file.py:42` — <problem>. Spec: "<quoted line>" → <fix direction>
+
+## Standards
+- [ ] **STD-4** judgement · decision: ? · `path/file.py:58` — possible <smell>: <problem> → <fix direction>
+
+## Review level
+<Agent | Focused | Full> — <why, against the diff>
+- `path/file.py:40-75` — <what the developer must decide or confirm>
+
+## Affected scope
+<modules and consumers> — <why this boundary is enough>
+
+## Consequences
+- <consequence> → <check> → <passed | failed | CI pending>
+
+## Deviations
+- <unticked criterion or departure from the plan> — <why>
 ```
 
-An empty tag keeps its heading with «none». End with one line: the count per tag and the worst `FIX`.
+Omit «Previous round» on round 01 and «Deviations» when there are none. An empty axis keeps its heading with «none».
 
-Report only. Fix nothing without the user's go-ahead.
+The developer answers a `judgement` item by setting its `decision` to `fix` or `skip` in the file; work that should
+happen later is `skip` plus a tracker task. A batch with no open `hard` item and no `decision: ?` left → tick
+`Agent review` in the map.
 
-A batch → the report goes to `.ai/tasks/<key>-N-*/reviews/<BB>-<part>.md`, so `/{{p}}-develop` can work it without this
-session. No findings → tick `Agent review` in the map; the digest is skipped.
-
-## 6. Digest
-
-The **digest** is the developer's copy: Russian, plain words, answered in place. Spawn a worker on the cheap tier
-(`docs/agents/harness.md`) with the review path and:
-
-> Write `<review path without .md>.ru.md`: one numbered item per finding, the same numbers, no checkboxes, no file
-> paths and no rule citations. Each item: a bold one-line gist; «Что видно:» — what an actor or the
-> code does now, in plain words; «Варианты:» — each option with what it leads to, then «Рекомендую: <N>»; a FIX gets
-> one option, the fix; «Ответ:» left empty. Open with the batch name and «Ответь под каждым пунктом. На TODO:
-> делать / отложить / пропустить; можно одной строкой на все TODO.»
-
-**Done when:** the digest has every number of the review. In chat: the digest path, the count per tag and every `FIX`
-gist in one line each. The next step is `/{{p}}-develop` with the review file once the digest is answered.
+In chat: the file path, findings count per axis, the worst finding within each axis, the review level, and the next
+step — the developer sets the decisions, then `/{{p}}-develop` with the review file.
 
 _Last modified: 2026-11-05_

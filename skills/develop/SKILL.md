@@ -1,6 +1,6 @@
 ---
 name: {{p}}-develop
-description: Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, the deferred TODOs, or a plain fix. A ticket from .ai/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /{{p}}-tdd-develop.
+description: Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, or a plain fix. A ticket from .ai/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /{{p}}-tdd-develop.
 ---
 
 # Develop
@@ -38,24 +38,13 @@ then tick the checklist and set `Status: done`; once committed, tick its line in
 
 ### A review file
 
-Input is a review file from `.ai/tasks/<key>-N-*/reviews/` → its unticked findings are the task. The developer's answers
-are in its digest, `<review>.ru.md`, under the same numbers; a line for all TODOs covers every TODO without its own
-answer. Each finding by its tag:
-
-- `FIX` → the outcome in `CONTRIBUTING.md` «Code review».
-- `NOTE` → as its answer says.
-- `TODO` → `делать`: fixed in this round; `отложить`: appended to `.ai/tasks/<key>-N-*/reviews/todo.md` as an unticked
-  line with the review file, its number and the finding; `пропустить`: closed unchanged.
-
-A `NOTE` or `TODO` without an answer, or no digest → stop and ask the user, naming those numbers. Existing tests are
-the check, new ones only when the finding asks for them. A finding that changes approved behaviour, or that you
-disagree with → ask the user. Each closed finding gets its box ticked, and the fixes are one commit per
-`/{{p}}-git-commit-message`, at most 100 lines of production code. Every finding ticked → tick `Agent review` in the
-map section for that batch. The final report lists every finding by number with its outcome: fixed, done as answered,
-deferred or skipped.
-
-Input is `.ai/tasks/<key>-N-*/reviews/todo.md` → its unticked lines are the task, as `делать` TODOs, in one commit; each
-fixed line gets its box ticked.
+Input is a review file from `.ai/tasks/<key>-N-*/reviews/` → it says what to fix in its «Fixer» line: every open item
+that is `hard` or `decision: fix`. A `decision: ?` left → stop and ask the user to set it in the file, naming those
+IDs. A finding that changes approved behaviour, or that you disagree with → ask the user. Existing tests are the
+check, new ones only when the finding asks for them. Each fixed item gets its box ticked and one `fixed:` line; the
+fixes are one commit per `/{{p}}-git-commit-message`, at most 100 lines of production code. No open `hard` or
+`decision: fix` item left → tick `Agent review` in the map section for that batch. The final report lists every item
+by ID with its outcome: fixed, skipped or asked.
 
 ### A plain fix
 
