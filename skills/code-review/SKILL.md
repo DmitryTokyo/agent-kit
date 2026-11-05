@@ -1,6 +1,6 @@
 ---
 name: {{p}}-code-review
-description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes: Standards (this repo's rules) and Spec (the tracker task it implements). Use when the user asks to review a branch, commits, or work in progress in tg-sales-bot, or says their own review is done and the tags in the code need handling."
+description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes: Standards (this repo's rules) and Spec (the tracker task it implements). Use when the user asks to review a branch, commits, or work in progress, or says their own review is done and the tags in the code need handling."
 ---
 
 # Code review
