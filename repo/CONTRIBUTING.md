@@ -95,16 +95,17 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
    then the developer plan `plan.md` and the agent instruction `agent.md`. `Delivery: commits` → `/{{p}}-develop`;
    `Delivery: tickets` → step 3.
 3. `/{{p}}-to-tickets` — tickets and their map `tickets/00-map.md`: one ticket is one commit of at most 100 lines of
-   production code. A section of the map is a batch: a part's development tickets, its E2E ticket and three gates —
-   agent review, developer review, manual check. A part has at most 6 development tickets and is one pull request with
-   one manual check at its end; a bigger part is split in two, each named after what it delivers (`checkout-map`,
-   `pickup-step`), not numbered.
+   production code. Each line of the plan's `Checks` lands in one ticket and sets its mode. A section of the map is a
+   batch: a part's development tickets, its E2E ticket and its gates — agent review always, developer review when the
+   plan says so, manual check when the plan has `manual` checks. A part has at most 6 development tickets and is one
+   pull request; a bigger part is split in two, each named after what it delivers (`checkout-map`, `pickup-step`), not
+   numbered.
 4. `/{{p}}-orchestrate {{KEY}}-N` — the first batch of the map with an unticked ticket, once the batches it follows have every
-   gate ticked; each ticket goes through the skill of its `Режим`. Per TDD ticket the developer approves the behaviours
-   and what happens to the tests; subagents write the tests, the code and review them; each ticket is committed on its
-   own and ticked in the map. The batch lives on its own git branch `{{key}}-N-<part>`; at its end the branch is pushed and a
-   pull request into `{{main}}` is opened (see «Branches and pull requests»). One ticket alone: `/{{p}}-tdd-develop {{KEY}}-N <ID>` or `/{{p}}-develop` with the ticket path —
-   left uncommitted for the developer's `git diff`.
+   gate ticked; each ticket goes through the skill of its `Mode`. The developer is asked only about deviations from the
+   approved checks; subagents write the tests, the code and review them; each ticket is committed on its own and ticked
+   in the map. The batch lives on its branch (see «Branches and pull requests»); nothing is pushed. One ticket alone:
+   `/{{p}}-tdd-develop {{KEY}}-N <ID>` or `/{{p}}-develop` with the ticket path — left uncommitted for the developer's
+   `git diff`.
 5. `/{{p}}-code-review {{KEY}}-N <part>` in a new session, another model welcome — findings into
    `.ai/tasks/{{key}}-N-<slug>/reviews/` with a Russian digest beside them; the developer answers in the digest, then
    `/{{p}}-develop` with the review file works them and ticks the gate.
@@ -118,10 +119,10 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
 
 ## Branches and pull requests
 
-- A **part** is a logical unit of the ticket map. A batch (a map section) gets a git branch `{{key}}-N-<part>` and a pull
-  request into `{{main}}`; the developer merges it.
+- A task works on one branch named after its folder, `{{key}}-N-<slug>`, and one pull request into `{{main}}`. A ticket
+  map with several parts gets one branch `{{key}}-N-<part>` and one pull request per part instead. The developer merges.
 - The agent never pushes `{{main}}`: it stops and asks the developer to do it. Each harness's permission file
-  (`docs/agents/harness.md`) denies those commands. Only the batch branch is pushed.
+  (`docs/agents/harness.md`) denies those commands. Only the task or part branch is pushed.
 - Whose change is whose is read from the history: the agent commits under its harness's identity
   (`docs/agents/harness.md` «Agent identity»), the developer as themself. Pull requests are opened under the
   developer's account.

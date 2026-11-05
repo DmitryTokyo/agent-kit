@@ -148,7 +148,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 | `issue-tracker.md` | tracker, task key, tools, task language, where working files live |
 | `product.md` | behaviour spec, actors, what only a manual check shows, the E2E actor |
 | `stack.md` | stack, code layout, the `check` / `unit` / `e2e` / `one-test` / `migrate` commands, line counting |
-| `git.md` | commit format, main branch, part branch, how to open a PR, agent identity, review tags |
+| `git.md` | commit format, main branch, task and part branches, how to open a PR, agent identity, review tags |
 | `harness.md` | roles, tiers and actions mapped per harness: subagents, models, asking the user, agent identity |
 | `code-rules.md` | layers, where code goes, ticket slicing, code rules |
 | `hygiene.md` | the checklist for changed files |

@@ -6,13 +6,13 @@ maps them for each harness.
 
 ## Git
 
-Never push to `{{main}}`: stop and tell the user to do it themselves. Push only the batch branch of `/{{p}}-orchestrate`. Agent commits carry the identity of `docs/agents/harness.md` «Agent identity» — never strip it, the user tells their changes from the agent's by it.
+Never push to `{{main}}`: stop and tell the user to do it themselves. Push only the task or part branch of `docs/agents/git.md` «Branches». Agent commits carry the identity of `docs/agents/harness.md` «Agent identity» — never strip it, the user tells their changes from the agent's by it.
 
 ## Agent skills
 
 ### Development
 
-When I ask you to write, develop, build or fix something in code, offer to invoke the `/{{p}}-develop` skill before starting. It covers layers and responsibility boundaries, verification commands, the layout inside an app, constant rules, Celery and code quality. Tests go through `/{{p}}-test-writer`, which `/{{p}}-develop` references. A batch of tickets from a task's map goes through `/{{p}}-orchestrate {{KEY}}-N`. A single ticket from `.ai/tasks/{{key}}-N-*/tickets/` is routed by its `Режим` (mode) field: `TDD` and `E2E` go through `/{{p}}-tdd-develop`, `без тестов` (no tests) goes through `/{{p}}-develop`.
+When I ask you to write, develop, build or fix something in code, offer to invoke the `/{{p}}-develop` skill before starting; a task with an approved plan that says `Delivery: commits` goes there too. It covers layers and responsibility boundaries, verification commands, the layout inside an app, constant rules, Celery and code quality. Tests go through `/{{p}}-test-writer`, which `/{{p}}-develop` references. A batch of tickets from a task's map goes through `/{{p}}-orchestrate {{KEY}}-N`. A single ticket from `.ai/tasks/{{key}}-N-*/tickets/` is routed by its `Mode` field: `TDD` and `E2E` go through `/{{p}}-tdd-develop`, `no tests` goes through `/{{p}}-develop`.
 
 Task chain and code review tags: `CONTRIBUTING.md` «Feature workflow» and «Code review».
 

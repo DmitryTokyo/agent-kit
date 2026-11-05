@@ -15,7 +15,12 @@ How commits, branches and pull requests are made. `<KEY>` is the task key from `
 ## Branches
 
 - Main branch: <!-- fill: master | main -->. The agent never pushes it: it stops and tells the user to do it.
-- A batch of the ticket map gets the branch `<key>-<N>-<part>` (lowercase key). The agent pushes only that branch.
+- The **task branch** is named after the task folder: `.ai/tasks/<key>-<N>-<slug>/` → `<key>-<N>-<slug>` (lowercase
+  key). A task whose ticket map has several parts gets one branch per part instead, `<key>-<N>-<part>`. One branch is
+  one pull request. The agent pushes only these branches.
+- Getting onto the branch before the first edit: already on it → continue; on the main branch →
+  `git pull --ff-only && git switch -c <branch>`; the branch exists → `git switch <branch>`; on another task's branch →
+  stop and ask the user.
 
 ## Agent identity
 
