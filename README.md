@@ -2,7 +2,7 @@
 
 **English** · [Русский](README.ru.md)
 
-A set of agent skills — for Claude Code, OpenCode, pi or another harness — with which an agent takes a task from
+A set of agent skills for any coding harness, with which an agent takes a task from
 its creation to a pull request: files it in the tracker, writes a plan, cuts it into small tickets, writes tests and
 code, checks its own work and commits. You approve the key steps and look at the result in the pull request.
 
@@ -14,6 +14,13 @@ The kit is for you if you:
 - want code to go through tests and review, and the agent never to push to the main branch.
 
 It isn't needed for one-off edits and questions: the process only gets in the way there.
+
+## Tested with
+
+- Harnesses: Claude Code, OpenCode, Codex.
+- Models: Claude, DeepSeek.
+
+Another harness works once `docs/agents/harness.md` has a section for it: `bootstrap` writes one from your answers.
 
 ## A starting point
 
