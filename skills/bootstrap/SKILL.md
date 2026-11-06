@@ -21,8 +21,8 @@ Stop and tell the user when any of these fails:
 ## 2. Read the project
 
 Before asking anything, read what is there: `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `README.md`, `CONTEXT.md`,
-`docs/adr/`, `docs/agents/`, `.agents/`, `.claude/`, `.opencode/`, `.pi/`, `.pre-commit-config.yaml`, `.gitignore`, the
-build and dependency files (`Makefile`, `pyproject.toml`, `package.json`, …), the source root, the test directories,
+`docs/adr/`, `docs/agents/`, `.agents/`, `.claude/`, `.opencode/`, `.codex/`, `.pre-commit-config.yaml`, `.gitignore`,
+the build and dependency files (`Makefile`, `pyproject.toml`, `package.json`, …), the source root, the test directories,
 `.codegraph/`, `git remote -v`, the default branch.
 
 From them, draft an answer to every question of step 3. A question the files answer gets the drafted answer to
@@ -35,7 +35,7 @@ The user answers by number.
 
 1. Skill prefix: lowercase letters and digits. No default: the user chooses it.
 2. Task key in the tracker, e.g. `AG`. No default: the user chooses it.
-3. Harnesses the project runs in: the sections of `<kit>/contract/harness.md` (`claude-code`, `opencode`, `pi`), and
+3. Harnesses the project runs in: the sections of `<kit>/contract/harness.md` (`claude-code`, `opencode`, `codex`), and
    the values it leaves to fill — tiers, agent identity. A harness without a section → it gets one from the user's
    answers, and say so: `sync` can send it to the kit.
 4. Tracker: name, team or project, URL, the tools to read, list and save issues; what an epic is; the status a

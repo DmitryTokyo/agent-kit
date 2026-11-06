@@ -67,18 +67,19 @@ gives the author and trailer per harness. Never strip them.
 - permissions: `.opencode/opencode.json`.
 <!-- /harness:opencode -->
 
-<!-- harness:pi -->
-## pi
+<!-- harness:codex -->
+## Codex
 
-pi loads agent definitions from `~/.pi/agent/agents/`, `.pi/agents/` and `.agents/agents/`.
+Codex reads `AGENTS.md` and the skills in `.agents/skills/` natively.
 
-- worker: `Agent(subagent_type="worker")`. Never hand two workers the same file.
-- explorer: `Agent(subagent_type="scout")`.
-- reviewer: `Agent(subagent_type="reviewer")`.
-- continue a worker: not available — a subagent returns one final report. Re-dispatch with that report pasted into
-  the new task.
-- tiers: the main agent runs on the session's model; <!-- fill: per-agent models, or «one model» -->.
+- worker: `spawn_agent` with the task prompt and the tier's model.
+- explorer: `spawn_agent` with a read-only task.
+- reviewer: `spawn_agent`, one per review, all spawned before the first `wait_agent`.
+- continue a worker: `send_input` to it; `wait_agent` collects the result.
+- tiers: <!-- fill: the model of each tier; `agents.default_subagent_model` in `.codex/config.toml` sets the default -->.
 - ask the user: the plain message.
-- invoke a skill: <!-- fill -->.
-- identity: <!-- fill: author and trailer -->.
-<!-- /harness:pi -->
+- invoke a skill: `$<name>`; `/<name>` in a skill is `$<name>`.
+- identity: <!-- fill: author and trailer, e.g. `git -c user.name=Codex -c user.email=<email> commit ...` -->.
+- permissions: `.codex/rules/default.rules`, denies as `prefix_rule(pattern = [...], decision = "forbidden")`; it
+  loads only when the project's `.codex/` is trusted.
+<!-- /harness:codex -->
