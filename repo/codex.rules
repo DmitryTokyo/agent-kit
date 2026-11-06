@@ -1,0 +1,15 @@
+# agent-kit: the agent never pushes the main branch and never force-pushes.
+prefix_rule(
+    pattern = ["git", "push", "origin", ["{{main}}", "HEAD:{{main}}"]],
+    decision = "forbidden",
+    justification = "Never push {{main}}: the developer merges it.",
+    match = ["git push origin {{main}}", "git push origin HEAD:{{main}}"],
+    not_match = ["git push origin {{key}}-1-slug"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f", "--force-with-lease"]],
+    decision = "forbidden",
+    justification = "Never force-push.",
+    match = ["git push --force origin {{key}}-1-slug", "git push -f"],
+)

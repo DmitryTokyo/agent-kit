@@ -86,8 +86,10 @@ Done when the user approves.
    - `claude-code` chosen → `CLAUDE.md` opens with the line `@AGENTS.md` (created when missing); its rules that
      every harness needs move to `AGENTS.md`, Claude Code specifics stay;
    - `claude-code` chosen → `settings.json` merged into `.claude/settings.json`: `permissions.allow` and
-     `permissions.deny` as unions. Another harness's permission file gets the same denies when the user names its
-     format;
+     `permissions.deny` as unions;
+   - `codex` chosen → `codex.rules` appended to `.codex/rules/default.rules` (created when missing), rules already
+     there stay. Codex loads it only for a trusted project: put that in the report;
+   - another harness's permission file gets the same denies when the user names its format;
    - `pre-commit.yaml` — its hooks added to the `repo: local` entry of `.pre-commit-config.yaml`, created when missing;
      `pre-commit install --hook-type commit-msg` is the user's to run, put it in the report.
 5. `.gitignore` gets `<work>/` when missing.
@@ -110,13 +112,14 @@ Done when the user approves.
 
 ## 6. Verify
 
-- `grep -rn '{{' .agents/skills docs/agents AGENTS.md CONTRIBUTING.md .pre-commit-config.yaml` — empty.
+- `grep -rn '{{' .agents/skills docs/agents AGENTS.md CONTRIBUTING.md .pre-commit-config.yaml .codex/rules` — empty.
 - Every `/<prefix>-…` and `.agents/skills/<prefix>-…` reference in the installed skills resolves to an installed
   skill; a reference to `business-questions` with the module off is a stop.
 - `docs/agents/harness.md` has a section for every chosen harness. `claude-code` chosen → `.claude/skills` resolves
   to `.agents/skills` and `CLAUDE.md` contains `@AGENTS.md`.
 - `.agents/agent-kit.json` and every harness permission file written parse; `pre-commit validate-config` passes when
-  pre-commit is installed.
+  pre-commit is installed; `codex execpolicy check --rules .codex/rules/default.rules -- git push origin <main>`
+  reports `forbidden` when Codex is installed.
 
 Done when every check passes. Nothing is committed: the user reviews `git diff` and commits.
 

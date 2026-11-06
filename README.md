@@ -149,7 +149,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 | `skills/` | 15 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
-| `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
+| `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, Codex rules, pre-commit hooks | the project root |
 | `scripts/render.sh` | the kit at a given commit with the prefix filled in | used by `bootstrap` and `sync` |
 | `examples/tg-sales-bot/` | the filled contract of a live project | a sample to fill from |
 

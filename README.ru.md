@@ -150,7 +150,7 @@ PR смёржен.                             ← /ag-close-merge-request: тр
 | `skills/` | 15 скиллов и `bootstrap`, `sync` | `.agents/skills/<префикс>-*` (`.claude/skills` ссылается туда); `bootstrap` и `sync` не копируются |
 | `contract/` | заготовки `docs/agents/*.md`; `<!-- fill: ... -->` — что заполняет проект | `docs/agents/` |
 | `packs/` | пакеты — правила стека: `python`, `django` | дописываются в `code-rules.md`, `hygiene.md`, `testing.md` |
-| `repo/` | разделы `CONTRIBUTING.md`, сниппет `AGENTS.md`, `.claude/settings.json`, pre-commit хуки | корень проекта |
+| `repo/` | разделы `CONTRIBUTING.md`, сниппет `AGENTS.md`, `.claude/settings.json`, правила Codex, pre-commit хуки | корень проекта |
 | `scripts/render.sh` | кит на нужном коммите с подставленным префиксом | используют `bootstrap` и `sync` |
 | `examples/tg-sales-bot/` | заполненный контракт живого проекта | образец для заполнения |
 
