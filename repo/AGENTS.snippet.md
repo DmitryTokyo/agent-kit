@@ -12,9 +12,9 @@ Never push to `{{main}}`: stop and tell the user to do it themselves. Push only 
 
 ### Development
 
-When I ask you to write, develop, build or fix something in code, offer to invoke the `/{{p}}-develop` skill before starting; a task with an approved plan that says `Delivery: commits` goes there too. It covers layers and responsibility boundaries, verification commands, the layout inside an app, constant rules, Celery and code quality. Tests go through `/{{p}}-test-writer`, which `/{{p}}-develop` references. A batch of tickets from a task's map goes through `/{{p}}-orchestrate {{KEY}}-N`. A single ticket from `.ai/tasks/{{key}}-N-*/tickets/` is routed by its `Mode` field: `TDD` and `E2E` go through `/{{p}}-tdd-develop`, `no tests` goes through `/{{p}}-develop`.
+When I ask you to write, develop, build or fix something in code, offer to invoke the `/{{p}}-develop` skill before starting; a task with an approved plan that says `Delivery: commits` goes there too. It covers layers and responsibility boundaries, verification commands, the layout inside an app, constant rules, Celery and code quality. Tests go through `/{{p}}-test-writer`, which `/{{p}}-develop` references. A batch of tickets from a task's map goes through `/{{p}}-orchestrate {{KEY}}-N`. A single ticket from `{{work}}/tasks/{{key}}-N-*/tickets/` is routed by its `Mode` field: `TDD` and `E2E` go through `/{{p}}-tdd-develop`, `no tests` goes through `/{{p}}-develop`.
 
-Task chain and code review: `CONTRIBUTING.md` «Feature workflow» and «Code review». Pushes, pull requests and the developer's review comments go through `/{{p}}-merge-request`.
+Task chain and code review: `CONTRIBUTING.md` «Feature workflow» and «Code review». Pushes, pull requests and the developer's review comments go through `/{{p}}-merge-request`; a merged pull request goes through `/{{p}}-close-merge-request`.
 
 <!-- module:codegraph -->
 ### Code search
@@ -32,7 +32,7 @@ The CLI reads the index as of the last `codegraph sync`; run it after editing fi
 
 ### Issue tracker
 
-Epics and tasks live in the tracker of `docs/agents/issue-tracker.md`. A task's working files are in `.ai/tasks/{{key}}-N-*/`. See `docs/agents/issue-tracker.md`.
+Epics and tasks live in the tracker of `docs/agents/issue-tracker.md`. A task's working files are in `{{work}}/tasks/{{key}}-N-*/`; `{{work}}/` is gitignored, so edit and move files in it freely and never ask whether it is tracked. See `docs/agents/issue-tracker.md`.
 
 ### Domain docs
 

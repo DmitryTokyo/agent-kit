@@ -1,6 +1,6 @@
 ---
 name: {{p}}-to-tickets
-description: Split a task's approved plan (.ai/tasks/<key>-N-<slug>/plan.md + agent.md) into commit-sized ticket files under tickets/ and a map of batches, each part ending with its E2E and manual check tickets when the plan has such checks.
+description: Split a task's approved plan ({{work}}/tasks/<key>-N-<slug>/plan.md + agent.md) into commit-sized ticket files under tickets/ and a map of batches, each part ending with its E2E and manual check tickets when the plan has such checks.
 disable-model-invocation: true
 ---
 
@@ -207,7 +207,7 @@ One checklist item per scenario, copied from `agent.md` «Tests» with its title
 - [ ] <screen → action → expected result>
 ```
 
-The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every section of the map is merged — `/{{p}}-merge-request` «After the merge» does it.
+The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every section of the map is merged — `/{{p}}-close-merge-request` does it.
 
 ## Ticket rules
 
@@ -221,4 +221,4 @@ The user ticks every case in the product. A failed case becomes a new ticket of 
   them as `Mode`, `no tests`, `Gates`, `Agent review`, `Manual check`.
 - English, wrapped at 120 characters. UI texts and button labels stay verbatim.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

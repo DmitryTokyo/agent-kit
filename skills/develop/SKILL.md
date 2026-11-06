@@ -1,6 +1,6 @@
 ---
 name: {{p}}-develop
-description: Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, or a plain fix. A ticket from .ai/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /{{p}}-tdd-develop.
+description: Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, or a plain fix. A ticket from {{work}}/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /{{p}}-tdd-develop.
 ---
 
 # Develop
@@ -19,7 +19,7 @@ Then pick the input. Every input but a plain fix works on the task branch: get o
 
 ### A task with a plan
 
-The task folder `.ai/tasks/<key>-N-*/` with the approved `plan.md` and its `agent.md`. Either missing → stop: say
+The task folder `{{work}}/tasks/<key>-N-*/` with the approved `plan.md` and its `agent.md`. Either missing → stop: say
 which, the task key and title, and point to `/{{p}}-create-plan`. `plan.md` says `Delivery: tickets` and the folder has
 no `tickets/` → stop and suggest `/{{p}}-to-tickets`.
 
@@ -38,7 +38,7 @@ then tick the checklist and set `Status: done`; once committed, tick its line in
 
 ### A review file
 
-Input is a review file from `.ai/tasks/<key>-N-*/reviews/` → it says what to fix in its «Fixer» line: every open item
+Input is a review file from `{{work}}/tasks/<key>-N-*/reviews/` → it says what to fix in its «Fixer» line: every open item
 that is `hard` or `decision: fix`. A `decision: ?` left → stop and ask the user to set it in the file, naming those
 IDs. A finding that changes approved behaviour, or that you disagree with → ask the user. Existing tests are the
 check, new ones only when the finding asks for them. Each fixed item gets its box ticked and one `fixed:` line; the
@@ -81,4 +81,4 @@ A task with a plan, also:
    `- <condition → expected result> (added in development)`. Never edit or remove existing items.
 6. The worktree stays uncommitted: the next step is `/{{p}}-git-commit-message`, then `/{{p}}-code-review`.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

@@ -38,15 +38,18 @@ The user answers by number.
 3. Harnesses the project runs in: the sections of `<kit>/contract/harness.md` (`claude-code`, `opencode`, `pi`), and
    the values it leaves to fill — tiers, agent identity. A harness without a section → it gets one from the user's
    answers, and say so: `sync` can send it to the kit.
-4. Tracker: name, team or project, URL, the tools to read, list and save issues; what an epic is.
-5. Language of task titles and descriptions.
-6. Main branch; the host and how each operation of `<kit>/contract/git.md` «Pull requests» runs (`gh`, or an API
+4. Tracker: name, team or project, URL, the tools to read, list and save issues; what an epic is; the status a
+   finished task moves to (`Done`).
+5. Working folder: where task files live, relative to the root, default `.ai`. It gets `tasks/` (the open tasks) and
+   `done/` (the merged ones) and is gitignored.
+6. Language of task titles and descriptions.
+7. Main branch; the host and how each operation of `<kit>/contract/git.md` «Pull requests» runs (`gh`, or an API
    wrapper that keeps the token inside its process), repository.
-7. Stack and the packs: list `<kit>/packs/`. A stack without a pack → its rules come from the user and the code, and
+8. Stack and the packs: list `<kit>/packs/`. A stack without a pack → its rules come from the user and the code, and
    say so: `sync` can turn them into a pack later.
-8. Commands: `check`, `unit`, `e2e`, `one-test`, `migrate` — each a command or «none».
-9. Behaviour spec, actors, what only a manual check shows, the E2E actor and harness.
-10. Optional modules, each «нет» unless the user says yes:
+9. Commands: `check`, `unit`, `e2e`, `one-test`, `migrate` — each a command or «none».
+10. Behaviour spec, actors, what only a manual check shows, the E2E actor and harness.
+11. Optional modules, each «нет» unless the user says yes:
     - `business-questions` — the skill, its section in `issue-tracker.md` and the gate in `AGENTS.md`; then the
       project and label in the tracker;
     - `codegraph` — the «Code search» section of `AGENTS.md`; offered only with `.codegraph/` present.
@@ -61,12 +64,12 @@ Done when the user approves.
 
 ## 5. Install
 
-1. Render: `<kit>/scripts/render.sh <kit HEAD> <prefix> <tmp>` into an empty scratch directory.
+1. Render: `<kit>/scripts/render.sh <kit HEAD> <prefix> <work> <tmp>` into an empty scratch directory.
 2. Skills: copy `<tmp>/skills/<prefix>-*` into `.agents/skills/`. `business-questions` off → skip
    `<prefix>-business-questions`. `claude-code` chosen → `.claude/skills` is a symlink to `../.agents/skills`; a real
    `.claude/skills/` directory → move its skills into `.agents/skills/` first, a name clash is a step 4 conflict.
 3. Contract: for each file of `<kit>/contract/`, write `docs/agents/<file>`:
-   - replace `{{p}}` with the prefix;
+   - replace `{{p}}` with the prefix, `{{work}}` with the working folder;
    - replace every `<!-- fill: ... -->` with the answer or what the files show; one left unfilled stays as it is and
      goes into the report;
    - `<!-- module:NAME -->…<!-- /module:NAME -->`: module on → drop the two marker lines, keep the text; off → drop
@@ -76,7 +79,8 @@ Done when the user approves.
    - `code-rules.md`, `hygiene.md`, `testing.md`: append each chosen pack's file from `<tmp>/packs/<pack>/`, markers
      included, in the order of the answer;
    - an existing `docs/agents/<file>` → merge: its facts stay, the template's sections are added around them.
-4. Repo wiring from `<kit>/repo/`, with `{{p}}`, `{{KEY}}`, `{{key}}`, `{{main}}` replaced and modules handled as in 3:
+4. Repo wiring from `<kit>/repo/`, with `{{p}}`, `{{KEY}}`, `{{key}}`, `{{main}}`, `{{work}}` replaced and modules
+   handled as in 3:
    - `CONTRIBUTING.md` — its sections appended; a section of the same heading already there → show both and ask;
    - `AGENTS.snippet.md` — appended to `AGENTS.md` (created when missing);
    - `claude-code` chosen → `CLAUDE.md` opens with the line `@AGENTS.md` (created when missing); its rules that
@@ -86,7 +90,7 @@ Done when the user approves.
      format;
    - `pre-commit.yaml` — its hooks added to the `repo: local` entry of `.pre-commit-config.yaml`, created when missing;
      `pre-commit install --hook-type commit-msg` is the user's to run, put it in the report.
-5. `.gitignore` gets `.ai/` when missing.
+5. `.gitignore` gets `<work>/` when missing.
 6. Write `.agents/agent-kit.json`:
 
    ```json
@@ -97,6 +101,7 @@ Done when the user approves.
      "prefix": "<prefix>",
      "key": "<KEY>",
      "main": "<main branch>",
+     "work": "<working folder>",
      "harnesses": ["<harness>", "..."],
      "packs": ["<pack>", "..."],
      "modules": ["<module>", "..."]
@@ -121,4 +126,4 @@ In Russian: the skills installed, the files created and changed, every `<!-- fil
 waits for, the commands for the user (`pre-commit install --hook-type commit-msg`), and the next step — commit the
 install, then `/<prefix>-create-task` for the first task.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

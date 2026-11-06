@@ -1,6 +1,6 @@
 ---
 name: {{p}}-orchestrate
-description: Run the next batch of a task's ticket map (.ai/tasks/<key>-N-*/tickets/00-map.md) end to end, each ticket through the skill of its `Mode`, one commit per ticket. Use when the user gives a task key without a ticket ID and wants the tickets developed.
+description: Run the next batch of a task's ticket map ({{work}}/tasks/<key>-N-*/tickets/00-map.md) end to end, each ticket through the skill of its `Mode`, one commit per ticket. Use when the user gives a task key without a ticket ID and wants the tickets developed.
 ---
 
 # Orchestrate
@@ -11,7 +11,7 @@ Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agent
 
 ## Input
 
-`<KEY>-N`. Task folder: `.ai/tasks/<key>-N-*/` (case-insensitive).
+`<KEY>-N`. Task folder: `{{work}}/tasks/<key>-N-*/` (case-insensitive).
 
 The **batch**: the first section of `tickets/00-map.md` (format: `.agents/skills/{{p}}-to-tickets/SKILL.md` «Map») with an
 unticked ticket line; its unticked tickets in list order.
@@ -67,4 +67,4 @@ After each ticket — `{{p}}-tdd-develop` «Output».
 At the batch end: the commits in order, each with its departures, the manual checks of `no tests` tickets, then the
 section's gates in order — the first one is `/{{p}}-code-review <KEY>-N <part>` in a new session.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

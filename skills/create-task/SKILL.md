@@ -21,7 +21,8 @@ The tracker of `docs/agents/issue-tracker.md` holds the task's problem, goal, li
 Infer what the user already supplied. Ask the user (`docs/agents/harness.md` «Actions») only for what's missing, in
 one message, before creating anything:
 
-- status — free-form answer, no choices offered;
+- status — a short choice of the tracker's starting statuses (e.g. `Backlog`, `Todo`, `In Progress`), any other status
+  accepted;
 - priority — preserve the user's value, never invent one;
 - project (epic), when the task clearly belongs to one and the user hasn't named it;
 - Product Value and Work Type (`CONTRIBUTING.md` «Three axes») — classify the task yourself and ask to confirm, your
@@ -66,4 +67,4 @@ Each task identifier with its clickable link, plus team, project, status, priori
 Type. With the
 business-questions module, for a new development task, also the business questions that block it.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

@@ -14,7 +14,7 @@ review is a file a fixer in another session works from; this skill fixes no code
 
 ## 1. Pin the fixed point
 
-`<KEY>-N <part>` → a **batch**: the section of `.ai/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
+`<KEY>-N <part>` → a **batch**: the section of `{{work}}/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
 with an unticked `Agent review` when no part is given; older maps: `Ревью агентом`). Base: the parent of the first
 commit hash in its ticket lines; diff: `git diff <base> <last hash>`. A ticket line without a hash → stop: the batch is
 unfinished.
@@ -31,7 +31,7 @@ Otherwise take the fixed point from the user; if none given, ask.
 ## 2. Find the spec
 
 1. Task key `<KEY>-N` from commit prefixes, or from the user. No key → ask the user and wait; never skip the spec.
-2. Task folder `.ai/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `tickets/*.md`, and
+2. Task folder `{{work}}/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `tickets/*.md`, and
    the latest review file of this scope (step 7) — the previous round, if any.
 3. The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal. Older tasks
    carry `## Decisions` and acceptance criteria there: they are part of the spec.
@@ -112,7 +112,7 @@ Inline, from the diff and its callers:
 
 ## 7. Write the review file
 
-The scope's review file is `.ai/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
+The scope's review file is `{{work}}/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
 otherwise; `NN` is one past the latest round of that scope (`01` for the first). The file is self-contained: a fixer in
 another session reads only it. IDs stay stable across rounds: `SPEC-n`, `STD-n`, numbering continues from the previous
 round.
@@ -159,4 +159,4 @@ happen later is `skip` plus a tracker task. A batch with no open `hard` item and
 In chat: the file path, findings count per axis, the worst finding within each axis, the review level, and the next
 step — the developer sets the decisions, then `/{{p}}-develop` with the review file.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

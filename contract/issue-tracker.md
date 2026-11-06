@@ -12,6 +12,7 @@
   only in the tracker.
 - Title and description in <!-- fill: language -->. Code identifiers, statuses and UI texts stay as in the code.
 - Assignee: the current user unless the user names another person.
+- A finished task moves to <!-- fill: the Done status, e.g. `Done` -->.
 - <!-- fill: what task descriptions never carry, e.g. «no feature flags». -->
 - Blocking uses the tracker's native «blocks» relations.
 - A task description has three sections: Problem, Goal, Links. Scope and acceptance criteria live in `plan.md`.
@@ -20,9 +21,11 @@
 
 ## Working files
 
-A task's working files live in `.ai/tasks/<key>-N-<slug>/`, gitignored: `research.md`, `plan.md` (the developer plan),
-`agent.md` (the agent instruction), `notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
-review rounds, per batch or for the whole task).
+`{{work}}/` is gitignored: edit and move files in it freely. A task's working files live in
+`{{work}}/tasks/<key>-N-<slug>/`: `research.md`, `plan.md` (the developer plan), `agent.md` (the agent instruction),
+`notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
+review rounds, per batch or for the whole task), `pr.md` (the pull request of each branch). A finished task's folder
+moves to `{{work}}/done/`.
 
 ## When a skill says "publish to the tracker"
 
@@ -30,7 +33,7 @@ Create an issue through `/{{p}}-create-task`.
 
 ## When a skill says "load the ticket"
 
-Read the issue by its `<KEY>-N` key; commit-sized tickets come from `.ai/tasks/<key>-N-*/tickets/`.
+Read the issue by its `<KEY>-N` key; commit-sized tickets come from `{{work}}/tasks/<key>-N-*/tickets/`.
 
 <!-- module:business-questions -->
 ## Business questions

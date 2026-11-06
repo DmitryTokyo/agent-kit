@@ -88,7 +88,7 @@ Links, plus its status and labels.
 
 ## Feature workflow
 
-A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `.ai/tasks/{{key}}-N-<slug>/`.
+A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `{{work}}/tasks/{{key}}-N-<slug>/`.
 
 1. `/{{p}}-create-task` — the task in the tracker: Problem, Goal, Links.
 2. `/{{p}}-create-plan` — classification and route («Classify a task before code»), `research.md` for workflow 2,
@@ -107,7 +107,7 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
    `/{{p}}-tdd-develop {{KEY}}-N <ID>` or `/{{p}}-develop` with the ticket path — left uncommitted for the developer's
    `git diff`.
 5. `/{{p}}-code-review {{KEY}}-N <part>` (or with a fixed point when there is no map) in a new session, another model
-   welcome — the review file in `.ai/tasks/{{key}}-N-<slug>/reviews/`, see «Code review». The developer sets the
+   welcome — the review file in `{{work}}/tasks/{{key}}-N-<slug>/reviews/`, see «Code review». The developer sets the
    decisions, `/{{p}}-develop` with the review file fixes them and ticks `Agent review`.
 6. `/{{p}}-merge-request` — pushes the branch and opens the pull request: risk, review level, deviations,
    consequences → checks → results, criteria, the plan.
@@ -116,8 +116,8 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
    thread. The developer resolves threads and ticks the gate.
 8. The check ticket, when the part has one — every case clicked in the product. A failed case becomes a new ticket of
    the batch. The developer ticks the gate and merges; the next batch is free to start.
-9. After the merge, `/{{p}}-merge-request` links the pull request in the tracker task, moves it to Done once every
-   part is merged, and deletes the local branch.
+9. After the merge, `/{{p}}-close-merge-request` links the pull request in the tracker task, moves it to Done and its
+   folder to `{{work}}/done/` once every part is merged, updates `{{main}}` and deletes the local branch.
 
 ## Branches and pull requests
 
@@ -132,7 +132,7 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
 ## Code review
 
 The agent review (`/{{p}}-code-review`) writes one English file per round,
-`.ai/tasks/{{key}}-N-<slug>/reviews/<BB>-<part>-review-NN.md` for a batch or `reviews/review-NN.md` otherwise. Each
+`{{work}}/tasks/{{key}}-N-<slug>/reviews/<BB>-<part>-review-NN.md` for a batch or `reviews/review-NN.md` otherwise. Each
 finding has a stable ID (`SPEC-n` for the plan and the task, `STD-n` for the code rules) and is either:
 
 - `hard` — a defect, a broken requirement, boundary or documented rule; always fixed;

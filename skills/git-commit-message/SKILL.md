@@ -13,7 +13,7 @@ Propose one commit per logical chunk of the current diff, then stage and create 
 
 An `<KEY>-<number>` already in the conversation (any case: `<KEY>-5`, `<key>-5`) → use it, skip this step.
 
-Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `.ai/tasks/<key>-*` folder names. Ask the user (`docs/agents/harness.md` «Actions») for the task number, a short single choice:
+Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `{{work}}/tasks/<key>-*` folder names. Ask the user (`docs/agents/harness.md` «Actions») for the task number, a short single choice:
 
 - one option per candidate
 - fewer than 2 candidates → add an explicit «another number» option
@@ -28,7 +28,7 @@ Inspect no changes before the answer.
 
 - Self-contained chunks derived from the diff; invent no behaviour.
 - Prefer chunks under about 300 changed lines, without fragmenting one atomic change.
-- A chunk that finishes a ticket in `.ai/tasks/<key>-N-*/tickets/` is one commit.
+- A chunk that finishes a ticket in `{{work}}/tasks/<key>-N-*/tickets/` is one commit.
 
 ## 4. Draft messages
 
@@ -74,4 +74,4 @@ git commit -m "<KEY>-123: type: message"
 
 One `git add` + `git commit` pair per chunk; nothing staged before step 5. Never `git push`. Report the commits and their file scope.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

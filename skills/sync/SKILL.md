@@ -7,7 +7,8 @@ description: Sync a project installed by bootstrap with the agent-kit core both 
 
 The user runs this from the root of an installed project: «Read `<kit>/skills/sync/SKILL.md` and follow it». Every
 path below without `<kit>/` is in the project. The install record is `.agents/agent-kit.json`; `<base>` is its
-`commit`, `<prefix>` its `prefix`.
+`commit`, `<prefix>` its `prefix`, `<work>` its `work` (`.ai` when the record has none: an install made before the
+working folder was asked).
 
 ## 1. Preconditions
 
@@ -35,8 +36,8 @@ The migration is part of this sync's diff; continue with step 2.
 
 ## 2. Render
 
-Into empty scratch directories: `<kit>/scripts/render.sh <base> <prefix> <base-dir>` and
-`<kit>/scripts/render.sh HEAD <prefix> <head-dir>`.
+Into empty scratch directories: `<kit>/scripts/render.sh <base> <prefix> <work> <base-dir>` and
+`<kit>/scripts/render.sh HEAD <prefix> <work> <head-dir>`.
 
 What is compared:
 
@@ -58,7 +59,7 @@ What is compared:
    - `откатить` — the project gets the base version back.
    Print the list as a plain message and end the turn.
 3. `в ядро`: take the patch from the base item to the project item, turn `<prefix>-<skill name>` back into
-   `{{p}}-<skill name>`, apply it to the kit file with `git -C <kit> apply`. A project fact in the patch (a path, a
+   `{{p}}-<skill name>` and `<work>/` into `{{work}}/`, apply it to the kit file with `git -C <kit> apply`. A project fact in the patch (a path, a
    command, a tracker name) → stop and ask: it belongs in `docs/agents/`, not the kit. Then one kit commit for all of
    them, under the agent identity:
 
@@ -81,8 +82,8 @@ Re-render `<head-dir>` when the kit got a commit.
 3. A new pack in `<kit>/packs/` → named in the report, not installed.
 4. `contract/` and `repo/`: `git -C <kit> diff <base> HEAD -- contract repo`. Each change is a proposal for the
    project's `docs/agents/`, `AGENTS.md`, `CONTRIBUTING.md`, a harness permission file or `.pre-commit-config.yaml`:
-   show it, apply after the user's yes, with the record's values for `{{p}}`, `{{KEY}}`, `{{key}}`, `{{main}}`.
-5. Set `commit` in `.agents/agent-kit.json` to the kit `HEAD`.
+   show it, apply after the user's yes, with the record's values for `{{p}}`, `{{KEY}}`, `{{key}}`, `{{main}}`, `{{work}}`.
+5. Set `commit` in `.agents/agent-kit.json` to the kit `HEAD`; add `"work": "<work>"` when the record has none.
 
 ## 5. New pack (on request)
 
@@ -107,4 +108,4 @@ In Russian: the base and the new kit commit, the edits sent to the kit with the 
 the edits kept local, the kit changes merged, conflicts and how each was settled, proposals applied and declined, new
 packs available.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

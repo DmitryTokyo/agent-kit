@@ -80,7 +80,7 @@ and commit.
 /ag-code-review AG-55 pickup-step          ← in a new session, another model welcome
 /ag-merge-request                          ← pushes and opens the pull request
 I've reviewed the PR, handle my comments.  ← you left comments on the diff
-The PR is merged.                          ← links it in the tracker, closes the task
+The PR is merged.                          ← /ag-close-merge-request: tracker, Done, cleanup
 ```
 
 **Without tickets:**
@@ -110,7 +110,8 @@ Ask me about this plan one question at a time.
 | `recon` | studies unfamiliar code before a task and returns a short summary |
 | `code-review` | checks a part or a diff against the rules and the plan, sets the review level and the checks |
 | `hygiene-review` | finds in changed files what the linters miss |
-| `merge-request` | pushes, opens the pull request, works your review comments, closes the task after the merge |
+| `merge-request` | pushes, opens the pull request, works your review comments |
+| `close-merge-request` | after the merge: links the pull request in the tracker, moves the task to Done, cleans up |
 | `git-commit-message` | splits changes into commits and proposes messages |
 | `grill-one` | asks about a plan one question at a time, looking for gaps and contradictions |
 | `business-questions` | keeps questions to the business in the tracker; a module, off by default |
@@ -138,7 +139,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 14 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
+| `skills/` | 15 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, pre-commit hooks | the project root |
@@ -188,6 +189,7 @@ A project fact — a path, a command, a tracker name — never goes into the kit
 | Mark | Where | Replaced by |
 | --- | --- | --- |
 | `{{p}}` | skills, contract, repo | the project's skill prefix |
+| `{{work}}` | skills, contract, repo | the working folder of task files, `.ai` by default |
 | `{{KEY}}`, `{{key}}`, `{{main}}` | repo | the task key, its lowercase form, the main branch |
 | `<KEY>`, `<key>` | skills | stays: the skill reads the key from `docs/agents/issue-tracker.md` |
 | `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | the pack's text; `sync` finds it in the project by the markers |

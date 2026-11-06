@@ -1,6 +1,6 @@
 ---
 name: {{p}}-tdd-develop
-description: Implement one ticket from .ai/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented.
+description: Implement one ticket from {{work}}/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented.
 ---
 
 # TDD develop
@@ -11,7 +11,7 @@ Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agent
 
 ## Input
 
-`<KEY>-N <ID>` — one ticket, ID as `NN` or `<part>-NN`. Task folder: `.ai/tasks/<key>-N-*/` (case-insensitive). Ticket
+`<KEY>-N <ID>` — one ticket, ID as `NN` or `<part>-NN`. Task folder: `{{work}}/tasks/<key>-N-*/` (case-insensitive). Ticket
 files: `tickets/<ID>-*.md`, with parts `tickets/<BB>-<ID>-*.md` (`core-01` → `01-core-01-*.md`).
 
 - `<KEY>-N` without an ID → stop, suggest `/{{p}}-orchestrate <KEY>-N`.
@@ -68,4 +68,4 @@ Nothing is staged, committed or pushed: the user reviews the worktree with `git 
 Three lines: the commit with its line count (code, tests) under `/{{p}}-orchestrate`, otherwise «not committed», the
 departures from the ticket or `plan.md` with their reason (or «none»), the next unticked ticket of the map.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

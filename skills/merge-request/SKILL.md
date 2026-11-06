@@ -1,6 +1,6 @@
 ---
 name: {{p}}-merge-request
-description: "Push the task or part branch and open its pull request, work through the developer's review comments on it, or close the task after the merge. Use when the user asks to push, open a PR or MR, handle their review comments, or says the pull request is merged."
+description: "Push the task or part branch and open its pull request, or work through the developer's review comments on it. Use when the user asks to push, open a PR or MR, or handle their review comments. A merged pull request goes to /{{p}}-close-merge-request."
 ---
 
 # Merge request
@@ -23,7 +23,7 @@ reaches the command line or the chat.
    - `git rev-parse --abbrev-ref @{upstream}` fails → `git push -u origin <branch>`;
    - it resolves and `git log --oneline @{upstream}..HEAD` lists commits → `git push`;
    - it lists nothing → skip and say so.
-4. Collect the sources from the task folder `.ai/tasks/<key>-N-*/`: `plan.md`, `research.md` if present, and the latest
+4. Collect the sources from the task folder `{{work}}/tasks/<key>-N-*/`: `plan.md`, `research.md` if present, and the latest
    review file of this scope (`/{{p}}-code-review` step 7). No `plan.md` → stop and ask. The review file wins over the
    plan for review level, consequences and deviations.
 5. Build the description in English, these sections in order:
@@ -37,10 +37,17 @@ reaches the command line or the chat.
      or decision gets `not run: <what blocks it>`.
    - `## Criteria` — every `plan.md` «Criteria» item with its result: `met`, or `not met: <why>`.
    - `## Manual check` — the part's check ticket cases, when there is one.
-   - `## Plan` — `plan.md` and `research.md` in collapsed `<details>` blocks: `.ai/` is not in the repository.
+   - `## Plan` — `plan.md` and `research.md` in collapsed `<details>` blocks: `{{work}}/` is not in the repository.
 6. Find the open pull request of the branch. One exists → update its description. None → open it into the main branch
    with the title of `git.md` «Pull requests».
-7. Report the pull request link, and the gates of the map section still open on it.
+7. Record it in the task folder's `pr.md`, one line per branch; this branch's line is replaced, the others stay.
+   `/{{p}}-close-merge-request` finds the pull request by it:
+
+   ```markdown
+   - <branch>: <link> (<id>)
+   ```
+
+8. Report the pull request link, and the gates of the map section still open on it.
 
 ## Work through review comments
 
@@ -60,13 +67,4 @@ reaches the command line or the chat.
 5. Reply in each worked thread: `Fixed in <short sha>`, the answer, the objection, or the new ticket. The developer
    resolves threads.
 
-## After the merge
-
-1. The pull request's state is `merged`; anything else → stop and say so.
-2. The map section's gates the user has not ticked yet → name them and stop.
-3. Update the tracker task through the tools of `docs/agents/issue-tracker.md`: append `- PR: <link>` to its `Links`
-   section (no section → add one at the end), the rest unchanged. Every section of the map merged, or no map → move it
-   to Done.
-4. `git switch <main> && git pull --ff-only && git branch -d <branch>`.
-
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_

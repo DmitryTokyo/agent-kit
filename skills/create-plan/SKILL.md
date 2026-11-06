@@ -1,6 +1,6 @@
 ---
 name: {{p}}-create-plan
-description: Write task documents for a tracker <KEY>-N task into .ai/tasks/<key>-N-<slug>/ — research.md (investigation findings), plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, research write-up, notes, or a hand-off for another agent or thread.
+description: Write task documents for a tracker <KEY>-N task into {{work}}/tasks/<key>-N-<slug>/ — research.md (investigation findings), plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, research write-up, notes, or a hand-off for another agent or thread.
 ---
 
 # Create plan
@@ -19,10 +19,10 @@ A task gets two documents with two readers:
 ## Where it lives
 
 ```text
-.ai/tasks/<key>-<N>-<short-kebab-description>/research.md
-.ai/tasks/<key>-<N>-<short-kebab-description>/plan.md
-.ai/tasks/<key>-<N>-<short-kebab-description>/agent.md
-.ai/tasks/<key>-<N>-<short-kebab-description>/notes.md
+{{work}}/tasks/<key>-<N>-<short-kebab-description>/research.md
+{{work}}/tasks/<key>-<N>-<short-kebab-description>/plan.md
+{{work}}/tasks/<key>-<N>-<short-kebab-description>/agent.md
+{{work}}/tasks/<key>-<N>-<short-kebab-description>/notes.md
 ```
 
 Lowercase task key, 3–5 word description. One folder per task; reuse it if it exists. The key comes from the
@@ -232,4 +232,4 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 
 A plan changed after approval: ask the user with the changed lines before editing `plan.md`.
 
-_Last modified: 2026-11-05_
+_Last modified: 2026-11-06_
