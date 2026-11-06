@@ -28,10 +28,14 @@ the build and dependency files (`Makefile`, `pyproject.toml`, `package.json`, �
 From them, draft an answer to every question of step 3. A question the files answer gets the drafted answer to
 confirm; never invent one the files don't support.
 
+The user's request may already carry answers, e.g. «prefix zip, key ZIP, GitHub, Linear, folder .ai». Each is taken
+as given: it wins over a drafted one and is not asked again.
+
 ## 3. Ask
 
-One plain message with every question, numbered, each with the drafted answer or «нет данных», then end the turn.
-The user answers by number.
+One plain message, then end the turn: first the answers taken from the request, one line each, then every other
+question, numbered, each with the drafted answer or «нет данных». The user answers by number. The request answered
+every question → skip to step 4: its approval covers the given answers too.
 
 1. Skill prefix: lowercase letters and digits. No default: the user chooses it.
 2. Task key in the tracker, e.g. `AG`. No default: the user chooses it.

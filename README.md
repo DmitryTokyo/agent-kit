@@ -44,6 +44,11 @@ edit kept for this project survives updates from the kit. Send to the kit only w
 
    > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it.
 
+   Know some answers already? Add them to the same line, and the agent asks only about the rest:
+
+   > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it. Prefix ag, key AG, GitHub, Linear,
+   > folder .ai.
+
 4. The agent reads the project and sends its questions in one message, each with a suggested answer. Two answers are
    yours alone: the skill prefix (`ag` → the skills are called `/ag-develop`, `/ag-orchestrate`) and the task key in
    the tracker (`AG`).
