@@ -4,7 +4,8 @@
 
 Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agents/stack.md` «Commands».
 
-Read only the ticket file you were given, including its `## Handoff`. Follow the Handoff rules.
+Read the ticket file you were given, including its `## Handoff`, and in the task folder's `agent.md` exactly the
+«What to fix» items its `**Plan:**` line names. Follow the Handoff rules.
 The Handoff cases are the whole test scope: `agent.md` «Tests» and the ticket's tests line stay unread.
 
 Each Handoff case carries a mark:
