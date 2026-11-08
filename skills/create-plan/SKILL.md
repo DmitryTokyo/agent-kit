@@ -225,11 +225,13 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 4. Draft `plan.md` and ask the user with its full text (`docs/agents/harness.md` «Actions»). Iterate until the
    developer approves; then write `plan.md`. The tracker task stays as it is.
 5. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found.
-6. Check: can an agent from a clean thread, reading `plan.md` and `agent.md`, tell which files to open, what to change
-   and which tests to write?
+6. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` and reports
+   which files it would open, what it would change, which tests it would write, and every question the two files leave
+   open. A question the sources settle → fix `agent.md` and run the check again; a question only the developer can
+   answer → ask the user. Done when a run reports no open question.
 7. Hand over the file paths written and the next skill: `Delivery: tickets` → `/{{p}}-to-tickets`, commits →
    `/{{p}}-develop`.
 
 A plan changed after approval: ask the user with the changed lines before editing `plan.md`.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-08_

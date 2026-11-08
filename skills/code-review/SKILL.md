@@ -70,7 +70,10 @@ under its ID. Every unticked item carries over under its ID, its `decision` kept
 
 ## 5. Spawn both reviewers
 
-A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message.
+A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message. Both prompts also carry:
+
+> You are read-only: change no file and spawn nothing. End with «Declined to judge»: what you considered and set aside
+> as outside this axis, one line each with the reason.
 
 **Spec prompt** carries: diff command, commit list, untracked files, spec file paths, the tracker issue text, and:
 
@@ -136,6 +139,9 @@ changed. Leave `decision: ?` and `decision: skip` items untouched.
 ## Standards
 - [ ] **STD-4** judgement · decision: ? · `path/file.py:58` — possible <smell>: <problem> → <fix direction>
 
+## Declined to judge
+- Spec | Standards · <what> — <why it is outside the axis>
+
 ## Review level
 <Agent | Focused | Full> — <why, against the diff>
 - `path/file.py:40-75` — <what the developer must decide or confirm>
@@ -150,7 +156,7 @@ changed. Leave `decision: ?` and `decision: skip` items untouched.
 - <unticked criterion or departure from the plan> — <why>
 ```
 
-Omit «Previous round» on round 01 and «Deviations» when there are none. An empty axis keeps its heading with «none».
+Omit «Previous round» on round 01, «Declined to judge» and «Deviations» when there are none. An empty axis keeps its heading with «none».
 
 The developer answers a `judgement` item by setting its `decision` to `fix` or `skip` in the file; work that should
 happen later is `skip` plus a tracker task. A batch with no open `hard` item and no `decision: ?` left → tick
@@ -159,4 +165,4 @@ happen later is `skip` plus a tracker task. A batch with no open `hard` item and
 In chat: the file path, findings count per axis, the worst finding within each axis, the review level, and the next
 step — the developer sets the decisions, then `/{{p}}-develop` with the review file.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-08_

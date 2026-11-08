@@ -24,7 +24,8 @@ Stop and report instead of continuing:
 
 ### Step 1 — Plan (MANDATORY, before writing any code)
 
-1. List every scenario in scope, one line each. Scope is what the caller asked for — nothing beyond it.
+1. List every scenario in scope, one line each, with the **break**: the production change that would turn it red.
+   Scope is what the caller asked for — nothing beyond it.
 2. Per function under test, group the scenarios and apply **Parametrize** below.
 3. State which tests stay separate, which merge, and why: "Merged tests A, B, C into parametrize `test_X` over parameters [...]".
 
@@ -64,12 +65,17 @@ run: `testing.md` «Running».
 - **One test per behavior.** Variants of the same behavior differing only by input belong in parametrize.
 - **Only what the caller asked for.** No "while I'm here" extras. Every assert must fail on its own: drop one that the function's return type or a neighbouring assert already guarantees (`isinstance` on a service result).
 - AAA (Arrange – Act – Assert), separated by blank lines. The Act result always goes into a variable, never inlined into `assert`. Name it by what it is when the value is a domain object (`cart = await upsert_cart(...)`, `order`, `product_view`); name it `result` only when the value has no domain name (a number, a bool, a tuple, a status). If the name is already taken by an Arrange object, rename the Arrange one (`existing_cart`), not the Act result.
+- **A test guards behaviour.** A scenario whose only break is reversing a deliberate decision (a constant, a text, a
+  setting) is a change detector: test the behaviour that depends on the decision instead.
+- **Expected values are literals or hand-checked fixtures**, written down by you, never computed by the code under test
+  or its helpers.
 - **No logic in the test body** — no `if` or `for` driving Arrange or Assert.
 - **No comments in tests** (`# Arrange` etc.). A linter suppression is allowed.
 - Descriptive names for test arguments and `parametrize` parameters too.
 - Test data lives inside the test or the `parametrize` row, never in module-level globals.
 - An error branch → the runner's raises check; several inputs raising the same error → one parametrize. Covering every error branch is not required — scope rules.
-- Mock only at the process boundary `testing.md` «Mocks» names.
+- Mock only at the process boundary `testing.md` «Mocks» names. A mock feeds the code under test; the asserts check
+  what that code returned or sent across the boundary.
 - Test observable behavior, not implementation details. Refactoring without behavior changes should normally not require changing the test. Query counts, prefetch, SQL shape and ORM call patterns are implementation: test them only when the caller asks for exactly that.
 
 ### Test naming

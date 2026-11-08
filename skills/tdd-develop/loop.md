@@ -35,7 +35,7 @@ One Handoff case at a time:
 ## After the loop
 
 1. Ticket items no test covers (UI texts, keyboards, admin config): do them per the ticket checklist.
-2. Run the changed test files in full, then `e2e`, then `check`.
+2. Run the changed test files in full, then `unit`, then `e2e`, then `check`.
 
 ## STOP
 

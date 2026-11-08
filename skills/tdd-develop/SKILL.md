@@ -40,7 +40,7 @@ Every subagent is a worker (`docs/agents/harness.md` «Roles») on the tier name
 3. No deviation → step 4 without asking: the developer approved the checks in `plan.md`. Deviations → ask the user (`docs/agents/harness.md` «Actions») with them. An answer → continue the draft subagent with it and print its new deviations. Done when every deviation has the user's answer.
 4. **Tests** — subagent on `tests.md`, standard tier, unless the draft report says every case is `row`. Its report shows every `new` and `rewrite` test red for the expected reason before step 5.
 5. **Code** — subagent on `loop.md`, standard tier.
-6. **Review** — subagent on `review.md`, strong tier. Each item it sends back → continue the subagent that owns the file with it, then continue the reviewer to recheck those items. Done when the reviewer reports `clean`.
+6. **Review** — subagent on `review.md`, strong tier. Each item it sends back → continue the subagent that owns the file with it, then continue the reviewer to recheck those items. Done when the reviewer reports `clean`. The third recheck still `needs-fix` → ask the user (`docs/agents/harness.md` «Actions») with the open `Back to` items.
 7. **Close** — run `check`; green → per «Close».
 
 «Continue» is the «continue a worker» of `harness.md`; a harness without it re-dispatches the subagent with its last report pasted in.
@@ -68,4 +68,4 @@ Nothing is staged, committed or pushed: the user reviews the worktree with `git 
 Three lines: the commit with its line count (code, tests) under `/{{p}}-orchestrate`, otherwise «not committed», the
 departures from the ticket or `plan.md` with their reason (or «none»), the next unticked ticket of the map.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-08_
