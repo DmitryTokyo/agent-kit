@@ -1,6 +1,6 @@
 ---
 name: {{p}}-create-plan
-description: Write task documents for a tracker <KEY>-N task into {{work}}/tasks/<key>-N-<slug>/ — research.md (investigation findings), plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, research write-up, notes, or a hand-off for another agent or thread.
+description: Classify a tracker <KEY>-N task and write its plan into {{work}}/tasks/<key>-N-<slug>/ — plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, notes, or a hand-off for another agent or thread.
 ---
 
 # Create plan
@@ -19,7 +19,6 @@ A task gets two documents with two readers:
 ## Where it lives
 
 ```text
-{{work}}/tasks/<key>-<N>-<short-kebab-description>/research.md
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/plan.md
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/agent.md
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/notes.md
@@ -28,9 +27,16 @@ A task gets two documents with two readers:
 Lowercase task key, 3–5 word description. One folder per task; reuse it if it exists. The key comes from the
 conversation; no key → run `/{{p}}-create-task`, then use the key of the task it created.
 
+A task of an epic has a symlink to its folder in `{{work}}/epics/<epic-slug>/tasks/` (`/{{p}}-to-tasks`): find it with
+`find {{work}}/epics -path '*/tasks/<key>-<N>-*'`.
+
 ## Sources
 
 - The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal.
+- `research.md` and `design.md` of the task folder, when present: the plan builds on their findings and decisions,
+  each fact stays in its own document.
+- A task of an epic: the epic's `design.md` and its row in `roadmap.md` — the design sections this task implements and
+  its blockers.
 - Sibling issues in the same epic (titles only, full text only for the ones that look adjacent) — to catch work that
   belongs to a neighbour.
 - The behaviour spec — screens, buttons, texts. The plan matches it, never reinvents it.
@@ -38,27 +44,27 @@ conversation; no key → run `/{{p}}-create-task`, then use the key of the task 
 - `docs/adr/` — decisions constraining this area.
 - The code: run `/{{p}}-recon`, then read `docs/agents/code-rules.md` for its layer rules and function-vs-class test.
 
-Behaviour none of these settle is a product gap: ask the user, or record it under «Open questions» of `research.md`.
-Never invent it.
+Behaviour none of these settle is a product gap: ask the user. Never invent it.
 
 ## Pick the mode
 
-1. **Research** — `research.md` only.
-2. **Plan** — `plan.md` + `agent.md`.
-3. **Notes** — `notes.md` only.
+1. **Plan** — `plan.md` + `agent.md`.
+2. **Notes** — `notes.md` only.
 
-Ask the user when the mode isn't clear from the conversation.
+Research is `/{{p}}-research`, design is `/{{p}}-create-design`. Ask the user when the mode isn't clear from the
+conversation.
 
 ## Classify first
 
-Mode 2 starts with the classifier: read `CONTRIBUTING.md` «Classify a task before code», do the first look at the code
-and fill the plan's classification and route from it.
+The plan starts with the classifier: read `CONTRIBUTING.md` «Classify a task before code», do the first look at the
+code and fill the plan's classification and route from it. `research.md` already carries a route → start from it.
 
 - Workflow 1 → plan.
-- Workflow 2 with no `research.md` in the folder → mode 1 first, then the plan.
-- Research shows a new mechanism, contract or interaction → propose workflow 3 to the user, naming the finding; the
-  developer confirms the route.
-- Workflow 3 → stop: tell the user workflow 3 has no skill support yet.
+- Workflow 2 with no `research.md` in the folder → hand over to `/{{p}}-research`; the plan waits for it.
+- Workflow 3 with no approved `design.md` → hand over to `/{{p}}-research`, or to `/{{p}}-create-design` when
+  `research.md` exists; the plan waits for the approved design.
+- A task of an epic → its route is chosen against the epic's design: usually workflow 1 or 2, workflow 3 when the task
+  needs decisions the design left open.
 
 ## plan.md
 
@@ -68,6 +74,8 @@ The developer reads it. Written per [writing-for-humans.md](writing-for-humans.m
 # <KEY>-N: <title>
 
 Task: <tracker link>
+Epic: <epic-slug — a task of an epic only>
+Version: <N>
 
 ## Classification
 
@@ -75,7 +83,8 @@ Task: <tracker link>
 
 ## Route
 
-Workflow <1|2>. <basis: the pattern or confirmed cause; for 2 — link to research.md>
+Workflow <1|2|3>. <basis: the pattern or confirmed cause; for 2 — link to research.md; for 3 — links to research.md
+and design.md; a task of an epic — the epic's design.md>
 
 ## Result
 
@@ -94,6 +103,10 @@ Workflow <1|2>. <basis: the pattern or confirmed cause; for 2 — link to resear
 
 - <condition → expected result> · <test: new | extend existing | e2e | manual | none — why>
 
+## Order
+
+1. <part: what it delivers> — after <part | —>
+
 ## Stop conditions
 
 - <finding that stops the work and returns it to route selection>
@@ -101,6 +114,7 @@ Workflow <1|2>. <basis: the pattern or confirmed cause; for 2 — link to resear
 ## Developer review
 
 <yes | no> — <why>; <which changes to look at>
+Checkpoints: <point in the work → what the developer does>
 
 Delivery: <commits on the branch (~N lines) | tickets (~N lines)>
 ```
@@ -112,10 +126,20 @@ Delivery: <commits on the branch (~N lines) | tickets (~N lines)>
   observable behavior», `docs/agents/testing.md`). `e2e` — the E2E actor of `docs/agents/product.md` can play it;
   `manual` — only a manual check shows it (`docs/agents/product.md` «Checks»). Development and tickets take tests from
   here and do not ask again.
-- **Research**: workflow 2 links `research.md` in `Route` and builds on its findings; each fact lives in
-  `research.md` alone.
-- **Delivery**: workflow 1 → commits on the branch, no tickets. Workflow 2 → `tickets` when production lines of all
-  edits exceed ~100 (`docs/agents/stack.md` «Line count»), else commits.
+- **Research and design**: `Route` links them and the plan builds on them; each fact and each decision lives in its
+  own document, the plan only orders the work and names the checks.
+- **Order** — workflow 3 only: the parts, what each delivers and what it waits for. `agent.md` «Parts» details the
+  same parts and never reorders them. One part → omit.
+- **Stop conditions** — workflow 3 always has one: the approved design proves wrong → back to `/{{p}}-create-design`.
+- **Checkpoints** — workflow 3 only, omit when there are none: a point mid-work where the developer takes part (look
+  at data after a migration, try a flow on staging).
+- **One screen** — workflows 1 and 2. Workflow 3 is as long as its parts need, each item still per
+  [writing-for-humans.md](writing-for-humans.md).
+- **Delivery**: workflow 1 → commits on the branch, no tickets. Workflows 2 and 3 → `tickets` when production lines of
+  all edits exceed ~100 (`docs/agents/stack.md` «Line count»), else commits.
+- **Epic** — only for a task whose folder is linked into an epic; `/{{p}}-close-merge-request` reads it to move the
+  link along with the folder.
+- **Version** starts at 1 and rises with each approval after the first.
 
 ## agent.md
 
@@ -124,8 +148,9 @@ English, terse, domain concepts by their names in the code.
 1. **Title** — `# <KEY>-N: Agent instruction`, then `Plan: plan.md` — the approved plan wins on any conflict.
 2. **Implementation shape** — where new code lives (the layer of `docs/agents/code-rules.md` «Layers»), what is
    reused as-is.
-3. **Parts** — workflow 2 with tickets only: core edits, then parts independent of each other that are each checkable
-   in the product on their own. One line per part: name and its edits. Omit for a single part.
+3. **Parts** — workflows 2 and 3 with tickets only, in the plan's `Order` when it has one: core edits, then parts
+   independent of each other that are each checkable in the product on their own. One line per part: name and its edits.
+   Omit for a single part.
 4. **What to fix** — one numbered heading per edit. A line about required ordering first, if there is one.
 5. **Tests** — per test line of the plan's `Checks`, by its mark. Omit when the plan has no test lines.
 
@@ -161,52 +186,9 @@ A heading and a few sentences:
 ### What stays out of agent.md
 
 - anything the plan already says: classification, result, criteria, checks, boundaries;
-- justifications, benefits, comparison of options — they live in `research.md`;
+- justifications, benefits, comparison of options — they live in `research.md` and `design.md`;
 - finished code or test code — the agent writes it, looking at the named file;
 - logs and measurements.
-
-## research.md
-
-One document for the developer and the agent. It reads top-down: the summary alone carries the decision.
-
-```markdown
-# <KEY>-N: Research
-
-Task: <tracker link>
-
-Question: <what the research answers, one sentence>
-
-## Summary
-
-- <the answer and the decision it leads to>
-- Route: <workflow 2 holds | workflow 3 — the new mechanism, contract or interaction>
-- Critical risks: <risk → consequence>
-
-## Key findings
-
-Confirmed:
-
-- <fact> — `file:line` | <number, query, log line>
-
-Hypotheses:
-
-- <claim> — <what confirms or refutes it>
-
-## Open questions
-
-- <question> — <who answers: the developer, the business, a check>
-
-## Evidence
-
-- <sources read: files, queries, logs, measurements>
-```
-
-- **Confirmed** holds facts read this session in code, data or logs; everything else is a hypothesis.
-- A rejected option is a confirmed finding: the option and the fact that rules it out. What the eventual fix won't
-  cover goes there too.
-- The document records results, in the order a reader needs them; the order of the search stays in the chat.
-
-Bullets + `file:line`, not an essay.
 
 ## notes.md
 
@@ -219,19 +201,22 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 
 ## Workflow
 
-1. Resolve the task key and folder, pick the mode. Mode 2: classify per «Classify first».
+1. Resolve the task key and folder, pick the mode. Mode 1: classify per «Classify first».
 2. Read the sources. What's missing — ask the user, they'll find it faster.
-3. Write `research.md` / `notes.md` if the mode calls for it. Modes 1 and 3 stop here.
+3. Mode 2: write `notes.md` and stop.
 4. Draft `plan.md` and ask the user with its full text (`docs/agents/harness.md` «Actions»). Iterate until the
-   developer approves; then write `plan.md`. The tracker task stays as it is.
+   developer approves; then write `plan.md` and copy it to the tracker (`docs/agents/issue-tracker.md` «Document
+   copies»). The tracker task stays as it is.
 5. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found.
-6. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` and reports
+6. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` (workflow 3:
+   and `design.md`) and reports
    which files it would open, what it would change, which tests it would write, and every question the two files leave
    open. A question the sources settle → fix `agent.md` and run the check again; a question only the developer can
    answer → ask the user. Done when a run reports no open question.
 7. Hand over the file paths written and the next skill: `Delivery: tickets` → `/{{p}}-to-tickets`, commits →
    `/{{p}}-develop`.
 
-A plan changed after approval: ask the user with the changed lines before editing `plan.md`.
+A plan changed after approval: ask the user with the changed lines before editing `plan.md`, raise `Version`, copy
+the new version to the tracker.
 
 _Last modified: 2026-11-08_

@@ -31,8 +31,9 @@ Otherwise take the fixed point from the user; if none given, ask.
 ## 2. Find the spec
 
 1. Task key `<KEY>-N` from commit prefixes, or from the user. No key → ask the user and wait; never skip the spec.
-2. Task folder `{{work}}/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `tickets/*.md`, and
-   the latest review file of this scope (step 7) — the previous round, if any.
+2. Task folder `{{work}}/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `design.md`,
+   `tickets/*.md`, and the latest review file of this scope (step 7) — the previous round, if any. `plan.md` names an
+   `Epic:` → also `{{work}}/epics/<epic-slug>/design.md`.
 3. The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal. Older tasks
    carry `## Decisions` and acceptance criteria there: they are part of the spec.
 4. The behaviour spec — the sections for the screens the diff touches.
@@ -79,7 +80,8 @@ A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message. Both p
 
 > Report (a) `plan.md` Result and Criteria missing or partial; (b) behaviour in the diff nobody asked for, or outside
 > the plan's Boundaries (scope creep); (c) requirements implemented but looking wrong, including screens or texts
-> that differ from the behaviour spec; (d) a finding from the plan's Stop conditions; (e) defects: an input or state
+> that differ from the behaviour spec; (d) a finding from the plan's Stop conditions, or code that departs from a
+> decision, contract or boundary of `design.md`; (e) defects: an input or state
 > that crashes or gives a wrong result, with that input or state. Mark each `hard` (a defect, a broken requirement or
 > boundary) or `judgement` (a departure someone must decide on, or intent you cannot tell — phrase it as a question
 > with the options). Quote the spec line for each. Under 400 words.

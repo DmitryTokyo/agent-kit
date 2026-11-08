@@ -75,24 +75,43 @@ Each axis is independent: Work Type implies neither value nor risk.
 | 3. Research, design and plan | Behaviour, a mechanism, a contract or an interaction has to be defined | research → design → plan → change → checks → review |
 
 Check depth follows risk, not the size of the change. A new dependency, a pattern that does not fit, or rising risk
-sends the task back to route selection. Workflow 3 has no skill support yet.
+sends the task back to route selection. Research that shows behaviour, a mechanism, a contract or an interaction has
+to be defined proposes a switch from workflow 2 to 3; the developer confirms. An approved design that proves wrong
+sends the work back to design.
 
-Delivery: workflow 1 lands as commits without ticket files; workflow 2 may split into tickets.
+Delivery: workflow 1 lands as commits without ticket files; workflows 2 and 3 may split into tickets. An initiative
+that spans several tracker tasks (a new project, an integration, a move to another framework) is an **epic**: one
+research, one design and a roadmap of tasks, each task with its own plan.
+
+### Research and design
+
+Workflows 2 and 3 start with `/{{p}}-research`: enough confirmed information for the next stage, in `research.md`.
+In workflow 3 it opens with `/{{p}}-brainstorm` — an open interview about what the developer wants and why. Then
+`/{{p}}-create-design` agrees how the system should work: the developer picks an approach, `/{{p}}-grill-one` grills
+the draft on the concrete decisions, and the developer approves `design.md` before any plan. Diagrams (ERD,
+Sequence, State Machine, Data Flow, C4) are Mermaid inside the documents, drawn when they help.
+
+The local documents are the working copy; each approved version is also copied to the tracker
+(`docs/agents/issue-tracker.md` «Document copies»).
 
 ### Plan
 
 The developer reads one short `plan.md` and approves it before code: classification, route, result, criteria,
-boundaries, checks, stop conditions and whether the developer reviews the change. Checks are approved there, once;
-development returns to the developer only on a deviation from the plan. The tracker task holds only Problem, Goal and
-Links, plus its status and labels.
+boundaries, checks, stop conditions and whether the developer reviews the change. Workflow 3 adds the order of the parts
+and the checkpoints where the developer takes part, and the plan is as long as its parts need. Checks are approved
+there, once; development returns to the developer only on a deviation from the plan. The tracker task holds only
+Problem, Goal and Links, plus its status and labels.
 
 ## Feature workflow
 
 A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `{{work}}/tasks/{{key}}-N-<slug>/`.
 
 1. `/{{p}}-create-task` — the task in the tracker: Problem, Goal, Links.
-2. `/{{p}}-create-plan` — classification and route («Classify a task before code»), `research.md` for workflow 2,
-   then the developer plan `plan.md` and the agent instruction `agent.md`. `Delivery: commits` → `/{{p}}-develop`;
+2. `/{{p}}-create-plan` — classification and route («Classify a task before code»). Workflow 2 →
+   `/{{p}}-research` first; workflow 3 → `/{{p}}-research`, then `/{{p}}-create-design` («Research and design»).
+   Then the developer plan `plan.md` and the agent instruction `agent.md`. An epic: research and design for the whole
+   initiative, then `/{{p}}-to-tasks` writes the roadmap, creates the epic and its tasks, and each task comes back to
+   this step with the epic's design as its input. `Delivery: commits` → `/{{p}}-develop`;
    `Delivery: tickets` → step 3.
 3. `/{{p}}-to-tickets` — tickets and their map `tickets/00-map.md`: one ticket is one commit of at most 100 lines of
    production code. Each line of the plan's `Checks` lands in one ticket and sets its mode. A section of the map is a

@@ -43,9 +43,10 @@ every question → skip to step 4: its approval covers the given answers too.
    the values it leaves to fill — tiers, agent identity. A harness without a section → it gets one from the user's
    answers, and say so: `sync` can send it to the kit.
 4. Tracker: name, team or project, URL, the tools to read, list and save issues; what an epic is; the status a
-   finished task moves to (`Done`).
-5. Working folder: where task files live, relative to the root, default `.ai`. It gets `tasks/` (the open tasks) and
-   `done/` (the merged ones) and is gitignored.
+   finished task moves to (`Done`); where copies of approved documents go for a task and for an epic
+   (`<kit>/contract/issue-tracker.md` «Document copies»: a comment, a project update, or «none»).
+5. Working folder: where task files live, relative to the root, default `.ai`. It gets `tasks/` (the open tasks),
+   `epics/` and `done/` (the merged ones) and is gitignored.
 6. Language of task titles and descriptions.
 7. Main branch; the host and how each operation of `<kit>/contract/git.md` «Pull requests» runs (`gh`, or an API
    wrapper that keeps the token inside its process), repository.
@@ -133,4 +134,4 @@ In Russian: the skills installed, the files created and changed, every `<!-- fil
 waits for, the commands for the user (`pre-commit install --hook-type commit-msg`), and the next step — commit the
 install, then `/<prefix>-create-task` for the first task.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-08_

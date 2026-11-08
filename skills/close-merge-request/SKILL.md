@@ -27,7 +27,17 @@ command line or the chat.
 7. `git switch <main> && git pull --ff-only`, then `git branch -D <branch>` for each merged branch that exists locally:
    after a squash or rebase merge git does not see it as merged, the host's state above is the check. A remote branch
    still on the host stays; name it in the report.
-8. A finished task → `mkdir -p {{work}}/done && mv {{work}}/tasks/<folder> {{work}}/done/`.
-9. Report per task: the key, the pull request links, what was done. List skipped branches with the reason.
+8. A finished task → `mkdir -p {{work}}/done && mv {{work}}/tasks/<folder> {{work}}/done/`. Its `plan.md` names an
+   `Epic: <epic-slug>` → move the epic's link to the folder along with it:
 
-_Last modified: 2026-11-06_
+   ```bash
+   ln -sfn ../../../done/<folder> {{work}}/epics/<epic-slug>/tasks/<folder>
+   ```
+
+   Every link in `{{work}}/epics/<epic-slug>/tasks/` now points into `done/` → the epic is finished: move it to
+   `{{work}}/done/epics/<epic-slug>/`, point each of its links at `../../../<folder>` (`done/` from there), and move the
+   epic in the tracker to its finished state.
+9. Report per task: the key, the pull request links, what was done, the epic when one moved or finished. List
+   skipped branches with the reason.
+
+_Last modified: 2026-11-08_

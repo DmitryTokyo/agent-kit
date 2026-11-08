@@ -78,13 +78,25 @@ Write a plan for AG-55.
 /ag-orchestrate AG-55
 ```
 
-`create-plan` first classifies the task — product value, work type, risk — and picks a route: a known local fix, or
-research first. Then it writes one short `plan.md` for you: result, criteria, boundaries, the checks behind each
-consequence, and whether you need to review the change. You approve it once; the agent comes back only on a
-deviation. A small task goes straight to `develop`. A bigger one goes through `to-tickets`: one ticket is one commit of
-at most 100 lines of code, tickets are grouped into parts, one part is one branch and one pull request.
-`orchestrate` takes the next part and walks each ticket through: subagents write the tests and the code, review them
-and commit.
+`create-plan` first classifies the task — product value, work type, risk — and picks a route: a known local fix,
+research first, or research and design first. Then it writes one short `plan.md` for you: result, criteria, boundaries,
+the checks behind each consequence, and whether you need to review the change. You approve it once; the agent comes back
+only on a deviation. A small task goes straight to `develop`. A bigger one goes through `to-tickets`: one ticket is one
+commit of at most 100 lines of code, tickets are grouped into parts, one part is one branch and one pull request.
+`orchestrate` takes the next part and walks each ticket through: subagents write the tests and the code, review them and
+commit.
+
+**A task that needs a design first** — new behaviour, a mechanism, a contract or an interaction:
+
+```text
+Research AG-60.        ← /ag-research: an open interview about what you want, then the code; research.md
+Design AG-60.          ← /ag-create-design: you pick an approach, then a hard grilling; design.md with diagrams
+Write a plan for AG-60.
+```
+
+An initiative of several tasks (a new integration, a move to another framework) is an epic: one research and one
+design for all of it, then `/ag-to-tasks` writes the roadmap and creates the epic and its tasks in the tracker. The
+documents live in the working folder, where you read them; each approved version is also copied to the tracker.
 
 **Review and pull request:**
 
@@ -113,7 +125,11 @@ Ask me about this plan one question at a time.
 | Skill | What it does |
 | --- | --- |
 | `create-task` | files a task in the tracker |
-| `create-plan` | classifies the task, writes its research, the developer plan and the agent instruction |
+| `research` | gathers requirements and studies the existing system; writes `research.md` |
+| `brainstorm` | an open interview about what you want and why, before anything is designed |
+| `create-design` | agrees the architecture with you: approaches, a grilling, diagrams; writes `design.md` |
+| `to-tasks` | cuts an epic's design into a roadmap of tracker tasks and creates them |
+| `create-plan` | classifies the task, writes the developer plan and the agent instruction |
 | `to-tickets` | cuts the plan into tickets and parts |
 | `orchestrate` | walks the next part of tickets through, one commit per ticket |
 | `tdd-develop` | does one ticket: test first, then code |
@@ -151,7 +167,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 15 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
+| `skills/` | 19 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, Codex rules, pre-commit hooks | the project root |
@@ -163,7 +179,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 | File | What it holds |
 | --- | --- |
 | `domain.md` | `CONTEXT.md`, ADRs, glossary |
-| `issue-tracker.md` | tracker, task key, tools, task language, where working files live |
+| `issue-tracker.md` | tracker, task key, tools, task language, where working files live, where document copies go |
 | `product.md` | behaviour spec, actors, what only a manual check shows, the E2E actor |
 | `stack.md` | stack, code layout, the `check` / `unit` / `e2e` / `one-test` / `migrate` commands, line counting |
 | `git.md` | commit format, main branch, task and part branches, how to open a PR and work its review threads, agent identity |

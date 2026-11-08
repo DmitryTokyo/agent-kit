@@ -23,8 +23,9 @@ reaches the command line or the chat.
    - `git rev-parse --abbrev-ref @{upstream}` fails → `git push -u origin <branch>`;
    - it resolves and `git log --oneline @{upstream}..HEAD` lists commits → `git push`;
    - it lists nothing → skip and say so.
-4. Collect the sources from the task folder `{{work}}/tasks/<key>-N-*/`: `plan.md`, `research.md` if present, and the latest
-   review file of this scope (`/{{p}}-code-review` step 7). No `plan.md` → stop and ask. The review file wins over the
+4. Collect the sources from the task folder `{{work}}/tasks/<key>-N-*/`: `plan.md`, `research.md` and `design.md` if
+   present (`plan.md` names an `Epic:` → the design of `{{work}}/epics/<epic-slug>/`), and the latest review file of
+   this scope (`/{{p}}-code-review` step 7). No `plan.md` → stop and ask. The review file wins over the
    plan for review level, consequences and deviations.
 5. Build the description in English, these sections in order:
    - `## Changes` — 2–5 bullets on what changed; `Task: <tracker link>`.
@@ -37,7 +38,8 @@ reaches the command line or the chat.
      or decision gets `not run: <what blocks it>`.
    - `## Criteria` — every `plan.md` «Criteria» item with its result: `met`, or `not met: <why>`.
    - `## Manual check` — the part's check ticket cases, when there is one.
-   - `## Plan` — `plan.md` and `research.md` in collapsed `<details>` blocks: `{{work}}/` is not in the repository.
+   - `## Plan` — `plan.md`, `research.md` and `design.md` in collapsed `<details>` blocks: `{{work}}/` is not in the
+     repository. An epic's design goes in with its «Summary and key decisions» section only.
 6. Find the open pull request of the branch. One exists → update its description. None → open it into the main branch
    with the title of `git.md` «Pull requests».
 7. Record it in the task folder's `pr.md`, one line per branch; this branch's line is replaced, the others stay.
@@ -67,4 +69,4 @@ reaches the command line or the chat.
 5. Reply in each worked thread: `Fixed in <short sha>`, the answer, the objection, or the new ticket. The developer
    resolves threads.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-08_

@@ -1,8 +1,8 @@
 # Writing plan.md for the developer
 
 The developer reads `plan.md` once and approves it. Each item describes observable behaviour: what an actor does and
-sees, what the system sends, stores or refuses. One or two sentences per item, two or three items per section; the
-whole plan fits one screen.
+sees, what the system sends, stores or refuses. One or two sentences per item, two or three items per section; in
+workflows 1 and 2 the whole plan fits one screen.
 
 One fact lives in one section. `Result` carries before → after only; a behaviour that stays as it is gets no item. A
 fact repeated in `Boundaries` or `Checks` is cut there.

@@ -22,10 +22,38 @@
 ## Working files
 
 `{{work}}/` is gitignored: edit and move files in it freely. A task's working files live in
-`{{work}}/tasks/<key>-N-<slug>/`: `research.md`, `plan.md` (the developer plan), `agent.md` (the agent instruction),
-`notes.md`, `tickets/` (a ticket is one commit, `00-map.md` is the batches and their progress), `reviews/` (the agent
-review rounds, per batch or for the whole task), `pr.md` (the pull request of each branch). A finished task's folder
-moves to `{{work}}/done/`.
+`{{work}}/tasks/<key>-N-<slug>/`: `research.md`, `design.md` (workflow 3, with large diagrams in `design/`), `plan.md`
+(the developer plan), `agent.md` (the agent instruction), `notes.md`, `tickets/` (a ticket is one commit, `00-map.md`
+is the batches and their progress), `reviews/` (the agent review rounds, per batch or for the whole task), `pr.md`
+(the pull request of each branch). A finished task's folder moves to `{{work}}/done/`.
+
+An epic's working files live in `{{work}}/epics/<epic-slug>/`: `research.md`, `design.md`, `roadmap.md` (its tasks and
+their order) and `tasks/` — a symlink per task to its folder in `{{work}}/tasks/` or `{{work}}/done/`. A finished
+epic moves to `{{work}}/done/epics/`.
+
+The local files are the working copy: skills read and edit only them.
+
+## Document copies
+
+The tracker keeps a copy of each approved document so it is not lost and its history is visible. The copy goes one
+way, local → tracker, and is never read back.
+
+- A task's documents: <!-- fill: where a task's copies go, e.g. «a comment on the task» | «none» -->.
+- An epic's documents: <!-- fill: where an epic's copies go, e.g. «a project update (`save_status_update`)» | «a
+  comment on the parent issue» | «none» -->.
+
+When a skill says "copy the document to the tracker": post a new entry there — earlier entries stay, so the tracker
+shows every version. The entry is:
+
+```markdown
+**<file name> v<Version>** — copy of `{{work}}/<path>`; edited locally, not here.
+Changed: <one line: what this version changed; «first version» for v1>
+
+<the document in full>
+```
+
+`research.md`, `design.md`, `plan.md` and `roadmap.md` are copied; `agent.md`, `notes.md`, tickets and reviews are
+not. An epic not yet created in the tracker → its copies wait for `/{{p}}-to-tasks`. «none» → skip the step.
 
 ## When a skill says "publish to the tracker"
 
