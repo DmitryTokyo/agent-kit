@@ -15,6 +15,10 @@ The kit is for you if you:
 
 It isn't needed for one-off edits and questions: the process only gets in the way there.
 
+**To hand the kit to an agent:** give it [INDEX.md](INDEX.md). It is a map of the skills — what each one does, which
+belong together, what each release changed — and is enough for an agent to understand the repository without reading
+every skill, or to work out what to pull in after a new release.
+
 ## Tested with
 
 - Harnesses: Claude Code, OpenCode, Codex.
