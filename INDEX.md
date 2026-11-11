@@ -3,7 +3,7 @@
 A set of agent skills that take a task from an idea to a merged pull request. Take only the skills a project needs:
 one skill for a small script, the whole chain for a large product.
 
-**Current version: v0.0.5** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
+**Current version: v0.0.6** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
 
 ## Pick by project
 
@@ -79,7 +79,7 @@ A local edit good for every project goes back to the kit: change `skills/<name>/
 
 Newest first.
 
-### Unreleased — the guide replaces the installer
+### v0.0.6 — the guide replaces the installer, integration tests, a shorter PR description
 - **Removed:** `bootstrap`, `sync`, `scripts/render.sh`. Skills are taken and updated by hand or by an agent reading
   this file («Take skills into a project», «Update a project»).
 - **Epic task folders:** `to-tasks` no longer creates a folder for every task of an epic; `create-plan` creates it and
