@@ -123,10 +123,11 @@ Ask me about this plan one question at a time.
 | `tdd-develop` | does one ticket: test first, then code |
 | `develop` | writes code without a ticket or for a no-tests ticket |
 | `test-writer` | writes unit tests and E2E scenarios |
+| `integration-test` | writes the one integration test of a task: a real request through the whole path, the stored state asserted |
 | `recon` | studies unfamiliar code before a task and returns a short summary |
 | `code-review` | checks a part or a diff against the rules and the plan, sets the review level and the checks |
 | `hygiene-review` | finds in changed files what the linters miss |
-| `merge-request` | pushes, opens the pull request, works your review comments |
+| `merge-request` | pushes, opens the pull request with a description of only what a human must know, works your review comments |
 | `close-merge-request` | after the merge: links the pull request in the tracker, moves the task to Done, cleans up |
 | `git-commit-message` | splits changes into commits and proposes messages |
 | `grill-one` | asks about a plan one question at a time, looking for gaps and contradictions |
@@ -155,7 +156,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 19 skills | `.agents/skills/<prefix>-*` (`.claude/skills` links to it) |
+| `skills/` | 20 skills | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); optional subagent definitions go to `.agents/agents/` (`.claude/agents` links to it) |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, Codex rules, pre-commit hooks | the project root |

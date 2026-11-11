@@ -29,6 +29,11 @@ adds what is specific to the stack and the project, and wins where they disagree
 
 <!-- fill: where unit tests, E2E scenarios, fixtures, factories and test constants live; the file naming rule. -->
 
+## Integration tests
+
+<!-- fill: how a test sends a real request to an entry point (test client, handler call), where integration tests
+live, what they may not mock. «none» when the project has no integration tests. -->
+
 ## E2E scenarios
 
 <!-- fill: the harness, how an actor acts, what is asserted, what a scenario cannot see. «none» without E2E. -->

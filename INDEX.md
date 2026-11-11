@@ -26,7 +26,8 @@ installed.
 | `recon` | maps unfamiliar code in a subagent, returns a short summary | `harness`, `stack`, `product` |
 | `hygiene-review` | finds what linters miss in changed files | `harness`, `hygiene` |
 | `test-writer` | writes unit tests and E2E scenarios | `harness`, `stack`, `testing`, `product` |
-| `git-commit-message` | splits changes into commits, proposes messages, commits on your yes | `harness`, `git`, `issue-tracker` |
+| `integration-test` | writes one integration test: a real request through the whole path, the stored state asserted | `harness`, `stack`, `testing` |
+| `git-commit-message` | splits changes into commits, proposes messages, commits on your yes, pushes a branch already pushed | `harness`, `git`, `issue-tracker` |
 | `create-task` | files a task in the tracker | `harness`, `issue-tracker`, `product` |
 | `code-review` | reviews a diff on two axes: the project's rules and the task's plan | most of them |
 
@@ -36,7 +37,7 @@ One skill writes files the next one reads: take a set whole.
 
 | Set | Skills | Flow |
 | --- | --- | --- |
-| Ticket chain | `create-plan`, `to-tickets`, `orchestrate`, `tdd-develop`, `develop`, `test-writer`, `code-review` | plan → tickets → one commit per ticket, test first → review |
+| Ticket chain | `create-plan`, `to-tickets`, `orchestrate`, `tdd-develop`, `develop`, `test-writer`, `integration-test`, `code-review` | plan → tickets → one commit per ticket, test first → the task's integration test → review |
 | Workflow 3: research and design | `research`, `brainstorm`, `create-design`, `to-tasks`, `create-plan` | requirements → design approved by you → epic cut into tasks → plan |
 | Pull request cycle | `merge-request`, `close-merge-request` | push and open the PR, answer review threads → after the merge, close the task |
 | Business questions | `business-questions`, `create-task` | questions to the business kept as themes in the tracker |
@@ -48,6 +49,8 @@ tasks) → `to-tickets` → `orchestrate` → `code-review` → `merge-request` 
 
 1. Copy `skills/<name>/` to `.agents/skills/<prefix>-<name>/` in the project. `<prefix>` is a short name for the
    project's skills, e.g. `zip`. Claude Code reads `.claude/skills/`: make it a symlink to `../.agents/skills`.
+   Named subagent definitions, if the project wants any, go to `.agents/agents/` (`contract/harness.md` «Agent
+   definitions»); the kit's skills need none.
 2. In the copied files replace `{{p}}` with the prefix and `{{work}}` with the folder for task files (`.ai`, add it to
    `.gitignore`):
 
@@ -83,7 +86,25 @@ Newest first.
   its epic link when the task starts, so `{{work}}/tasks/` shows only the work in progress. `close-merge-request`
   finishes an epic only when every task of `roadmap.md` is in `done/`. `contract/issue-tracker.md` «Working files»
   says the same.
-- **To take:** for the folder fix, `to-tasks`, `create-plan` and `close-merge-request` together. The installer
+- **New skill:** `integration-test` — one integration test per task from `integration.md`, which `create-plan` now
+  writes when a change alters what a request leaves in the stored state; `develop` and `tdd-develop` «Last ticket» run
+  it. `contract/testing.md` gets «Integration tests».
+- **Pull request description:** `merge-request/description.md` — only what the diff and CI cannot say (a bold summary,
+  «Needs a human», «Deviations»), no PR on a red check, and «Refresh after a push». `git-commit-message` pushes a task
+  branch that is already pushed and refreshes the description.
+- **Review:** `code-review` reviews inline by default, asks how to review a diff over ~800 lines, runs the hygiene scan
+  and a new test reviewer (`test-review.md`: red probe, refactoring probe) in the background.
+- **Tests:** `test-writer/rules.md` filters scenarios before code («Dropped scenarios» in the report), one happy path
+  per function, a case must go red without its change; the main agent confirms inferred behaviours first.
+  `create-plan` «Checks» names the change that turns a test red, `test: none — default` otherwise.
+- **Smaller edits:** `create-plan` (every data fact has a source read this session; a fact of another repository
+  becomes questions for its agent), `research` (another repository's agent answers questions), `develop` (code-rules
+  scan of the changed lines; the repository's rules win over a ticket), `hygiene-review` (checks the changed lines
+  against a diff base), `tdd-develop` and `orchestrate` («Last ticket»: the whole branch against `Criteria`),
+  `create-task` (asks priority, `Medium` recommended), `to-tickets` (common slicing seams), `contract/harness.md`
+  («Agent definitions», `.agents/agents/`).
+- **To take:** for the folder fix, `to-tasks`, `create-plan` and `close-merge-request` together; `integration-test`
+  with `create-plan`, `develop` and `tdd-develop`; `merge-request` with `git-commit-message`. The installer
   removal needs nothing; a project installed by `bootstrap` keeps working, its `.agents/agent-kit.json` gives the
   commit to update from.
 

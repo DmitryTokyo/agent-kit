@@ -23,7 +23,8 @@ one message, before creating anything:
 
 - status — a short choice of the tracker's starting statuses (e.g. `Backlog`, `Todo`, `In Progress`), any other status
   accepted;
-- priority — preserve the user's value, never invent one;
+- priority — preserve the user's value; none given → ask, `Medium` as the recommended pick, `High` and `Urgent` as the
+  other choices, any other priority accepted;
 - project (epic), when the task clearly belongs to one and the user hasn't named it;
 - Product Value and Work Type (`CONTRIBUTING.md` «Three axes») — classify the task yourself and ask to confirm, your
   pick first. Where they live in the tracker: `docs/agents/issue-tracker.md` «Conventions».
@@ -67,4 +68,4 @@ Each task identifier with its clickable link, plus team, project, status, priori
 Type. With the
 business-questions module, for a new development task, also the business questions that block it.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-11_

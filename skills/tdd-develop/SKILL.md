@@ -62,10 +62,21 @@ Nothing is staged, committed or pushed: the user reviews the worktree with `git 
 
 1. Tick the ticket's checklist and set its `Status` to `done`.
 2. Tick the ticket's line in the map.
+3. Every ticket of the map now `done` → per «Last ticket».
+
+## Last ticket
+
+The last ticket of the task closes the task's work, under `/{{p}}-orchestrate` too:
+
+1. A worker (`docs/agents/harness.md` «Roles»), standard tier, reviews the whole branch diff
+   (`git diff <main>...HEAD` plus the worktree) against `plan.md` «Criteria» and ticks each criterion it confirms. Every
+   unticked criterion goes into «Output» as a deviation: it goes to the pull request.
+2. The task folder has `integration.md` → a worker, standard tier, with the subagent prompt of `harness.md` for
+   `.agents/skills/{{p}}-integration-test/SKILL.md` and the `integration.md` path. Its report goes into «Output».
 
 ## Output
 
 Three lines: the commit with its line count (code, tests) under `/{{p}}-orchestrate`, otherwise «not committed», the
 departures from the ticket or `plan.md` with their reason (or «none»), the next unticked ticket of the map.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

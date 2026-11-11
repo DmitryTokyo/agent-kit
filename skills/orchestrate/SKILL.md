@@ -22,8 +22,8 @@ unticked ticket line; its unticked tickets in list order.
 ## Role
 
 Read `.agents/skills/{{p}}-tdd-develop/SKILL.md` once, now: you are its dispatcher, under its «Role», for every ticket of
-the batch. Its ticket sections and «Output» apply; this skill replaces its «Input» and «Close». Its stops stop the
-batch.
+the batch. Its ticket sections, «Last ticket» and «Output» apply; this skill replaces its «Input» and «Close». Its
+stops stop the batch.
 
 ## Start
 
@@ -42,7 +42,8 @@ Each ticket of the batch, by its `**Mode:**` line (older tickets: `Режим`, 
 | `no tests` | worker (`docs/agents/harness.md` «Roles»), standard tier, the subagent prompt of `harness.md` for `.agents/skills/{{p}}-develop/SKILL.md` and `<ticket path>`, plus *"The manual check is the user's: report how to do it and leave the checklist to the dispatcher."*; then `check` green |
 | missing | stop: the mode is set by `/{{p}}-to-tickets` |
 
-Then «Commit», and the next ticket.
+Then «Commit», and the next ticket. After the commit of the map's last ticket → `{{p}}-tdd-develop` «Last ticket»;
+an integration test it wrote goes in one more commit per «Commit».
 
 ## Commit
 
@@ -67,4 +68,4 @@ After each ticket — `{{p}}-tdd-develop` «Output».
 At the batch end: the commits in order, each with its departures, the manual checks of `no tests` tickets, then the
 section's gates in order — the first one is `/{{p}}-code-review <KEY>-N <part>` in a new session.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-11_

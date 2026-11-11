@@ -23,33 +23,17 @@ reaches the command line or the chat.
    - `git rev-parse --abbrev-ref @{upstream}` fails → `git push -u origin <branch>`;
    - it resolves and `git log --oneline @{upstream}..HEAD` lists commits → `git push`;
    - it lists nothing → skip and say so.
-4. Collect the sources from the task folder `{{work}}/tasks/<key>-N-*/`: `plan.md`, `research.md` and `design.md` if
-   present (`plan.md` names an `Epic:` → the design of `{{work}}/epics/<epic-slug>/`), and the latest review file of
-   this scope (`/{{p}}-code-review` step 7). No `plan.md` → stop and ask. The review file wins over the
-   plan for review level, consequences and deviations.
-5. Build the description in English, these sections in order:
-   - `## Changes` — 2–5 bullets on what changed; `Task: <tracker link>`.
-   - `## Risk` — the `plan.md` «Classification» line.
-   - `## Review level` — Agent, Focused or Full with its reason. Focused and Full list the exact `file:line` ranges or
-     decisions the developer must read. Without a review file, derive it as `/{{p}}-code-review` step 6 does.
-   - `## Deviations` — unticked criteria and departures from the plan, each with why. None → `none`.
-   - `## Consequences` — one line per significant consequence: `<consequence> → <check> → <result>`. Take them from
-     the review file, else from `plan.md` «Checks». Run every check you can; a check that needs the developer's access
-     or decision gets `not run: <what blocks it>`.
-   - `## Criteria` — every `plan.md` «Criteria» item with its result: `met`, or `not met: <why>`.
-   - `## Manual check` — the part's check ticket cases, when there is one.
-   - `## Plan` — `plan.md`, `research.md` and `design.md` in collapsed `<details>` blocks: `{{work}}/` is not in the
-     repository. An epic's design goes in with its «Summary and key decisions» section only.
-6. Find the open pull request of the branch. One exists → update its description. None → open it into the main branch
+4. Build the description by [description.md](description.md) «Build».
+5. Find the open pull request of the branch. One exists → update its description. None → open it into the main branch
    with the title of `git.md` «Pull requests».
-7. Record it in the task folder's `pr.md`, one line per branch; this branch's line is replaced, the others stay.
+6. Record it in the task folder's `pr.md`, one line per branch; this branch's line is replaced, the others stay.
    `/{{p}}-close-merge-request` finds the pull request by it:
 
    ```markdown
    - <branch>: <link> (<id>)
    ```
 
-8. Report the pull request link, and the gates of the map section still open on it.
+7. Report the pull request link, and the gates of the map section still open on it.
 
 ## Work through review comments
 
@@ -65,8 +49,9 @@ reaches the command line or the chat.
      `.agents/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules», or a tracker task when it lies outside this task.
 4. Run `check`; green → commit the fixes of the round as one commit under the agent identity (`docs/agents/git.md`),
    with a message in the format of `/{{p}}-git-commit-message` step 4. The user started this skill: no confirmation
-   question. Then `git push`.
+   question. Note the sha of `@{upstream}`, `git push`, then refresh the description by
+   [description.md](description.md) «Refresh after a push».
 5. Reply in each worked thread: `Fixed in <short sha>`, the answer, the objection, or the new ticket. The developer
    resolves threads.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

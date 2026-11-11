@@ -15,12 +15,14 @@ A task gets two documents with two readers:
   result, criteria, boundaries, checks, stop conditions, developer review.
 - `agent.md` — the **agent instruction**: where to look, what to change and how the checks become tests. It links the
   plan and never repeats it.
+- `integration.md` — the **integration test spec**, read only after the code is written (`/{{p}}-integration-test`).
 
 ## Where it lives
 
 ```text
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/plan.md
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/agent.md
+{{work}}/tasks/<key>-<N>-<short-kebab-description>/integration.md
 {{work}}/tasks/<key>-<N>-<short-kebab-description>/notes.md
 ```
 
@@ -53,7 +55,8 @@ Behaviour none of these settle is a product gap: ask the user. Never invent it.
 
 ## Pick the mode
 
-1. **Plan** — `plan.md` + `agent.md`.
+1. **Plan** — `plan.md` + `agent.md`, plus `integration.md` when the change alters what a request to an entry point
+   leaves in the stored state and `docs/agents/testing.md` «Integration tests» is not `none`.
 2. **Notes** — `notes.md` only.
 
 Research is `/{{p}}-research`, design is `/{{p}}-create-design`. Ask the user when the mode isn't clear from the
@@ -128,7 +131,8 @@ Delivery: <commits on the branch (~N lines) | tickets (~N lines)>
   Goal and Links. A criterion is checkable against the diff; review ticks it.
 - **Checks** are the only place tests are decided: one line per consequence the change can break. A test line names
   observable behaviour, never a query count or a private helper (`.agents/skills/{{p}}-test-writer/rules.md` «Test
-  observable behavior», `docs/agents/testing.md`). `e2e` — the E2E actor of `docs/agents/product.md` can play it;
+  observable behavior», `docs/agents/testing.md`), and the change that turns it red; a result that already held
+  before the change is `test: none — default`. `e2e` — the E2E actor of `docs/agents/product.md` can play it;
   `manual` — only a manual check shows it (`docs/agents/product.md` «Checks»). Development and tickets take tests from
   here and do not ask again.
 - **Research and design**: `Route` links them and the plan builds on them; each fact and each decision lives in its
@@ -195,6 +199,20 @@ A heading and a few sentences:
 - finished code or test code — the agent writes it, looking at the named file;
 - logs and measurements.
 
+## integration.md
+
+English, terse. One integration test for the task's main path, written by `/{{p}}-integration-test`:
+
+- **Test** — the test name and file.
+- **Path** — the entry point and the request payload.
+- **Arrange** — the data the actor has before the request.
+- **Assert** — the stored state after the request: records, statuses, requests that left the process.
+- **Domain** — the parametrize values: the whole domain the path serves, not only the value the task adds.
+- **Mocks** — what leaves the process on this path.
+- **Replaces** — the test of the same path that asserts only the response, if one exists.
+- **Goes red when** — each production line of the change whose revert turns the test red.
+- **Run** — the command for this test (`one-test` of `docs/agents/stack.md` «Commands»).
+
 ## notes.md
 
 Title `# <KEY>-N: Notes`, then freeform — whatever structure the conversation had.
@@ -207,12 +225,16 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 ## Workflow
 
 1. Resolve the task key and folder, pick the mode. Mode 1: classify per «Classify first».
-2. Read the sources. What's missing — ask the user, they'll find it faster.
+2. Read the sources. What's missing — ask the user, they'll find it faster. Every fact about data in the plan (fields,
+   options, values, states) has a source read this session: the database or the code. A fact that lives in another
+   repository becomes questions for that repository's agent: write them, hand them to the user, and hold the plan
+   until they are answered.
 3. Mode 2: write `notes.md` and stop.
 4. Draft `plan.md` and ask the user with its full text (`docs/agents/harness.md` «Actions»). Iterate until the
    developer approves; then write `plan.md` and copy it to the tracker (`docs/agents/issue-tracker.md` «Document
    copies»). The tracker task stays as it is.
-5. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found.
+5. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found. Write
+   `integration.md` when mode 1 calls for it; `agent.md` never names it.
 6. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` (workflow 3:
    and `design.md`) and reports
    which files it would open, what it would change, which tests it would write, and every question the two files leave

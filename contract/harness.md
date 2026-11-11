@@ -14,6 +14,13 @@ and tell the user.
 A subagent prompt that points at a skill file reads: *"Read `<path>` and follow it for `<input>`. You are the
 subagent — do not spawn anything, you cannot talk to the user."*
 
+## Agent definitions
+
+`.agents/agents/` holds named subagent definitions: a role with its fixed prompt, its allowed tools and its tier in one
+file, so a prompt several skills dispatch lives once and a harness can limit its tools and pin its model. The kit's
+skills carry their prompts inline and need none, so the folder may stay empty. A project that moves a skill's prompt
+into a definition dispatches it by name; each harness below says where it reads them.
+
 ## Tiers
 
 - **strong** — the strongest model: dispatchers and reviews that decide.
@@ -46,6 +53,8 @@ gives the author and trailer per harness. Never strip them.
   carries content.
 - invoke a skill: `/<name>`, or the `Skill` tool. Skills live in `.agents/skills/`, read through the
   `.claude/skills` symlink.
+- agent definitions: `.claude/agents` → symlink to `../.agents/agents`; dispatch one with
+  `Agent(subagent_type="<name>")`.
 - identity: `git -c user.name=Claude -c user.email=noreply@anthropic.com commit -m "<message>" -m "Co-Authored-By:
   Claude <noreply@anthropic.com>"`. A pull request body ends with
   `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
@@ -64,6 +73,7 @@ gives the author and trailer per harness. Never strip them.
 - invoke a skill: the `skill` tool by ID; `/<name>` in a skill is the ID `<name>`. There are no slash commands for
   skills.
 - identity: <!-- fill: author and trailer, e.g. `git -c user.name=OpenCode -c user.email=<email> commit ...` -->.
+- agent definitions: <!-- fill: where OpenCode reads them, or «none» -->.
 - permissions: `.opencode/opencode.json`.
 <!-- /harness:opencode -->
 
@@ -80,6 +90,7 @@ Codex reads `AGENTS.md` and the skills in `.agents/skills/` natively.
 - ask the user: the plain message.
 - invoke a skill: `$<name>`; `/<name>` in a skill is `$<name>`.
 - identity: <!-- fill: author and trailer, e.g. `git -c user.name=Codex -c user.email=<email> commit ...` -->.
+- agent definitions: <!-- fill: where Codex reads them, or «none» -->.
 - permissions: `.codex/rules/default.rules`, denies as `prefix_rule(pattern = [...], decision = "forbidden")`; it
   loads only when the project's `.codex/` is trusted.
 <!-- /harness:codex -->

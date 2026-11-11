@@ -9,8 +9,9 @@ description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since 
 
 The behaviour spec is the document `docs/agents/product.md` «Behaviour spec» names. Actors: `docs/agents/product.md` «Actors».
 
-Two-axis review, each axis in its own reviewer. Reports stay separate: no merging, no reranking across axes. The
-review is a file a fixer in another session works from; this skill fixes no code.
+Two-axis review, inline by default, each axis in its own pass; cheap subagents give a second look at hygiene and
+tests. Reports stay separate: no merging, no reranking across axes. The review is a file a fixer in another session
+works from; this skill fixes no code.
 
 ## 1. Pin the fixed point
 
@@ -32,7 +33,7 @@ Otherwise take the fixed point from the user; if none given, ask.
 
 1. Task key `<KEY>-N` from commit prefixes, or from the user. No key → ask the user and wait; never skip the spec.
 2. Task folder `{{work}}/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `design.md`,
-   `tickets/*.md`, and the latest review file of this scope (step 7) — the previous round, if any. `plan.md` names an
+   `tickets/*.md`, and the latest review file of this scope (step 8) — the previous round, if any. `plan.md` names an
    `Epic:` → also `{{work}}/epics/<epic-slug>/design.md`.
 3. The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal. Older tasks
    carry `## Decisions` and acceptance criteria there: they are part of the spec.
@@ -69,14 +70,36 @@ Plus the smell baseline below. Repo rules override it; each smell is a judgement
 With a previous round, check it first: every `[x]` item verified in the code — holds → closed; does not → reopened
 under its ID. Every unticked item carries over under its ID, its `decision` kept.
 
-## 5. Spawn both reviewers
+## 5. Size the diff
 
-A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message. Both prompts also carry:
+`git diff <base> --stat` plus the line counts of the untracked files. Over ~800 changed lines → ask the user
+(`docs/agents/harness.md` «Actions»): review all inline, spawn one reviewer per axis, or review only the files they
+name.
+
+**Done when:** the diff is under the bound, or the user has picked a mode.
+
+## 6. Review
+
+In one message, in the background:
+
+- an explorer (`docs/agents/harness.md` «Roles»), cheap tier, with the subagent prompt of `/{{p}}-hygiene-review`:
+  the changed and new files, diff base `<base>`;
+- the diff touches test files → a reviewer, standard tier, with the subagent prompt of `harness.md` for
+  `.agents/skills/{{p}}-code-review/test-review.md` and the input `Files: <changed and new test files>`,
+  `Diff base: <base>`.
+
+Then review inline, Spec axis first, then Standards, each in its own pass with the axis text below. Whatever an axis
+considers and sets aside as outside it goes to «Declined to judge» with the reason: nothing is dropped silently.
+
+When the user picked one reviewer per axis, spawn a reviewer (`harness.md` «Roles») per axis instead, both in one
+message. Each prompt carries the diff command, commit list, untracked files, and that axis's text below; Spec adds the
+spec file paths and the tracker issue text, Standards adds the standards file paths and the smell baseline pasted in
+full. Both prompts also carry:
 
 > You are read-only: change no file and spawn nothing. End with «Declined to judge»: what you considered and set aside
 > as outside this axis, one line each with the reason.
 
-**Spec prompt** carries: diff command, commit list, untracked files, spec file paths, the tracker issue text, and:
+**Spec axis:**
 
 > Report (a) `plan.md` Result and Criteria missing or partial; (b) behaviour in the diff nobody asked for, or outside
 > the plan's Boundaries (scope creep); (c) requirements implemented but looking wrong, including screens or texts
@@ -86,16 +109,14 @@ A reviewer (`docs/agents/harness.md` «Roles») per axis, in one message. Both p
 > boundary) or `judgement` (a departure someone must decide on, or intent you cannot tell — phrase it as a question
 > with the options). Quote the spec line for each. Under 400 words.
 
-**Standards prompt** carries: diff command, commit list, untracked files, the standards file paths, the smell baseline
-pasted in full, and:
+**Standards axis:**
 
 > Report per file:line (a) every breach of a documented rule, citing file + rule — `hard`; (b) every baseline smell,
-> named, with the hunk quoted — `judgement`; (c) every check of `docs/agents/hygiene.md` that fails on the changed
-> files — `hard`. Skip what the linter autofixes. Under 400 words.
+> named, with the hunk quoted — `judgement`. Skip what the linter autofixes. Under 400 words.
 
-**Done when:** both reviewers have reported.
+**Done when:** both axes are written and the hygiene explorer (and the test reviewer, if spawned) has reported.
 
-## 6. Scope, checks, level, criteria
+## 7. Scope, checks, level, criteria
 
 Inline, from the diff and its callers:
 
@@ -115,12 +136,13 @@ Inline, from the diff and its callers:
 
 **Done when:** every consequence has a check with its result, and every criterion is ticked or listed as a deviation.
 
-## 7. Write the review file
+## 8. Write the review file
 
 The scope's review file is `{{work}}/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
 otherwise; `NN` is one past the latest round of that scope (`01` for the first). The file is self-contained: a fixer in
-another session reads only it. IDs stay stable across rounds: `SPEC-n`, `STD-n`, numbering continues from the previous
-round.
+another session reads only it. The hygiene explorer's and the test reviewer's findings fold into Standards, each tagged
+«hygiene» or «test review», both `hard`. IDs stay stable across rounds: `SPEC-n`, `STD-n`, numbering continues from the
+previous round.
 
 ```markdown
 # <KEY>-N review NN
@@ -167,4 +189,4 @@ happen later is `skip` plus a tracker task. A batch with no open `hard` item and
 In chat: the file path, findings count per axis, the worst finding within each axis, the review level, and the next
 step — the developer sets the decisions, then `/{{p}}-develop` with the review file.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

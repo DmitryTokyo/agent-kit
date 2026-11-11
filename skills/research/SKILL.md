@@ -89,7 +89,7 @@ Hypotheses:
 
 ## Open questions
 
-- <question> — <who answers: the design, the developer, the business, a check>
+- <question> — <who answers: the design, the developer, the business, another repository's agent, a check>
 
 ## Evidence
 

@@ -1,13 +1,14 @@
 ---
 name: {{p}}-git-commit-message
-description: Review this repository's git changes, split them into logical chunks, propose <KEY>-N commit messages, and stage and commit only after explicit approval. Use for commit-message or local-commit requests.
+description: Review this repository's git changes, split them into logical chunks, propose <KEY>-N commit messages, and stage and commit only after explicit approval; a task branch already pushed is pushed again. Use for commit-message or local-commit requests.
 ---
 
 # Git commit messages
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
-Propose one commit per logical chunk of the current diff, then stage and create local commits after the user approves. Never push.
+Propose one commit per logical chunk of the current diff, then stage and create local commits after the user
+approves. Only a task branch that is already pushed gets pushed (step 7).
 
 ## 1. Get the task number
 
@@ -72,6 +73,13 @@ git add <files for this chunk>
 git commit -m "<KEY>-123: type: message"
 ```
 
-One `git add` + `git commit` pair per chunk; nothing staged before step 5. Never `git push`. Report the commits and their file scope.
+One `git add` + `git commit` pair per chunk; nothing staged before step 5. Report the commits and their file scope.
 
-_Last modified: 2026-11-06_
+## 7. Push a pushed branch
+
+Only a task or part branch of `docs/agents/git.md` «Branches», never the main branch.
+`git rev-parse @{upstream}` fails → the branch was never pushed: stop here; its first push and pull request go through
+`/{{p}}-merge-request`. It resolves → note that sha, `git push`, then refresh the pull request description by
+`.agents/skills/{{p}}-merge-request/description.md` «Refresh after a push» with the noted sha.
+
+_Last modified: 2026-11-11_

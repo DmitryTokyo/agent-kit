@@ -29,6 +29,9 @@ no `tickets/` → stop and suggest `/{{p}}-to-tickets`.
 - Tests are the plan's `Checks`: `new` / `extend existing` lines → through `/{{p}}-test-writer`; `e2e`, `manual`
   and `none` lines get no unit test. A test the checks do not name, or a check you cannot test as written, is a
   deviation: ask the user before acting on it.
+- A ticket or plan line and the repository's rules (`code-rules.md`, `testing.md`, the test-writer rules) disagree —
+  e.g. a check names a case the testing rules reject → the rules win. Name the disagreement and ask the user; never
+  write or drop the case silently.
 
 ### A ticket with `Mode: no tests`
 
@@ -69,8 +72,18 @@ Minimum code that solves the task: no features, abstractions, configurability or
 ## After writing code
 
 1. `check` — green. A schema change ends with `migrate` first.
-2. Run `/{{p}}-hygiene-review` on the changed files. Clear violations of a rule in `code-rules.md` → fix and include in
-   the final report. Ambiguous findings → ask the user before touching.
+2. In one message: an explorer (`docs/agents/harness.md` «Roles»), cheap tier, with the prompt below, and
+   `/{{p}}-hygiene-review` on the same files. `{DIFF_BASE}` is `HEAD` for uncommitted work, otherwise the commit or
+   branch the change started from.
+
+   ```
+   Read docs/agents/code-rules.md, then run `git diff {DIFF_BASE} -- {CHANGED_FILES}`. Report every breach of its
+   rules in added or changed lines only. Fix nothing. One line per breach: file:line — rule — suggested fix.
+   Nothing found → "No code-rules findings."
+   ```
+
+   A clear breach of a written rule → fix it. Ambiguous, or the plan says otherwise → ask the user before touching.
+   The final report lists every finding, one line each: `file:line — rule — fixed | asked`; zero findings → say so.
 3. After fixes, `check` again.
 
 A task with a plan, also:
@@ -79,6 +92,7 @@ A task with a plan, also:
    lists every unticked criterion as a deviation, with the reason — it goes to the pull request.
 5. Behaviour the plan does not describe, or a departure from it → append a check to the end of `plan.md` `Checks`:
    `- <condition → expected result> (added in development)`. Never edit or remove existing items.
-6. The worktree stays uncommitted: the next step is `/{{p}}-git-commit-message`, then `/{{p}}-code-review`.
+6. The task folder has `integration.md` → `/{{p}}-integration-test`.
+7. The worktree stays uncommitted: the next step is `/{{p}}-git-commit-message`, then `/{{p}}-code-review`.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-11_

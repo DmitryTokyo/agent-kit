@@ -29,7 +29,11 @@ the task folder. Ask for the key if the folder is unclear. `plan.md` says `Deliv
   such seam → the ticket stays whole.
 - A step with no acceptance criterion of its own (a helper or refactor only the next ticket uses) folds into that
   ticket.
-- The rules of `docs/agents/code-rules.md` «Ticket slicing».
+- Seams that usually hold their own acceptance criterion:
+  - the same validation checked in different places (a pre-check and the save path) → a ticket per place;
+  - an input form → its display (fields, choices, initial values) and its validation + save;
+  - client-side code → by behaviour (show or hide by a condition, a cascade of dependent fields), ~50 lines each.
+- The rules of `docs/agents/code-rules.md` «Ticket slicing»; they win over the seams above.
 - Each line of `plan.md` «Checks» lands in exactly one ticket, by its mark:
   - `new` / `extend existing` → the `Tests` of the development ticket whose edit it checks;
   - `e2e` → the part's E2E ticket;
@@ -221,4 +225,4 @@ The user ticks every case in the product. A failed case becomes a new ticket of 
   them as `Mode`, `no tests`, `Gates`, `Agent review`, `Manual check`.
 - English, wrapped at 120 characters. UI texts and button labels stay verbatim.
 
-_Last modified: 2026-11-06_
+_Last modified: 2026-11-11_

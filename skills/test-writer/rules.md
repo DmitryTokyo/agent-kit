@@ -26,8 +26,13 @@ Stop and report instead of continuing:
 
 1. List every scenario in scope, one line each, with the **break**: the production change that would turn it red.
    Scope is what the caller asked for — nothing beyond it.
-2. Per function under test, group the scenarios and apply **Parametrize** below.
-3. State which tests stay separate, which merge, and why: "Merged tests A, B, C into parametrize `test_X` over parameters [...]".
+2. **Filter.** Keep the scenarios that pass «Test observable behavior» and «A case goes red without its change» below.
+   Drop the rest: query count, prefetch, SQL shape, ORM or private-helper call patterns, a mock's call list for
+   something the caller cannot see, behaviour that is simply the default. One line per dropped scenario: what it was
+   and why it failed the filter. A scenario the caller asked for by name and that fails the filter is not dropped
+   silently: name it in the Step 6 report.
+3. Per function under test, group the kept scenarios and apply **Parametrize** below.
+4. State which tests stay separate, which merge, and why: "Merged tests A, B, C into parametrize `test_X` over parameters [...]".
 
 ### Step 2 — Write code
 
@@ -53,6 +58,7 @@ run: `testing.md` «Running».
 
 - Path to the test file
 - Each test tagged `[single]` or `[parametrize: N cases]`
+- "Dropped scenarios: none | <each one and why it failed the Step 1 filter>"
 - "Parametrize candidates I did NOT merge: none | <which and why>"
 - Result of `check`
 
@@ -63,10 +69,15 @@ run: `testing.md` «Running».
 ### General
 
 - **One test per behavior.** Variants of the same behavior differing only by input belong in parametrize.
+- **One happy-path test per function under test.** A second happy-path variant that differs only by input is a
+  parametrize row, not a test.
 - **Only what the caller asked for.** No "while I'm here" extras. Every assert must fail on its own: drop one that the function's return type or a neighbouring assert already guarantees (`isinstance` on a service result).
 - AAA (Arrange – Act – Assert), separated by blank lines. The Act result always goes into a variable, never inlined into `assert`. Name it by what it is when the value is a domain object (`cart = await upsert_cart(...)`, `order`, `product_view`); name it `result` only when the value has no domain name (a number, a bool, a tuple, a status). If the name is already taken by an Arrange object, rename the Arrange one (`existing_cart`), not the Act result.
 - **A test guards behaviour.** A scenario whose only break is reversing a deliberate decision (a constant, a text, a
   setting) is a change detector: test the behaviour that depends on the decision instead.
+- **A case goes red without its change.** Name the production line whose revert turns it red; a case with no such line
+  tests the default → drop it. A success status alone, while the collaborator that produces the effect is mocked, has
+  no such line.
 - **Expected values are literals or hand-checked fixtures**, written down by you, never computed by the code under test
   or its helpers.
 - **No logic in the test body** — no `if` or `for` driving Arrange or Assert.
@@ -76,7 +87,7 @@ run: `testing.md` «Running».
 - An error branch → the runner's raises check; several inputs raising the same error → one parametrize. Covering every error branch is not required — scope rules.
 - Mock only at the process boundary `testing.md` «Mocks» names. A mock feeds the code under test; the asserts check
   what that code returned or sent across the boundary.
-- Test observable behavior, not implementation details. Refactoring without behavior changes should normally not require changing the test. Query counts, prefetch, SQL shape and ORM call patterns are implementation: test them only when the caller asks for exactly that.
+- **Test observable behavior**, not implementation details: what a user or the calling code can see. Refactoring without behavior changes should normally not require changing the test. Query counts, prefetch, SQL shape and ORM call patterns are implementation: test them only when the caller asks for exactly that.
 
 ### Test naming
 
