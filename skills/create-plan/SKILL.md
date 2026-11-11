@@ -27,8 +27,13 @@ A task gets two documents with two readers:
 Lowercase task key, 3–5 word description. One folder per task; reuse it if it exists. The key comes from the
 conversation; no key → run `/{{p}}-create-task`, then use the key of the task it created.
 
-A task of an epic has a symlink to its folder in `{{work}}/epics/<epic-slug>/tasks/` (`/{{p}}-to-tasks`): find it with
-`find {{work}}/epics -path '*/tasks/<key>-<N>-*'`.
+A task of an epic is a row of its `roadmap.md`: find the epic with `grep -l '<KEY>-<N>' {{work}}/epics/*/roadmap.md`.
+Its folder is created here, when the task starts, and linked into the epic:
+
+```bash
+mkdir -p {{work}}/epics/<epic-slug>/tasks
+ln -s ../../../tasks/<key>-<N>-<slug> {{work}}/epics/<epic-slug>/tasks/<key>-<N>-<slug>
+```
 
 ## Sources
 
@@ -219,4 +224,4 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 A plan changed after approval: ask the user with the changed lines before editing `plan.md`, raise `Version`, copy
 the new version to the tracker.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

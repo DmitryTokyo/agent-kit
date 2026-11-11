@@ -79,8 +79,13 @@ Newest first.
 ### Unreleased — the guide replaces the installer
 - **Removed:** `bootstrap`, `sync`, `scripts/render.sh`. Skills are taken and updated by hand or by an agent reading
   this file («Take skills into a project», «Update a project»).
-- **To take:** nothing to apply; a project installed by `bootstrap` keeps working, its `.agents/agent-kit.json` gives
-  the commit to update from.
+- **Epic task folders:** `to-tasks` no longer creates a folder for every task of an epic; `create-plan` creates it and
+  its epic link when the task starts, so `{{work}}/tasks/` shows only the work in progress. `close-merge-request`
+  finishes an epic only when every task of `roadmap.md` is in `done/`. `contract/issue-tracker.md` «Working files»
+  says the same.
+- **To take:** for the folder fix, `to-tasks`, `create-plan` and `close-merge-request` together. The installer
+  removal needs nothing; a project installed by `bootstrap` keeps working, its `.agents/agent-kit.json` gives the
+  commit to update from.
 
 ### v0.0.5 — workflow 3: research, design, plan
 - **New skills:** `research`, `brainstorm`, `create-design`, `to-tasks`.

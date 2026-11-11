@@ -1,6 +1,6 @@
 ---
 name: {{p}}-to-tasks
-description: Split an epic's approved design ({{work}}/epics/<slug>/design.md) into a roadmap.md of tracker tasks with their order, then create the epic and its tasks in the tracker and link each task folder into the epic.
+description: Split an epic's approved design ({{work}}/epics/<slug>/design.md) into a roadmap.md of tracker tasks with their order, then create the epic and its tasks in the tracker.
 disable-model-invocation: true
 ---
 
@@ -80,22 +80,17 @@ Version: <N>
    create it with the epic's Problem / Goal / Links and the design summary in 3–5 lines.
 2. Each task through `/{{p}}-create-task`, inside the epic, Product Value and Work Type confirmed once for all of them;
    «blocks» relations from the `Blocked by` column. Write each key into the table.
-3. Per task: create its folder `{{work}}/tasks/<key>-N-<slug>/` and link it into the epic:
-
-   ```bash
-   mkdir -p {{work}}/epics/<epic-slug>/tasks
-   ln -s ../../../tasks/<key>-N-<slug> {{work}}/epics/<epic-slug>/tasks/<key>-N-<slug>
-   ```
-
+3. No task folders: `{{work}}/tasks/` holds only the work in progress, and the roadmap table is the queue. A task's
+   folder and its link into the epic appear when `/{{p}}-create-plan` starts it.
 4. Copy `research.md`, `design.md` and `roadmap.md` to the tracker (`docs/agents/issue-tracker.md` «Document
    copies»): copies that waited for the epic go now.
 
 ## 6. Report
 
-The epic link, each task with its key, link and blockers, the folders linked, and the next step:
+The epic link, each task with its key, link and blockers, and the next step:
 `/{{p}}-create-plan <KEY>-N` for the first task with no blocker.
 
-A roadmap changed after approval: ask the user with the changed lines, raise `Version`, update the tracker and the
-links, copy the new version.
+A roadmap changed after approval: ask the user with the changed lines, raise `Version`, update the tracker, copy the
+new version.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

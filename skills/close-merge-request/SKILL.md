@@ -34,10 +34,11 @@ command line or the chat.
    ln -sfn ../../../done/<folder> {{work}}/epics/<epic-slug>/tasks/<folder>
    ```
 
-   Every link in `{{work}}/epics/<epic-slug>/tasks/` now points into `done/` → the epic is finished: move it to
+   Every task of the epic's `roadmap.md` has a link in `{{work}}/epics/<epic-slug>/tasks/` and every link points into
+   `done/` → the epic is finished: move it to
    `{{work}}/done/epics/<epic-slug>/`, point each of its links at `../../../<folder>` (`done/` from there), and move the
    epic in the tracker to its finished state.
 9. Report per task: the key, the pull request links, what was done, the epic when one moved or finished. List
    skipped branches with the reason.
 
-_Last modified: 2026-11-08_
+_Last modified: 2026-11-11_

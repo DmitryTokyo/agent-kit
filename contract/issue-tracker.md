@@ -28,8 +28,9 @@ is the batches and their progress), `reviews/` (the agent review rounds, per bat
 (the pull request of each branch). A finished task's folder moves to `{{work}}/done/`.
 
 An epic's working files live in `{{work}}/epics/<epic-slug>/`: `research.md`, `design.md`, `roadmap.md` (its tasks and
-their order) and `tasks/` — a symlink per task to its folder in `{{work}}/tasks/` or `{{work}}/done/`. A finished
-epic moves to `{{work}}/done/epics/`.
+their order) and `tasks/` — a symlink per started task to its folder in `{{work}}/tasks/` or `{{work}}/done/`. A task
+gets its folder when its work starts, so `{{work}}/tasks/` holds only the work in progress. A finished epic moves to
+`{{work}}/done/epics/`.
 
 The local files are the working copy: skills read and edit only them.
 
