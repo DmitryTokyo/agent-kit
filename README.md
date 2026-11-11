@@ -15,16 +15,16 @@ The kit is for you if you:
 
 It isn't needed for one-off edits and questions: the process only gets in the way there.
 
-**To hand the kit to an agent:** give it [INDEX.md](INDEX.md). It is a map of the skills — what each one does, which
-belong together, what each release changed — and is enough for an agent to understand the repository without reading
-every skill, or to work out what to pull in after a new release.
+**Start with [INDEX.md](INDEX.md).** It is the guide: which skills to take for which project, which work alone, which
+go as a set, how to take them and what each release changed. Give it to the agent with what you are building, and it
+picks the skills.
 
 ## Tested with
 
 - Harnesses: Claude Code, OpenCode, Codex.
 - Models: Claude, DeepSeek.
 
-Another harness works once `docs/agents/harness.md` has a section for it: `bootstrap` writes one from your answers.
+Another harness works once `docs/agents/harness.md` has a section for it: copy one and map it to the new harness.
 
 ## A starting point
 
@@ -32,8 +32,8 @@ The kit is a starting point, not a finished set. After the install the skills ar
 `.agents/skills/`, and they are worth tailoring to the project: its stack, its tracker, your habits and the mistakes
 the agent makes right here. Edit them in the project.
 
-Drifting away from the kit is fine. `sync` asks about each edit whether it is shared or for this project only, and an
-edit kept for this project survives updates from the kit. Send to the kit only what would help any project.
+Drifting away from the kit is fine. Send to the kit only what would help any project: change the skill here and
+update `INDEX.md` in the same commit.
 
 ## Install
 
@@ -43,30 +43,14 @@ edit kept for this project survives updates from the kit. Send to the kit only w
    git clone git@github.com:DmitryTokyo/agent-kit.git ~/dev/personal/agent-kit
    ```
 
-2. Commit everything in the project: the install lands as one diff.
-3. Open your agent in the project root and say:
+2. Open your agent in the project root and say what you are building:
 
-   > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it.
+   > Read `~/dev/personal/agent-kit/INDEX.md`. I'm building a landing page. Pick the skills and take them into this
+   > project, prefix ag.
 
-   Know some answers already? Add them to the same line, and the agent asks only about the rest:
-
-   > Read `~/dev/personal/agent-kit/skills/bootstrap/SKILL.md` and follow it. Prefix ag, key AG, GitHub, Linear,
-   > folder .ai.
-
-4. The agent reads the project and sends its questions in one message, each with a suggested answer. Two answers are
-   yours alone: the skill prefix (`ag` → the skills are called `/ag-develop`, `/ag-orchestrate`) and the task key in
-   the tracker (`AG`).
-5. The agent shows which files it will create and change. After your yes it installs the skills and sets up the
-   project.
-6. Finish by hand:
-   - turn on the commit message check:
-
-     ```bash
-     pre-commit install --hook-type commit-msg
-     ```
-
-   - fill in what the agent couldn't fill itself — it lists those places in its report;
-   - review `git diff` and commit.
+3. The agent proposes the skills. After your yes it copies them, fills only the `docs/agents/` files they read and asks
+   about what the project's files don't show. A small project gets a question or two, a large one a long interview.
+4. Review `git diff` and commit.
 
 ## How to use it
 
@@ -120,9 +104,9 @@ Prepare a commit.
 Ask me about this plan one question at a time.
 ```
 
-**Exchange edits with the kit** — send your skill edits to the kit and get what's new in the kit:
+**Update from the kit:**
 
-> Read `~/dev/personal/agent-kit/skills/sync/SKILL.md` and follow it.
+> Read `~/dev/personal/agent-kit/INDEX.md` and update this project's skills from the kit.
 
 ### All skills
 
@@ -151,7 +135,7 @@ Ask me about this plan one question at a time.
 ## What you get
 
 - **One process in every project.** The skills are shared, and everything about a given project — commands, tracker,
-  code rules — lives in its `docs/agents/`. A new project gets the same process after one `bootstrap`.
+  code rules — lives in its `docs/agents/`. A new project takes the skills it needs from `INDEX.md`.
 - **One short plan.** You read one screen before code — result, criteria, boundaries, checks — and approve it once.
 - **Small steps.** A ticket is one commit, a part is one pull request. The ticket map shows what is done and what is
   left.
@@ -159,8 +143,8 @@ Ask me about this plan one question at a time.
   covers. You review only when the plan says so, and only the places it names.
 - **A protected main branch.** The agent never pushes to it — each harness's permission file denies it. Its commits
   are signed by its harness (`Claude`, `OpenCode`, …), yours by you, so the history shows who changed what.
-- **Edits aren't lost.** Fix a skill in one project — `sync` offers to send the edit to the kit, and the other
-  projects get it.
+- **Edits aren't lost.** Fix a skill in one project, carry the fix into the kit, and the other projects get it on
+  their next update.
 
 ## How it works
 
@@ -171,11 +155,10 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 19 skills plus `bootstrap` and `sync` | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); `bootstrap` and `sync` are not copied |
+| `skills/` | 19 skills | `.agents/skills/<prefix>-*` (`.claude/skills` links to it) |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, Codex rules, pre-commit hooks | the project root |
-| `scripts/render.sh` | the kit at a given commit with the prefix filled in | used by `bootstrap` and `sync` |
 | `examples/tg-sales-bot/` | the filled contract of a live project | a sample to fill from |
 
 ### The contract: docs/agents/
@@ -194,7 +177,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 ### Modules
 
-A module is an optional part of the kit. Modules are off by default; `bootstrap` asks about each:
+A module is an optional part of the kit, off unless you take it:
 
 - `business-questions` — business question themes in the tracker and the rule «a task isn't closed until the answers
   are in». Not needed for personal projects.
@@ -202,17 +185,9 @@ A module is an optional part of the kit. Modules are off by default; `bootstrap`
 
 ### A stack without a pack
 
-Packs exist for Python and Django. For another stack (FastAPI, Go) `bootstrap` fills `code-rules.md`, `hygiene.md`
-and `testing.md` from your answers and the code. Once the rules settle, ask `sync` to turn them into a pack — the
-next project on that stack gets them right away.
-
-### How sync works
-
-- **Project → kit.** `sync` shows every edit to skills and packs since the last sync. For each you answer `в ядро`
-  (send to the kit), `оставить` (keep in this project only) or `откатить` (revert). Edits answered `в ядро` become a
-  commit in `agent-kit`; pushed after your yes.
-- **Kit → project.** Kit changes merge three-way on top of your local edits; `sync` shows conflicts and asks.
-  Changes to `contract/` and `repo/` arrive as proposals.
+Packs exist for Python and Django. For another stack (FastAPI, Go) the agent fills `code-rules.md`, `hygiene.md`
+and `testing.md` from your answers and the code. Once the rules settle, move the stack's part into
+`packs/<stack>/` — the next project on that stack gets it right away.
 
 A project fact — a path, a command, a tracker name — never goes into the kit: it belongs in `docs/agents/`.
 
@@ -224,7 +199,7 @@ A project fact — a path, a command, a tracker name — never goes into the kit
 | `{{work}}` | skills, contract, repo | the working folder of task files, `.ai` by default |
 | `{{KEY}}`, `{{key}}`, `{{main}}` | repo | the task key, its lowercase form, the main branch |
 | `<KEY>`, `<key>` | skills | stays: the skill reads the key from `docs/agents/issue-tracker.md` |
-| `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | the pack's text; `sync` finds it in the project by the markers |
+| `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | the pack's text, marked so an update finds it in the project |
 | `<!-- module:NAME -->…<!-- /module:NAME -->` | contract, repo | kept or cut out along with the module |
 
 In `examples/`, an empty `<!-- pack:NAME -->` pair stands for the pack's text.

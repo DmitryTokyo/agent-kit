@@ -1,8 +1,7 @@
 # Code rules
 
 How code is written in this project. `/{{p}}-develop`, the TDD subagents and `/{{p}}-code-review` read this file in
-full. Pack sections sit between `<!-- pack:NAME -->` markers and come from `agent-kit/packs/`; edit them there and
-pull through `sync`. Everything else is the project's own.
+full. Pack sections sit between `<!-- pack:NAME -->` markers and come from `agent-kit/packs/`; edit them there and bring them over on update. Everything else is the project's own.
 
 ## Layers
 
