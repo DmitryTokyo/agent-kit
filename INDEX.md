@@ -3,7 +3,7 @@
 A set of agent skills that take a task from an idea to a merged pull request. Take only the skills a project needs:
 one skill for a small script, the whole chain for a large product.
 
-**Current version: v0.0.6** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
+**Current version: v0.0.7** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
 
 ## Pick by project
 
@@ -96,6 +96,26 @@ A repository edit good for every project goes back to the kit: change `skills/<n
 ## Releases
 
 Newest first.
+
+### v0.0.7 — shared skills: one copy, no prefix, repository rules in `docs/agents/skills/`
+- **Breaking, install:** skills are no longer copied into a project. Link them once per machine into
+  `~/.claude/skills/` and `~/.agents/skills/` («Install skills»); Codex and OpenCode read `~/.agents/skills/`. An edit
+  in the kit reaches every repository at once. `.agents/agent-kit.json` shrinks to `{"commit": "<kit commit>"}`, the
+  commit the contract was filled from.
+- **No prefix:** `{{p}}` and `{{work}}` are gone from skills, contract and repo files. Skills are `/<name>`, the work
+  folder is `.ai`. Skills read each other's files through `~/.agents/skills/<name>/`.
+- **Renamed:** `code-review` → `review-diff` (Claude Code has a built-in `/code-review`).
+- **Repository rules:** every skill reads `docs/agents/skills/<name>.md` first, if it exists; its rules win over the
+  skill's text, and the skill says which file it read. A project step that works differently is the project's own
+  skill, named unlike any shared one, and a line in `CONTRIBUTING.md` «Feature workflow».
+- **No silent skips:** a skill that is not found stops the work and is reported (`contract/harness.md` «Actions»). The
+  chain is read where it is needed: `to-tickets` copies the gates into the task's ticket map, later steps hand over
+  along it.
+- **Harness:** `contract/harness.md` OpenCode section filled (`@<name>`, `skill` tool, agent definitions in
+  `.opencode/agents/`, `external_directory`); Codex reads `~/.agents/skills/`. Checked against Codex and OpenCode V2.
+- **To update a project:** delete its copies in `.agents/skills/` and `.claude/skills`, replace `as-`-style prefixes in
+  `CONTRIBUTING.md` and `docs/agents/*`, move local skill edits into `docs/agents/skills/<name>.md`, sync
+  `contract/harness.md`, set `commit`. aura-pacific-shop (PR #9) is the example.
 
 ### v0.0.6 — the guide replaces the installer, integration tests, a shorter PR description
 - **Removed:** `bootstrap`, `sync`, `scripts/render.sh`. Skills are taken and updated by hand or by an agent reading
