@@ -1,9 +1,11 @@
 ---
-name: {{p}}-hygiene-review
+name: hygiene-review
 description: Scan changed or new files for hygiene issues the linters and the type checker miss, by the checklist in docs/agents/hygiene.md. Use after implementing a change, on the changed files.
 ---
 
 # Hygiene review
+
+Repository rules: read `docs/agents/skills/hygiene-review.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 Spawn an explorer (`docs/agents/harness.md` «Roles») to scan the changed/new files against `docs/agents/hygiene.md`.
 Report findings; fixing needs a judgement call, so ask before touching.

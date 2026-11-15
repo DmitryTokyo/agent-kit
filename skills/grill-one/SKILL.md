@@ -1,9 +1,11 @@
 ---
-name: {{p}}-grill-one
-description: Interview the user one question at a time to find gaps and contradictions in a plan, draft or idea. Use when the user asks for questions one by one or invokes /{{p}}-grill-one.
+name: grill-one
+description: Interview the user one question at a time to find gaps and contradictions in a plan, draft or idea. Use when the user asks for questions one by one or invokes /grill-one.
 ---
 
 # Grill one
+
+Repository rules: read `docs/agents/skills/grill-one.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 An **interview**: one question per message, then wait. The subject is the plan, draft or idea the user named; the
 interview ends with a text the user and you both agree describes it.

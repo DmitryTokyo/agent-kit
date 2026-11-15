@@ -51,8 +51,10 @@ gives the author and trailer per harness. Never strip them.
 - tiers: strong — `opus`, standard — `sonnet`, cheap — `haiku`; the main agent switches with `/model`.
 - ask the user: the plain message. `AskUserQuestion` hides the text printed before it in the desktop app, so it never
   carries content.
-- invoke a skill: `/<name>`, or the `Skill` tool. Skills live in `.agents/skills/`, read through the
-  `.claude/skills` symlink.
+- invoke a skill: `/<name>`, or the `Skill` tool. Shared skills are linked into `~/.claude/skills/` and
+  `~/.agents/skills/`; a project's own skills live in `.agents/skills/`, read through the `.claude/skills` symlink. A
+  skill that is not found stops the work: say which one is missing and where it was expected; never skip the step or
+  retell the skill from memory.
 - agent definitions: `.claude/agents` → symlink to `../.agents/agents`; dispatch one with
   `Agent(subagent_type="<name>")`.
 - identity: `git -c user.name=Claude -c user.email=noreply@anthropic.com commit -m "<message>" -m "Co-Authored-By:
@@ -80,7 +82,7 @@ gives the author and trailer per harness. Never strip them.
 <!-- harness:codex -->
 ## Codex
 
-Codex reads `AGENTS.md` and the skills in `.agents/skills/` natively.
+Codex reads `AGENTS.md` natively and the skills in `~/.agents/skills/` (shared) and `.agents/skills/` (the project's).
 
 - worker: `spawn_agent` with the task prompt and the tier's model.
 - explorer: `spawn_agent` with a read-only task.

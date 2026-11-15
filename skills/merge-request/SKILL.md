@@ -1,9 +1,11 @@
 ---
-name: {{p}}-merge-request
-description: "Push the task or part branch and open its pull request, or work through the developer's review comments on it. Use when the user asks to push, open a PR or MR, or handle their review comments. A merged pull request goes to /{{p}}-close-merge-request."
+name: merge-request
+description: "Push the task or part branch and open its pull request, or work through the developer's review comments on it. Use when the user asks to push, open a PR or MR, or handle their review comments. A merged pull request goes to /close-merge-request."
 ---
 
 # Merge request
+
+Repository rules: read `docs/agents/skills/merge-request.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -18,7 +20,7 @@ reaches the command line or the chat.
    - the current branch is a task or part branch of `docs/agents/git.md` «Branches», never the main branch;
    - `git status --porcelain` is empty;
    - `git log --oneline <main>..HEAD` lists commits.
-2. A batch of the ticket map → its `Agent review` gate is ticked; unticked → stop and suggest `/{{p}}-review-diff`.
+2. A batch of the ticket map → its `Agent review` gate is ticked; unticked → stop and suggest `/review-diff`.
 3. Push only what the remote does not have yet:
    - `git rev-parse --abbrev-ref @{upstream}` fails → `git push -u origin <branch>`;
    - it resolves and `git log --oneline @{upstream}..HEAD` lists commits → `git push`;
@@ -27,7 +29,7 @@ reaches the command line or the chat.
 5. Find the open pull request of the branch. One exists → update its description. None → open it into the main branch
    with the title of `git.md` «Pull requests».
 6. Record it in the task folder's `pr.md`, one line per branch; this branch's line is replaced, the others stay.
-   `/{{p}}-close-merge-request` finds the pull request by it:
+   `/close-merge-request` finds the pull request by it:
 
    ```markdown
    - <branch>: <link> (<id>)
@@ -46,9 +48,9 @@ reaches the command line or the chat.
    - a change that alters approved behaviour, a test's expected value or the plan's Boundaries → an objection: the
      argument and the place it rests on (the behaviour spec, an ADR, `CONTEXT.md`, the plan); the developer decides;
    - beyond a review round (about 30 lines, another screen or another task) → a new ticket per
-     `.agents/skills/{{p}}-to-tickets/SKILL.md` «Ticket rules», or a tracker task when it lies outside this task.
+     `~/.agents/skills/to-tickets/SKILL.md` «Ticket rules», or a tracker task when it lies outside this task.
 4. Run `check`; green → commit the fixes of the round as one commit under the agent identity (`docs/agents/git.md`),
-   with a message in the format of `/{{p}}-git-commit-message` step 4. The user started this skill: no confirmation
+   with a message in the format of `/git-commit-message` step 4. The user started this skill: no confirmation
    question. Note the sha of `@{upstream}`, `git push`, then refresh the description by
    [description.md](description.md) «Refresh after a push».
 5. Reply in each worked thread: `Fixed in <short sha>`, the answer, the objection, or the new ticket. The developer

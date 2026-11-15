@@ -1,9 +1,11 @@
 ---
-name: {{p}}-tdd-develop
-description: Implement one ticket from {{work}}/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented.
+name: tdd-develop
+description: Implement one ticket from .ai/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented.
 ---
 
 # TDD develop
+
+Repository rules: read `docs/agents/skills/tdd-develop.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -11,27 +13,27 @@ Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agent
 
 ## Input
 
-`<KEY>-N <ID>` — one ticket, ID as `NN` or `<part>-NN`. Task folder: `{{work}}/tasks/<key>-N-*/` (case-insensitive). Ticket
+`<KEY>-N <ID>` — one ticket, ID as `NN` or `<part>-NN`. Task folder: `.ai/tasks/<key>-N-*/` (case-insensitive). Ticket
 files: `tickets/<ID>-*.md`, with parts `tickets/<BB>-<ID>-*.md` (`core-01` → `01-core-01-*.md`).
 
-- `<KEY>-N` without an ID → stop, suggest `/{{p}}-orchestrate <KEY>-N`.
-- No `tickets/` folder or no ticket file for the ID → stop, tell the user this skill works only from a ticket, suggest `/{{p}}-develop`.
+- `<KEY>-N` without an ID → stop, suggest `/orchestrate <KEY>-N`.
+- No `tickets/` folder or no ticket file for the ID → stop, tell the user this skill works only from a ticket, suggest `/develop`.
 - A check ticket → stop: it is manual.
-- No `**Mode:**` or `Mode: no tests` → stop, suggest `/{{p}}-develop` with the ticket path. Never decide the mode here. Older tickets say `Режим` and `без тестов`: the same fields.
-- Not under `/{{p}}-orchestrate` → get onto the branch of the ticket's map section («Branch») per `docs/agents/git.md` «Branches».
+- No `**Mode:**` or `Mode: no tests` → stop, suggest `/develop` with the ticket path. Never decide the mode here. Older tickets say `Режим` and `без тестов`: the same fields.
+- Not under `/orchestrate` → get onto the branch of the ticket's map section («Branch») per `docs/agents/git.md` «Branches».
 
 ## Role
 
 You are the dispatcher, on the strong tier (`docs/agents/harness.md` «Tiers»): you hold the queue, the user's answers and the subagents' reports. Running on another tier → stop and tell the user to switch.
 
-Your context stays thin, so a whole `/{{p}}-orchestrate` batch fits one session:
+Your context stays thin, so a whole `/orchestrate` batch fits one session:
 
 - From a ticket file you read only the `**Mode:**`, `**Blocked by:**` and `**Status:**` lines and the title; the map
   you read whole.
 - Code, diffs, tests, `plan.md`, `agent.md` and the skill files the subagents follow stay unread. Subagents read them.
 - The command output you read yourself is `check`.
 
-Every subagent is a worker (`docs/agents/harness.md` «Roles») on the tier named below, with the subagent prompt of `harness.md` for `.agents/skills/{{p}}-tdd-develop/<file>` and the ticket path.
+Every subagent is a worker (`docs/agents/harness.md` «Roles») on the tier named below, with the subagent prompt of `harness.md` for `~/.agents/skills/tdd-develop/<file>` and the ticket path.
 
 ## TDD ticket
 
@@ -66,17 +68,17 @@ Nothing is staged, committed or pushed: the user reviews the worktree with `git 
 
 ## Last ticket
 
-The last ticket of the task closes the task's work, under `/{{p}}-orchestrate` too:
+The last ticket of the task closes the task's work, under `/orchestrate` too:
 
 1. A worker (`docs/agents/harness.md` «Roles»), standard tier, reviews the whole branch diff
    (`git diff <main>...HEAD` plus the worktree) against `plan.md` «Criteria» and ticks each criterion it confirms. Every
    unticked criterion goes into «Output» as a deviation: it goes to the pull request.
 2. The task folder has `integration.md` → a worker, standard tier, with the subagent prompt of `harness.md` for
-   `.agents/skills/{{p}}-integration-test/SKILL.md` and the `integration.md` path. Its report goes into «Output».
+   `~/.agents/skills/integration-test/SKILL.md` and the `integration.md` path. Its report goes into «Output».
 
 ## Output
 
-Three lines: the commit with its line count (code, tests) under `/{{p}}-orchestrate`, otherwise «not committed», the
+Three lines: the commit with its line count (code, tests) under `/orchestrate`, otherwise «not committed», the
 departures from the ticket or `plan.md` with their reason (or «none»), the next unticked ticket of the map.
 
 _Last modified: 2026-11-11_

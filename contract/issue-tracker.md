@@ -21,16 +21,16 @@
 
 ## Working files
 
-`{{work}}/` is gitignored: edit and move files in it freely. A task's working files live in
-`{{work}}/tasks/<key>-N-<slug>/`: `research.md`, `design.md` (workflow 3, with large diagrams in `design/`), `plan.md`
+`.ai/` is gitignored: edit and move files in it freely. A task's working files live in
+`.ai/tasks/<key>-N-<slug>/`: `research.md`, `design.md` (workflow 3, with large diagrams in `design/`), `plan.md`
 (the developer plan), `agent.md` (the agent instruction), `notes.md`, `tickets/` (a ticket is one commit, `00-map.md`
 is the batches and their progress), `reviews/` (the agent review rounds, per batch or for the whole task), `pr.md`
-(the pull request of each branch). A finished task's folder moves to `{{work}}/done/`.
+(the pull request of each branch). A finished task's folder moves to `.ai/done/`.
 
-An epic's working files live in `{{work}}/epics/<epic-slug>/`: `research.md`, `design.md`, `roadmap.md` (its tasks and
-their order) and `tasks/` — a symlink per started task to its folder in `{{work}}/tasks/` or `{{work}}/done/`. A task
-gets its folder when its work starts, so `{{work}}/tasks/` holds only the work in progress. A finished epic moves to
-`{{work}}/done/epics/`.
+An epic's working files live in `.ai/epics/<epic-slug>/`: `research.md`, `design.md`, `roadmap.md` (its tasks and
+their order) and `tasks/` — a symlink per started task to its folder in `.ai/tasks/` or `.ai/done/`. A task
+gets its folder when its work starts, so `.ai/tasks/` holds only the work in progress. A finished epic moves to
+`.ai/done/epics/`.
 
 The local files are the working copy: skills read and edit only them.
 
@@ -47,22 +47,22 @@ When a skill says "copy the document to the tracker": post a new entry there —
 shows every version. The entry is:
 
 ```markdown
-**<file name> v<Version>** — copy of `{{work}}/<path>`; edited locally, not here.
+**<file name> v<Version>** — copy of `.ai/<path>`; edited locally, not here.
 Changed: <one line: what this version changed; «first version» for v1>
 
 <the document in full>
 ```
 
 `research.md`, `design.md`, `plan.md` and `roadmap.md` are copied; `agent.md`, `notes.md`, tickets and reviews are
-not. An epic not yet created in the tracker → its copies wait for `/{{p}}-to-tasks`. «none» → skip the step.
+not. An epic not yet created in the tracker → its copies wait for `/to-tasks`. «none» → skip the step.
 
 ## When a skill says "publish to the tracker"
 
-Create an issue through `/{{p}}-create-task`.
+Create an issue through `/create-task`.
 
 ## When a skill says "load the ticket"
 
-Read the issue by its `<KEY>-N` key; commit-sized tickets come from `{{work}}/tasks/<key>-N-*/tickets/`.
+Read the issue by its `<KEY>-N` key; commit-sized tickets come from `.ai/tasks/<key>-N-*/tickets/`.
 
 <!-- module:business-questions -->
 ## Business questions
@@ -79,5 +79,5 @@ Business questions live in the tracker: <!-- fill: project and label, e.g. proje
   behaviour spec, epics and tasks.
 - A question that comes up in conversation goes into its theme right away.
 
-The card format, statuses and steps are in `/{{p}}-business-questions`.
+The card format, statuses and steps are in `/business-questions`.
 <!-- /module:business-questions -->

@@ -3,7 +3,7 @@
 You review the changed test files of a diff and report every assert that pins implementation instead of observable
 behaviour, and every new test that stays green without the change. Report only: change no file, spawn nothing.
 
-Your prompt carries the test file list and a diff base. The general test rules: `.agents/skills/{{p}}-test-writer/rules.md`
+Your prompt carries the test file list and a diff base. The general test rules: `~/.agents/skills/test-writer/rules.md`
 «Test observable behavior»; the project's process boundary: `docs/agents/testing.md` «Mocks».
 
 ## Steps

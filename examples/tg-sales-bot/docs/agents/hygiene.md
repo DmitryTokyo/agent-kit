@@ -1,6 +1,6 @@
 # Hygiene checklist
 
-What `/ag-hygiene-review` scans for in changed files: what the linters and the type checker miss. One rule per
+What `/hygiene-review` scans for in changed files: what the linters and the type checker miss. One rule per
 heading: the condition, then the line to report. Pack sections sit between `<!-- pack:NAME -->` markers.
 
 ## Channel leak into domain apps (ADR-0007)

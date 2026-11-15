@@ -28,11 +28,11 @@ review rounds, per batch or for the whole task).
 
 ## When a skill says "publish to the tracker"
 
-Create an issue through `/ag-create-task`.
+Create an issue through `/create-task`.
 
 ## When a skill says "load the ticket"
 
-Read the issue by its `AG-N` key; commit-sized tickets come from `.ai/tasks/ag-N-*/tickets/`.
+Read the issue by its `AG-N` key; commit-sized tickets come from `.ai/tasks/N-*/tickets/`.
 
 <!-- module:business-questions -->
 ## Business questions
@@ -49,5 +49,5 @@ business («Упаковка», «Корзина», «Доставка»); a que
   behaviour spec, epics and tasks.
 - A question that comes up in conversation goes into its theme right away.
 
-The card format, statuses and steps are in `/ag-business-questions`.
+The card format, statuses and steps are in `/business-questions`.
 <!-- /module:business-questions -->

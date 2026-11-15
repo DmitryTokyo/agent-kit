@@ -1,9 +1,11 @@
 ---
-name: {{p}}-create-design
-description: Write design.md for a workflow 3 task or an epic from its research.md — architecture, behaviour, contracts, interactions, boundaries and risks, with diagrams — and get the developer's approval before any plan. Use when the user asks for a design or architecture, or when /{{p}}-research hands over a workflow 3 task.
+name: create-design
+description: Write design.md for a workflow 3 task or an epic from its research.md — architecture, behaviour, contracts, interactions, boundaries and risks, with diagrams — and get the developer's approval before any plan. Use when the user asks for a design or architecture, or when /research hands over a workflow 3 task.
 ---
 
 # Create design
+
+Repository rules: read `docs/agents/skills/create-design.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -13,14 +15,14 @@ names the checks.
 
 ## Where it lives
 
-`design.md` next to `research.md`: the task folder `{{work}}/tasks/<key>-N-*/` or the epic folder
-`{{work}}/epics/<epic-slug>/`. A large diagram goes to `design/<name>.md` beside it, linked from the document. No
-`research.md` → stop and hand over to `/{{p}}-research`.
+`design.md` next to `research.md`: the task folder `.ai/tasks/<key>-N-*/` or the epic folder
+`.ai/epics/<epic-slug>/`. A large diagram goes to `design/<name>.md` beside it, linked from the document. No
+`research.md` → stop and hand over to `/research`.
 
 ## Sources
 
 - `research.md`: its requirements, findings and open questions are the input. A fact the design needs and research
-  lacks → read the code for it (`/{{p}}-recon`) and add it to `research.md` «Key findings».
+  lacks → read the code for it (`/recon`) and add it to `research.md` «Key findings».
 - `docs/adr/` and `docs/agents/code-rules.md`: the decisions and layer rules the design keeps or explicitly changes.
 - The behaviour spec of `docs/agents/product.md`: behaviour the design changes is changed there before the code.
 
@@ -32,7 +34,7 @@ names the checks.
    reason. One sensible way only → say so and why the others don't fit. Done when the developer picked one.
 2. **Draft** `design.md` in the format below, from research and the chosen approach. Every decision a builder would
    otherwise guess is in it, or listed in «Open questions».
-3. **Grill the draft.** Invoke `/{{p}}-grill-one` (`docs/agents/harness.md` «Actions») with the draft and
+3. **Grill the draft.** Invoke `/grill-one` (`docs/agents/harness.md` «Actions») with the draft and
    `research.md` as its subject: the concrete decisions — what happens to the old behaviour, which modules are reused,
    where new code plugs in, which of two conflicting sources wins. Its agreed text updates the draft. Done when
    grill-one ends with no gaps.
@@ -46,9 +48,9 @@ names the checks.
    Done when a run reports no question of the third kind.
 6. **Approve.** Ask the user with the summary section in full, the list of `(agent's call)` decisions and the path.
    Iterate until the developer approves. A significant open question that blocks the plan → back to
-   `/{{p}}-research` or the conversation, not into the plan.
+   `/research` or the conversation, not into the plan.
 7. Copy the document to the tracker (`docs/agents/issue-tracker.md` «Document copies»).
-8. Hand over the path and the next skill: a task → `/{{p}}-create-plan`; an epic → `/{{p}}-to-tasks`.
+8. Hand over the path and the next skill: a task → `/create-plan`; an epic → `/to-tasks`.
 
 A design changed after approval (the plan hit a stop condition, the architecture proved wrong): rewrite the affected
 sections, raise `Version`, ask the user with the changed lines, then copy the new version to the tracker.

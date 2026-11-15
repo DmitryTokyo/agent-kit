@@ -1,9 +1,11 @@
 ---
-name: {{p}}-create-plan
-description: Classify a tracker <KEY>-N task and write its plan into {{work}}/tasks/<key>-N-<slug>/ — plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, notes, or a hand-off for another agent or thread.
+name: create-plan
+description: Classify a tracker <KEY>-N task and write its plan into .ai/tasks/<key>-N-<slug>/ — plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, notes, or a hand-off for another agent or thread.
 ---
 
 # Create plan
+
+Repository rules: read `docs/agents/skills/create-plan.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -15,26 +17,26 @@ A task gets two documents with two readers:
   result, criteria, boundaries, checks, stop conditions, developer review.
 - `agent.md` — the **agent instruction**: where to look, what to change and how the checks become tests. It links the
   plan and never repeats it.
-- `integration.md` — the **integration test spec**, read only after the code is written (`/{{p}}-integration-test`).
+- `integration.md` — the **integration test spec**, read only after the code is written (`/integration-test`).
 
 ## Where it lives
 
 ```text
-{{work}}/tasks/<key>-<N>-<short-kebab-description>/plan.md
-{{work}}/tasks/<key>-<N>-<short-kebab-description>/agent.md
-{{work}}/tasks/<key>-<N>-<short-kebab-description>/integration.md
-{{work}}/tasks/<key>-<N>-<short-kebab-description>/notes.md
+.ai/tasks/<key>-<N>-<short-kebab-description>/plan.md
+.ai/tasks/<key>-<N>-<short-kebab-description>/agent.md
+.ai/tasks/<key>-<N>-<short-kebab-description>/integration.md
+.ai/tasks/<key>-<N>-<short-kebab-description>/notes.md
 ```
 
 Lowercase task key, 3–5 word description. One folder per task; reuse it if it exists. The key comes from the
-conversation; no key → run `/{{p}}-create-task`, then use the key of the task it created.
+conversation; no key → run `/create-task`, then use the key of the task it created.
 
-A task of an epic is a row of its `roadmap.md`: find the epic with `grep -l '<KEY>-<N>' {{work}}/epics/*/roadmap.md`.
+A task of an epic is a row of its `roadmap.md`: find the epic with `grep -l '<KEY>-<N>' .ai/epics/*/roadmap.md`.
 Its folder is created here, when the task starts, and linked into the epic:
 
 ```bash
-mkdir -p {{work}}/epics/<epic-slug>/tasks
-ln -s ../../../tasks/<key>-<N>-<slug> {{work}}/epics/<epic-slug>/tasks/<key>-<N>-<slug>
+mkdir -p .ai/epics/<epic-slug>/tasks
+ln -s ../../../tasks/<key>-<N>-<slug> .ai/epics/<epic-slug>/tasks/<key>-<N>-<slug>
 ```
 
 ## Sources
@@ -49,7 +51,7 @@ ln -s ../../../tasks/<key>-<N>-<slug> {{work}}/epics/<epic-slug>/tasks/<key>-<N>
 - The behaviour spec — screens, buttons, texts. The plan matches it, never reinvents it.
 - `CONTEXT.md` — domain terms; use them, not synonyms.
 - `docs/adr/` — decisions constraining this area.
-- The code: run `/{{p}}-recon`, then read `docs/agents/code-rules.md` for its layer rules and function-vs-class test.
+- The code: run `/recon`, then read `docs/agents/code-rules.md` for its layer rules and function-vs-class test.
 
 Behaviour none of these settle is a product gap: ask the user. Never invent it.
 
@@ -59,7 +61,7 @@ Behaviour none of these settle is a product gap: ask the user. Never invent it.
    leaves in the stored state and `docs/agents/testing.md` «Integration tests» is not `none`.
 2. **Notes** — `notes.md` only.
 
-Research is `/{{p}}-research`, design is `/{{p}}-create-design`. Ask the user when the mode isn't clear from the
+Research is `/research`, design is `/create-design`. Ask the user when the mode isn't clear from the
 conversation.
 
 ## Classify first
@@ -68,8 +70,8 @@ The plan starts with the classifier: read `CONTRIBUTING.md` «Classify a task be
 code and fill the plan's classification and route from it. `research.md` already carries a route → start from it.
 
 - Workflow 1 → plan.
-- Workflow 2 with no `research.md` in the folder → hand over to `/{{p}}-research`; the plan waits for it.
-- Workflow 3 with no approved `design.md` → hand over to `/{{p}}-research`, or to `/{{p}}-create-design` when
+- Workflow 2 with no `research.md` in the folder → hand over to `/research`; the plan waits for it.
+- Workflow 3 with no approved `design.md` → hand over to `/research`, or to `/create-design` when
   `research.md` exists; the plan waits for the approved design.
 - A task of an epic → its route is chosen against the epic's design: usually workflow 1 or 2, workflow 3 when the task
   needs decisions the design left open.
@@ -130,7 +132,7 @@ Delivery: <commits on the branch (~N lines) | tickets (~N lines)>
 - **Criteria** and **Boundaries** are the task's acceptance criteria and scope; the tracker task holds only Problem,
   Goal and Links. A criterion is checkable against the diff; review ticks it.
 - **Checks** are the only place tests are decided: one line per consequence the change can break. A test line names
-  observable behaviour, never a query count or a private helper (`.agents/skills/{{p}}-test-writer/rules.md` «Test
+  observable behaviour, never a query count or a private helper (`~/.agents/skills/test-writer/rules.md` «Test
   observable behavior», `docs/agents/testing.md`), and the change that turns it red; a result that already held
   before the change is `test: none — default`. `e2e` — the E2E actor of `docs/agents/product.md` can play it;
   `manual` — only a manual check shows it (`docs/agents/product.md` «Checks»). Development and tickets take tests from
@@ -139,14 +141,14 @@ Delivery: <commits on the branch (~N lines) | tickets (~N lines)>
   own document, the plan only orders the work and names the checks.
 - **Order** — workflow 3 only: the parts, what each delivers and what it waits for. `agent.md` «Parts» details the
   same parts and never reorders them. One part → omit.
-- **Stop conditions** — workflow 3 always has one: the approved design proves wrong → back to `/{{p}}-create-design`.
+- **Stop conditions** — workflow 3 always has one: the approved design proves wrong → back to `/create-design`.
 - **Checkpoints** — workflow 3 only, omit when there are none: a point mid-work where the developer takes part (look
   at data after a migration, try a flow on staging).
 - **One screen** — workflows 1 and 2. Workflow 3 is as long as its parts need, each item still per
   [writing-for-humans.md](writing-for-humans.md).
 - **Delivery**: workflow 1 → commits on the branch, no tickets. Workflows 2 and 3 → `tickets` when production lines of
   all edits exceed ~100 (`docs/agents/stack.md` «Line count»), else commits.
-- **Epic** — only for a task whose folder is linked into an epic; `/{{p}}-close-merge-request` reads it to move the
+- **Epic** — only for a task whose folder is linked into an epic; `/close-merge-request` reads it to move the
   link along with the folder.
 - **Version** starts at 1 and rises with each approval after the first.
 
@@ -201,7 +203,7 @@ A heading and a few sentences:
 
 ## integration.md
 
-English, terse. One integration test for the task's main path, written by `/{{p}}-integration-test`:
+English, terse. One integration test for the task's main path, written by `/integration-test`:
 
 - **Test** — the test name and file.
 - **Path** — the entry point and the request payload.
@@ -240,8 +242,8 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
    which files it would open, what it would change, which tests it would write, and every question the two files leave
    open. A question the sources settle → fix `agent.md` and run the check again; a question only the developer can
    answer → ask the user. Done when a run reports no open question.
-7. Hand over the file paths written and the next skill: `Delivery: tickets` → `/{{p}}-to-tickets`, commits →
-   `/{{p}}-develop`.
+7. Hand over the file paths written and the next skill: `Delivery: tickets` → `/to-tickets`, commits →
+   `/develop`.
 
 A plan changed after approval: ask the user with the changed lines before editing `plan.md`, raise `Version`, copy
 the new version to the tracker.

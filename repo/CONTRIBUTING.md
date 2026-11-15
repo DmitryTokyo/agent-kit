@@ -85,9 +85,9 @@ research, one design and a roadmap of tasks, each task with its own plan.
 
 ### Research and design
 
-Workflows 2 and 3 start with `/{{p}}-research`: enough confirmed information for the next stage, in `research.md`.
-In workflow 3 it opens with `/{{p}}-brainstorm` — an open interview about what the developer wants and why. Then
-`/{{p}}-create-design` agrees how the system should work: the developer picks an approach, `/{{p}}-grill-one` grills
+Workflows 2 and 3 start with `/research`: enough confirmed information for the next stage, in `research.md`.
+In workflow 3 it opens with `/brainstorm` — an open interview about what the developer wants and why. Then
+`/create-design` agrees how the system should work: the developer picks an approach, `/grill-one` grills
 the draft on the concrete decisions, and the developer approves `design.md` before any plan. Diagrams (ERD,
 Sequence, State Machine, Data Flow, C4) are Mermaid inside the documents, drawn when they help.
 
@@ -104,39 +104,39 @@ Problem, Goal and Links, plus its status and labels.
 
 ## Feature workflow
 
-A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `{{work}}/tasks/{{key}}-N-<slug>/`.
+A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working files live in `.ai/tasks/{{key}}-N-<slug>/`.
 
-1. `/{{p}}-create-task` — the task in the tracker: Problem, Goal, Links.
-2. `/{{p}}-create-plan` — classification and route («Classify a task before code»). Workflow 2 →
-   `/{{p}}-research` first; workflow 3 → `/{{p}}-research`, then `/{{p}}-create-design` («Research and design»).
+1. `/create-task` — the task in the tracker: Problem, Goal, Links.
+2. `/create-plan` — classification and route («Classify a task before code»). Workflow 2 →
+   `/research` first; workflow 3 → `/research`, then `/create-design` («Research and design»).
    Then the developer plan `plan.md` and the agent instruction `agent.md`. An epic: research and design for the whole
-   initiative, then `/{{p}}-to-tasks` writes the roadmap, creates the epic and its tasks, and each task comes back to
-   this step with the epic's design as its input. `Delivery: commits` → `/{{p}}-develop`;
+   initiative, then `/to-tasks` writes the roadmap, creates the epic and its tasks, and each task comes back to
+   this step with the epic's design as its input. `Delivery: commits` → `/develop`;
    `Delivery: tickets` → step 3.
-3. `/{{p}}-to-tickets` — tickets and their map `tickets/00-map.md`: one ticket is one commit of at most 100 lines of
+3. `/to-tickets` — tickets and their map `tickets/00-map.md`: one ticket is one commit of at most 100 lines of
    production code. Each line of the plan's `Checks` lands in one ticket and sets its mode. A section of the map is a
    batch: a part's development tickets, its E2E ticket and its gates — agent review always, developer review when the
    plan says so, manual check when the plan has `manual` checks. A part has at most 6 development tickets and is one
    pull request; a bigger part is split in two, each named after what it delivers (`checkout-map`, `pickup-step`), not
    numbered.
-4. `/{{p}}-orchestrate {{KEY}}-N` — the first batch of the map with an unticked ticket, once the batches it follows have every
+4. `/orchestrate {{KEY}}-N` — the first batch of the map with an unticked ticket, once the batches it follows have every
    gate ticked; each ticket goes through the skill of its `Mode`. The developer is asked only about deviations from the
    approved checks; subagents write the tests, the code and review them; each ticket is committed on its own and ticked
    in the map. The batch lives on its branch (see «Branches and pull requests»); nothing is pushed. One ticket alone:
-   `/{{p}}-tdd-develop {{KEY}}-N <ID>` or `/{{p}}-develop` with the ticket path — left uncommitted for the developer's
+   `/tdd-develop {{KEY}}-N <ID>` or `/develop` with the ticket path — left uncommitted for the developer's
    `git diff`.
-5. `/{{p}}-review-diff {{KEY}}-N <part>` (or with a fixed point when there is no map) in a new session, another model
-   welcome — the review file in `{{work}}/tasks/{{key}}-N-<slug>/reviews/`, see «Code review». The developer sets the
-   decisions, `/{{p}}-develop` with the review file fixes them and ticks `Agent review`.
-6. `/{{p}}-merge-request` — pushes the branch and opens the pull request: risk, review level, deviations,
+5. `/review-diff {{KEY}}-N <part>` (or with a fixed point when there is no map) in a new session, another model
+   welcome — the review file in `.ai/tasks/{{key}}-N-<slug>/reviews/`, see «Code review». The developer sets the
+   decisions, `/develop` with the review file fixes them and ticks `Agent review`.
+6. `/merge-request` — pushes the branch and opens the pull request: risk, review level, deviations,
    consequences → checks → results, criteria, the plan.
 7. The developer's review on the pull request, when the plan's `Developer review` is `yes` — comments on lines of the
-   diff; `/{{p}}-merge-request` works the chosen threads, commits the round as one commit, pushes and replies in each
+   diff; `/merge-request` works the chosen threads, commits the round as one commit, pushes and replies in each
    thread. The developer resolves threads and ticks the gate.
 8. The check ticket, when the part has one — every case clicked in the product. A failed case becomes a new ticket of
    the batch. The developer ticks the gate and merges; the next batch is free to start.
-9. After the merge, `/{{p}}-close-merge-request` links the pull request in the tracker task, moves it to Done and its
-   folder to `{{work}}/done/` once every part is merged, updates `{{main}}` and deletes the local branch.
+9. After the merge, `/close-merge-request` links the pull request in the tracker task, moves it to Done and its
+   folder to `.ai/done/` once every part is merged, updates `{{main}}` and deletes the local branch.
 
 ## Branches and pull requests
 
@@ -150,8 +150,8 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
 
 ## Code review
 
-The agent review (`/{{p}}-review-diff`) writes one English file per round,
-`{{work}}/tasks/{{key}}-N-<slug>/reviews/<BB>-<part>-review-NN.md` for a batch or `reviews/review-NN.md` otherwise. Each
+The agent review (`/review-diff`) writes one English file per round,
+`.ai/tasks/{{key}}-N-<slug>/reviews/<BB>-<part>-review-NN.md` for a batch or `reviews/review-NN.md` otherwise. Each
 finding has a stable ID (`SPEC-n` for the plan and the task, `STD-n` for the code rules) and is either:
 
 - `hard` — a defect, a broken requirement, boundary or documented rule; always fixed;

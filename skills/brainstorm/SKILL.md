@@ -1,13 +1,15 @@
 ---
-name: {{p}}-brainstorm
-description: Open interview that finds out what the developer wants and why — goals, non-goals, cases, likes and dislikes, questions they have not thought of — before anything is designed. Use when the user wants to brainstorm a task or an idea, or when /{{p}}-research needs the requirements.
+name: brainstorm
+description: Open interview that finds out what the developer wants and why — goals, non-goals, cases, likes and dislikes, questions they have not thought of — before anything is designed. Use when the user wants to brainstorm a task or an idea, or when /research needs the requirements.
 ---
 
 # Brainstorm
 
+Repository rules: read `docs/agents/skills/brainstorm.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
+
 An **interview** that widens the picture: what the developer wants, why, and what they have not thought of yet. It
 ends with an agreed text of the requirements; the caller writes it into its document. Narrowing the picture into
-decisions is `/{{p}}-grill-one`'s work, later, on the design.
+decisions is `/grill-one`'s work, later, on the design.
 
 ## Look before you ask
 

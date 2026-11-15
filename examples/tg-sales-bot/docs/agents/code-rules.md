@@ -1,6 +1,6 @@
 # Code rules
 
-How code is written in this project. `/ag-develop`, the TDD subagents and `/ag-review-diff` read this file in full.
+How code is written in this project. `/develop`, the TDD subagents and `/review-diff` read this file in full.
 Pack sections sit between `<!-- pack:NAME -->` markers and come from `agent-kit/packs/`; edit them there and bring them over on update. Everything else is the project's own.
 
 ## Layers

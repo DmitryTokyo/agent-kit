@@ -1,13 +1,15 @@
 ---
-name: {{p}}-create-task
+name: create-task
 description: Create tasks in the project's tracker (docs/agents/issue-tracker.md). Use when the user asks to create, add, file, or register a task, issue, bug, or work item, or to cut an epic into tasks.
 ---
 
 # Create tracker tasks
 
+Repository rules: read `docs/agents/skills/create-task.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
+
 The behaviour spec is the document `docs/agents/product.md` «Behaviour spec» names. Actors: `docs/agents/product.md` «Actors».
 
-The tracker of `docs/agents/issue-tracker.md` holds the task's problem, goal, links, status and labels. Scope and acceptance criteria come later, in the developer plan of `/{{p}}-create-plan`; commit-sized tickets in `/{{p}}-to-tickets`.
+The tracker of `docs/agents/issue-tracker.md` holds the task's problem, goal, links, status and labels. Scope and acceptance criteria come later, in the developer plan of `/create-plan`; commit-sized tickets in `/to-tickets`.
 
 ## Defaults
 
@@ -43,7 +45,7 @@ What an actor can do after this task, 1–2 sentences.
 - <plan, research, pull request, related tasks; empty bullets are fine at creation>
 ```
 
-Scope, acceptance criteria and decisions go into `plan.md` (`/{{p}}-create-plan`), never into the task.
+Scope, acceptance criteria and decisions go into `plan.md` (`/create-plan`), never into the task.
 
 A task is sized to one coherent behaviour an actor notices — several commits, one manual check pass. Bigger → propose splitting it into several tasks before creating anything.
 
@@ -55,12 +57,12 @@ A task is sized to one coherent behaviour an actor notices — several commits, 
 3. Create the issue.
 4. Only with the business-questions module (`docs/agents/issue-tracker.md` «Business questions»): list the issues of
    its project that are not `Done`: these are themes of business questions. For each open question the new task cannot
-   be finished without, record it on the task as `/{{p}}-business-questions` describes under «Development side».
+   be finished without, record it on the task as `/business-questions` describes under «Development side».
 
 ## Business questions
 
 Only with the business-questions module: a question to the partner or the business is a line in a theme of its
-project, not a development task: use `/{{p}}-business-questions`.
+project, not a development task: use `/business-questions`.
 
 ## Report
 

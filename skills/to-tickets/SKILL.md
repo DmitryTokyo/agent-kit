@@ -1,10 +1,12 @@
 ---
-name: {{p}}-to-tickets
-description: Split a task's approved plan ({{work}}/tasks/<key>-N-<slug>/plan.md + agent.md) into commit-sized ticket files under tickets/ and a map of batches, each part ending with its E2E and manual check tickets when the plan has such checks.
+name: to-tickets
+description: Split a task's approved plan (.ai/tasks/<key>-N-<slug>/plan.md + agent.md) into commit-sized ticket files under tickets/ and a map of batches, each part ending with its E2E and manual check tickets when the plan has such checks.
 disable-model-invocation: true
 ---
 
 # To tickets
+
+Repository rules: read `docs/agents/skills/to-tickets.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -19,7 +21,7 @@ Break the approved plan into **tickets**: one ticket = one commit, at most 100 l
 
 Read `plan.md` (its `Criteria` are the acceptance criteria, its `Checks` the tests), `agent.md` and `research.md` from
 the task folder. Ask for the key if the folder is unclear. `plan.md` says `Delivery: commits` → stop: the task goes to
-`/{{p}}-develop` without tickets.
+`/develop` without tickets.
 
 ### 2. Draft tickets
 
@@ -95,14 +97,14 @@ The map, the ticket file paths and the first ticket to run.
 
 ## Map
 
-`tickets/00-map.md` is the order of work and its progress; the user and `/{{p}}-orchestrate` read it instead of the
+`tickets/00-map.md` is the order of work and its progress; the user and `/orchestrate` read it instead of the
 ticket files. One section is one **batch**: the development tickets of a part, then its E2E ticket, closed by its
 **gates**.
 
 ```markdown
 # <KEY>-N — map
 
-`/{{p}}-orchestrate <KEY>-N` takes the first batch with an unticked ticket. It starts it once every gate of the
+`/orchestrate <KEY>-N` takes the first batch with an unticked ticket. It starts it once every gate of the
 batches in «After» is ticked.
 
 ## 01 core
@@ -135,12 +137,12 @@ batches in «After» is ticked.
 
 - **Branch** — per `docs/agents/git.md` «Branches»: one part → the task branch `<key>-N-<slug>`; several parts →
   `<key>-N-<part>`.
-- Ticket line: `- [ ] <ID> <title>`, in file order. `/{{p}}-tdd-develop` (or `/{{p}}-develop` for `no tests`) ticks
-  it; `/{{p}}-orchestrate` also appends ` — <short commit hash>`.
+- Ticket line: `- [ ] <ID> <title>`, in file order. `/tdd-develop` (or `/develop` for `no tests`) ticks
+  it; `/orchestrate` also appends ` — <short commit hash>`.
 - «After» — the sections whose gates gate this one, by part name; `—` for none.
 - Gates, in this order, each ticked by:
-  - `Agent review` — always; `/{{p}}-develop` after it closes every finding of the review file, or
-    `/{{p}}-review-diff` when the review has none;
+  - `Agent review` — always; `/develop` after it closes every finding of the review file, or
+    `/review-diff` when the review has none;
   - `Developer review` — only when `plan.md` «Developer review» is `yes`; the user ticks it on the pull request;
   - `Manual check` — only when the part has a check ticket; the user, once every case of it is ticked.
 
@@ -195,7 +197,7 @@ Mode `no tests` — `Tests` holds one line: why, and how it is checked by hand.
 - [ ] `e2e` green.
 ```
 
-One checklist item per scenario, copied from `agent.md` «Tests» with its title and sub-bullets. `/{{p}}-tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
+One checklist item per scenario, copied from `agent.md` «Tests» with its title and sub-bullets. `/tdd-develop` runs the ticket; a scenario that stays red becomes a new development ticket of the same part.
 
 ## Check ticket template
 
@@ -211,7 +213,7 @@ One checklist item per scenario, copied from `agent.md` «Tests» with its title
 - [ ] <screen → action → expected result>
 ```
 
-The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every section of the map is merged — `/{{p}}-close-merge-request` does it.
+The user ticks every case in the product. A failed case becomes a new ticket of the same part. The tracker issue `<KEY>-N` moves to Done only after every section of the map is merged — `/close-merge-request` does it.
 
 ## Ticket rules
 

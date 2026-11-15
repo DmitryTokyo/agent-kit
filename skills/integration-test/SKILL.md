@@ -1,9 +1,11 @@
 ---
-name: {{p}}-integration-test
+name: integration-test
 description: Write the integration test a task's integration.md specifies — one real request to an entry point through the whole path inside the system, asserting the stored state. Use when the code of a task is done and its folder has integration.md, or when the user asks for an integration test.
 ---
 
 # Integration test
+
+Repository rules: read `docs/agents/skills/integration-test.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 Commands (`check`, `one-test`) are keys of `docs/agents/stack.md` «Commands».
 
@@ -17,13 +19,13 @@ You write the test yourself; never delegate it.
 
 ## Input
 
-`{{work}}/tasks/<task>/integration.md`: Test, Path, Arrange, Assert, Domain, Mocks, Replaces, Goes red when, Run. No
+`.ai/tasks/<task>/integration.md`: Test, Path, Arrange, Assert, Domain, Mocks, Replaces, Goes red when, Run. No
 file → ask the user (`docs/agents/harness.md` «Actions») for the path to test and write the same sections into a new
 `integration.md` first.
 
 ## Rules
 
-From `.agents/skills/{{p}}-test-writer/rules.md` apply «Testing rules» and «Parametrize»; from `docs/agents/testing.md`
+From `~/.agents/skills/test-writer/rules.md` apply «Testing rules» and «Parametrize»; from `docs/agents/testing.md`
 «Database», «Mocks» and «Integration tests». The workflow of `rules.md` is for unit tests.
 
 - One request in Act; the asserts read the stored state after it: records, statuses, the requests that left the

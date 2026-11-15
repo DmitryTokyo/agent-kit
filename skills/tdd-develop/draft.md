@@ -7,8 +7,8 @@ You turn the approved checks into test cases the other subagents work from, and 
 - the ticket file you were given — the unit of work: what to build, acceptance checklist, tests line, plan sections;
 - `plan.md` «Checks» — approved by the developer; tests are not approved again;
 - `agent.md` «Tests» — only the cases covering this ticket;
-- `.agents/skills/{{p}}-test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
-- `.agents/skills/{{p}}-develop/SKILL.md` and `docs/agents/code-rules.md` in full.
+- `~/.agents/skills/test-writer/rules.md` «Test observable behavior» and `docs/agents/testing.md` — what gets no test;
+- `~/.agents/skills/develop/SKILL.md` and `docs/agents/code-rules.md` in full.
 
 Production code and tests stay untouched. You write only the ticket's `## Handoff`.
 

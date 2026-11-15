@@ -1,9 +1,11 @@
 ---
-name: {{p}}-orchestrate
-description: Run the next batch of a task's ticket map ({{work}}/tasks/<key>-N-*/tickets/00-map.md) end to end, each ticket through the skill of its `Mode`, one commit per ticket. Use when the user gives a task key without a ticket ID and wants the tickets developed.
+name: orchestrate
+description: Run the next batch of a task's ticket map (.ai/tasks/<key>-N-*/tickets/00-map.md) end to end, each ticket through the skill of its `Mode`, one commit per ticket. Use when the user gives a task key without a ticket ID and wants the tickets developed.
 ---
 
 # Orchestrate
+
+Repository rules: read `docs/agents/skills/orchestrate.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -11,17 +13,17 @@ Commands (`check`, `unit`, `e2e`, `one-test`, `migrate`) are keys of `docs/agent
 
 ## Input
 
-`<KEY>-N`. Task folder: `{{work}}/tasks/<key>-N-*/` (case-insensitive).
+`<KEY>-N`. Task folder: `.ai/tasks/<key>-N-*/` (case-insensitive).
 
-The **batch**: the first section of `tickets/00-map.md` (format: `.agents/skills/{{p}}-to-tickets/SKILL.md` «Map») with an
+The **batch**: the first section of `tickets/00-map.md` (format: `~/.agents/skills/to-tickets/SKILL.md` «Map») with an
 unticked ticket line; its unticked tickets in list order.
 
-- No `tickets/` folder or no `00-map.md` → stop, suggest `/{{p}}-to-tickets`.
+- No `tickets/` folder or no `00-map.md` → stop, suggest `/to-tickets`.
 - A ticket ID given → stop and name the skill for its `Mode` from «Route».
 
 ## Role
 
-Read `.agents/skills/{{p}}-tdd-develop/SKILL.md` once, now: you are its dispatcher, under its «Role», for every ticket of
+Read `~/.agents/skills/tdd-develop/SKILL.md` once, now: you are its dispatcher, under its «Role», for every ticket of
 the batch. Its ticket sections, «Last ticket» and «Output» apply; this skill replaces its «Input» and «Close». Its
 stops stop the batch.
 
@@ -37,12 +39,12 @@ Each ticket of the batch, by its `**Mode:**` line (older tickets: `Режим`, 
 
 | Mode | Run |
 | --- | --- |
-| `TDD` | `{{p}}-tdd-develop` «TDD ticket» |
-| `E2E` | `{{p}}-tdd-develop` «E2E ticket» |
-| `no tests` | worker (`docs/agents/harness.md` «Roles»), standard tier, the subagent prompt of `harness.md` for `.agents/skills/{{p}}-develop/SKILL.md` and `<ticket path>`, plus *"The manual check is the user's: report how to do it and leave the checklist to the dispatcher."*; then `check` green |
-| missing | stop: the mode is set by `/{{p}}-to-tickets` |
+| `TDD` | `tdd-develop` «TDD ticket» |
+| `E2E` | `tdd-develop` «E2E ticket» |
+| `no tests` | worker (`docs/agents/harness.md` «Roles»), standard tier, the subagent prompt of `harness.md` for `~/.agents/skills/develop/SKILL.md` and `<ticket path>`, plus *"The manual check is the user's: report how to do it and leave the checklist to the dispatcher."*; then `check` green |
+| missing | stop: the mode is set by `/to-tickets` |
 
-Then «Commit», and the next ticket. After the commit of the map's last ticket → `{{p}}-tdd-develop` «Last ticket»;
+Then «Commit», and the next ticket. After the commit of the map's last ticket → `tdd-develop` «Last ticket»;
 an integration test it wrote goes in one more commit per «Commit».
 
 ## Commit
@@ -50,22 +52,22 @@ an integration test it wrote goes in one more commit per «Commit».
 The user authorized these commits by starting this skill; they go without a confirmation question. They carry the
 agent identity (see `commit.md`), so the developer's commits and the agent's stay apart in the history and in the PR.
 
-1. Write the message `<KEY>-N: <type>: <description>` — the format of `/{{p}}-git-commit-message` step 4, taken from the
+1. Write the message `<KEY>-N: <type>: <description>` — the format of `/git-commit-message` step 4, taken from the
    ticket title and the reports: `feat`/`fix` for a TDD ticket, `test` for an E2E ticket, `docs` for documentation.
 2. Worker, cheap tier, the subagent prompt of `docs/agents/harness.md` for
-   `.agents/skills/{{p}}-orchestrate/commit.md` and `<ticket path>`, with the message `<message>`.
+   `~/.agents/skills/orchestrate/commit.md` and `<ticket path>`, with the message `<message>`.
 3. Its report `too-big` → stop and tell the user the production line count: the ticket is too big for one commit.
 
 ## After the batch
 
-Nothing is pushed. Once the section's `Agent review` gate is ticked, `/{{p}}-merge-request` pushes the branch and opens
+Nothing is pushed. Once the section's `Agent review` gate is ticked, `/merge-request` pushes the branch and opens
 the pull request with the review level and the consequences; the other gates are worked on it. The developer's review comments on it go through the same skill.
 
 ## Output
 
-After each ticket — `{{p}}-tdd-develop` «Output».
+After each ticket — `tdd-develop` «Output».
 
 At the batch end: the commits in order, each with its departures, the manual checks of `no tests` tickets, then the
-section's gates in order — the first one is `/{{p}}-review-diff <KEY>-N <part>` in a new session.
+section's gates in order — the first one is `/review-diff <KEY>-N <part>` in a new session.
 
 _Last modified: 2026-11-11_

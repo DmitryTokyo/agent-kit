@@ -15,7 +15,7 @@ How commits, branches and pull requests are made. `<KEY>` is the task key from `
 ## Branches
 
 - Main branch: <!-- fill: master | main -->. The agent never pushes it: it stops and tells the user to do it.
-- The **task branch** is named after the task folder: `{{work}}/tasks/<key>-<N>-<slug>/` → `<key>-<N>-<slug>` (lowercase
+- The **task branch** is named after the task folder: `.ai/tasks/<key>-<N>-<slug>/` → `<key>-<N>-<slug>` (lowercase
   key). A task whose ticket map has several parts gets one branch per part instead, `<key>-<N>-<part>`. One branch is
   one pull request. The agent pushes only these branches.
 - Getting onto the branch before the first edit: already on it → continue; on the main branch →
@@ -30,8 +30,8 @@ and the agent's stay apart.
 ## Pull requests
 
 Host: <!-- fill: GitHub | GitLab | …, the repository -->. Every call goes through <!-- fill: `gh` | a wrapper script
-that adds the token inside its own process (the token is never printed) -->. `/{{p}}-merge-request` and
-`/{{p}}-close-merge-request` run these operations by name:
+that adds the token inside its own process (the token is never printed) -->. `/merge-request` and
+`/close-merge-request` run these operations by name:
 
 | Operation | Command |
 | --- | --- |

@@ -1,9 +1,11 @@
 ---
-name: {{p}}-review-diff
+name: review-diff
 description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes, Standards (this repo's rules) and Spec (the task's plan), then set the affected scope, checks and review level. Use when the user asks to review a branch, commits, or work in progress."
 ---
 
-# Code review
+# Review diff
+
+Repository rules: read `docs/agents/skills/review-diff.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -15,7 +17,7 @@ works from; this skill fixes no code.
 
 ## 1. Pin the fixed point
 
-`<KEY>-N <part>` → a **batch**: the section of `{{work}}/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
+`<KEY>-N <part>` → a **batch**: the section of `.ai/tasks/<key>-N-*/tickets/00-map.md` for that part (the first section
 with an unticked `Agent review` when no part is given; older maps: `Ревью агентом`). Base: the parent of the first
 commit hash in its ticket lines; diff: `git diff <base> <last hash>`. A ticket line without a hash → stop: the batch is
 unfinished.
@@ -32,9 +34,9 @@ Otherwise take the fixed point from the user; if none given, ask.
 ## 2. Find the spec
 
 1. Task key `<KEY>-N` from commit prefixes, or from the user. No key → ask the user and wait; never skip the spec.
-2. Task folder `{{work}}/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `design.md`,
+2. Task folder `.ai/tasks/<key>-N-*/` (case-insensitive): `plan.md`, `agent.md`, `research.md`, `design.md`,
    `tickets/*.md`, and the latest review file of this scope (step 8) — the previous round, if any. `plan.md` names an
-   `Epic:` → also `{{work}}/epics/<epic-slug>/design.md`.
+   `Epic:` → also `.ai/epics/<epic-slug>/design.md`.
 3. The tracker issue `<KEY>-N` via the tracker tools of `docs/agents/issue-tracker.md`: Problem and Goal. Older tasks
    carry `## Decisions` and acceptance criteria there: they are part of the spec.
 4. The behaviour spec — the sections for the screens the diff touches.
@@ -48,7 +50,7 @@ No `plan.md` → the spec is the tracker issue alone; say so in the review. Wher
 - `docs/adr/` — the ADRs touching the changed areas
 - `docs/agents/code-rules.md`
 - `docs/agents/hygiene.md`
-- `.agents/skills/{{p}}-test-writer/rules.md` and `docs/agents/testing.md` — for changed test files
+- `~/.agents/skills/test-writer/rules.md` and `docs/agents/testing.md` — for changed test files
 
 Plus the smell baseline below. Repo rules override it; each smell is a judgement call, labelled "possible <smell>".
 
@@ -82,10 +84,10 @@ name.
 
 In one message, in the background:
 
-- an explorer (`docs/agents/harness.md` «Roles»), cheap tier, with the subagent prompt of `/{{p}}-hygiene-review`:
+- an explorer (`docs/agents/harness.md` «Roles»), cheap tier, with the subagent prompt of `/hygiene-review`:
   the changed and new files, diff base `<base>`;
 - the diff touches test files → a reviewer, standard tier, with the subagent prompt of `harness.md` for
-  `.agents/skills/{{p}}-review-diff/test-review.md` and the input `Files: <changed and new test files>`,
+  `~/.agents/skills/review-diff/test-review.md` and the input `Files: <changed and new test files>`,
   `Diff base: <base>`.
 
 Then review inline, Spec axis first, then Standards, each in its own pass with the axis text below. Whatever an axis
@@ -138,7 +140,7 @@ Inline, from the diff and its callers:
 
 ## 8. Write the review file
 
-The scope's review file is `{{work}}/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
+The scope's review file is `.ai/tasks/<key>-N-*/reviews/<BB>-<part>-review-NN.md` for a batch, `reviews/review-NN.md`
 otherwise; `NN` is one past the latest round of that scope (`01` for the first). The file is self-contained: a fixer in
 another session reads only it. The hygiene explorer's and the test reviewer's findings fold into Standards, each tagged
 «hygiene» or «test review», both `hard`. IDs stay stable across rounds: `SPEC-n`, `STD-n`, numbering continues from the
@@ -187,6 +189,6 @@ happen later is `skip` plus a tracker task. A batch with no open `hard` item and
 `Agent review` in the map.
 
 In chat: the file path, findings count per axis, the worst finding within each axis, the review level, and the next
-step — the developer sets the decisions, then `/{{p}}-develop` with the review file.
+step — the developer sets the decisions, then `/develop` with the review file.
 
 _Last modified: 2026-11-11_

@@ -3,10 +3,10 @@
 This repository is the kit, not a project that uses it. It holds generic agent skills and contract templates that
 take a task from the tracker to a pull request. They grew out of real work and are meant to be reused across many
 repositories. A project takes the skills it needs by `INDEX.md`, fills the contract `docs/agents/*.md` they read
-and tailors its copy; edits good for every project come back here.
+and writes its nuances into `docs/agents/skills/`; edits good for every project come back here.
 
 Everything here stays project-agnostic: a path, command, tracker name or stack rule of a specific project belongs in
-that project's `docs/agents/`, a shared stack rule in `packs/`. Folder layout, placeholders (`{{p}}`, `{{KEY}}`) and
+that project's `docs/agents/`, a shared stack rule in `packs/`. Folder layout, placeholders (`{{KEY}}`) and
 markers: «How it works» below.
 
 `INDEX.md` is the guide: which skills to take for which project, which work alone, which go as a set. A commit that
@@ -61,8 +61,6 @@ A project fact — a path, a command, a tracker name — never goes into the kit
 
 | Mark | Where | Replaced by |
 | --- | --- | --- |
-| `{{p}}` | skills, contract, repo | the project's skill prefix |
-| `{{work}}` | skills, contract, repo | the working folder of task files, `.ai` by default |
 | `{{KEY}}`, `{{key}}`, `{{main}}` | repo | the task key, its lowercase form, the main branch |
 | `<KEY>`, `<key>` | skills | stays: the skill reads the key from `docs/agents/issue-tracker.md` |
 | `<!-- pack:NAME -->…<!-- /pack:NAME -->` | contract | the pack's text, marked so an update finds it in the project |

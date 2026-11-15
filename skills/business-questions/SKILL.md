@@ -1,9 +1,11 @@
 ---
-name: {{p}}-business-questions
+name: business-questions
 description: Business questions, kept as themes in the tracker project of docs/agents/issue-tracker.md «Business questions». Use when a question for the partner or the business comes up, when the user asks to walk a theme for unasked questions, or when the partner has answered and the answers need distributing.
 ---
 
 # Business questions
+
+Repository rules: read `docs/agents/skills/business-questions.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 The behaviour spec is the document `docs/agents/product.md` «Behaviour spec» names. Actors: `docs/agents/product.md` «Actors».
 

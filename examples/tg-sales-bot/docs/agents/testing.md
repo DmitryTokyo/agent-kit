@@ -1,6 +1,6 @@
 # Testing
 
-The project's testing stack and conventions. `/ag-test-writer`'s `rules.md` applies the general rules; this file adds
+The project's testing stack and conventions. `/test-writer`'s `rules.md` applies the general rules; this file adds
 what is specific to the stack and the project, and wins where they disagree. Pack sections sit between
 `<!-- pack:NAME -->` markers.
 

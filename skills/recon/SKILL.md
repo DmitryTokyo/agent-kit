@@ -1,9 +1,11 @@
 ---
-name: {{p}}-recon
+name: recon
 description: Map the code relevant to a task in an explorer subagent and return a compact context summary. Use before implementing a feature or fix that touches unfamiliar code paths.
 ---
 
 # Recon
+
+Repository rules: read `docs/agents/skills/recon.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 Spawn an explorer (`docs/agents/harness.md` «Roles») to map the code relevant to the task. The subagent reads files; the main context receives only the compact output.
 

@@ -59,6 +59,7 @@ once. A skill has no prefix and reads project facts only from the project's own 
    done
    ```
 
+   Make both links for every skill: skills read each other's files through `~/.agents/skills/<name>/`.
 2. The description of every installed skill takes room in the context of every repository: install what you use.
 3. Subagent definitions, if a project wants any, go to the project's `.agents/agents/` (`contract/harness.md`
    «Agent definitions»); the kit's skills need none.

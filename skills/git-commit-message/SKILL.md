@@ -1,9 +1,11 @@
 ---
-name: {{p}}-git-commit-message
+name: git-commit-message
 description: Review this repository's git changes, split them into logical chunks, propose <KEY>-N commit messages, and stage and commit only after explicit approval; a task branch already pushed is pushed again. Use for commit-message or local-commit requests.
 ---
 
 # Git commit messages
+
+Repository rules: read `docs/agents/skills/git-commit-message.md` first, if it exists; its rules win over this skill's text. Say which file you read, or that there is none.
 
 `<KEY>` is the task key of `docs/agents/issue-tracker.md` «Tracker»; `<key>` is its lowercase form.
 
@@ -14,7 +16,7 @@ approves. Only a task branch that is already pushed gets pushed (step 7).
 
 An `<KEY>-<number>` already in the conversation (any case: `<KEY>-5`, `<key>-5`) → use it, skip this step.
 
-Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `{{work}}/tasks/<key>-*` folder names. Ask the user (`docs/agents/harness.md` «Actions») for the task number, a short single choice:
+Otherwise collect candidates from `git log -20 --oneline`, `git branch --show-current`, and `.ai/tasks/<key>-*` folder names. Ask the user (`docs/agents/harness.md` «Actions») for the task number, a short single choice:
 
 - one option per candidate
 - fewer than 2 candidates → add an explicit «another number» option
@@ -29,7 +31,7 @@ Inspect no changes before the answer.
 
 - Self-contained chunks derived from the diff; invent no behaviour.
 - Prefer chunks under about 300 changed lines, without fragmenting one atomic change.
-- A chunk that finishes a ticket in `{{work}}/tasks/<key>-N-*/tickets/` is one commit.
+- A chunk that finishes a ticket in `.ai/tasks/<key>-N-*/tickets/` is one commit.
 
 ## 4. Draft messages
 
@@ -79,7 +81,7 @@ One `git add` + `git commit` pair per chunk; nothing staged before step 5. Repor
 
 Only a task or part branch of `docs/agents/git.md` «Branches», never the main branch.
 `git rev-parse @{upstream}` fails → the branch was never pushed: stop here; its first push and pull request go through
-`/{{p}}-merge-request`. It resolves → note that sha, `git push`, then refresh the pull request description by
-`.agents/skills/{{p}}-merge-request/description.md` «Refresh after a push» with the noted sha.
+`/merge-request`. It resolves → note that sha, `git push`, then refresh the pull request description by
+`~/.agents/skills/merge-request/description.md` «Refresh after a push» with the noted sha.
 
 _Last modified: 2026-11-11_
