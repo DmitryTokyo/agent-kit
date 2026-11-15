@@ -34,7 +34,9 @@ A skill that needs the main agent on a tier says so; on another tier the agent s
 - **ask the user** — print the question with everything it needs (lists, tables, the preview) as a plain message and
   end the turn. The user's reply answers it. A short choice with no content to show may use the harness's question
   tool.
-- **invoke a skill** — a skill names another as `/<name>`; the mapping below says how to load it.
+- **invoke a skill** — a skill names another as `/<name>`; the mapping below says how to load it. A skill that is not
+  found stops the work: say which one is missing and where it was expected; never skip the step or retell the skill
+  from memory.
 
 ## Agent identity
 
@@ -52,9 +54,7 @@ gives the author and trailer per harness. Never strip them.
 - ask the user: the plain message. `AskUserQuestion` hides the text printed before it in the desktop app, so it never
   carries content.
 - invoke a skill: `/<name>`, or the `Skill` tool. Shared skills are linked into `~/.claude/skills/` and
-  `~/.agents/skills/`; a project's own skills live in `.agents/skills/`, read through the `.claude/skills` symlink. A
-  skill that is not found stops the work: say which one is missing and where it was expected; never skip the step or
-  retell the skill from memory.
+  `~/.agents/skills/`; a project's own skills live in `.agents/skills/`, read through the `.claude/skills` symlink.
 - agent definitions: `.claude/agents` → symlink to `../.agents/agents`; dispatch one with
   `Agent(subagent_type="<name>")`.
 - identity: `git -c user.name=Claude -c user.email=noreply@anthropic.com commit -m "<message>" -m "Co-Authored-By:
@@ -73,10 +73,15 @@ gives the author and trailer per harness. Never strip them.
 - tiers: <!-- fill: the model of each tier, or «the session's model» when the project does not split them -->.
 - ask the user: the plain message; the `question` tool for a short choice.
 - invoke a skill: the `skill` tool by ID; `/<name>` in a skill is the ID `<name>`. There are no slash commands for
-  skills.
+  skills: the user loads one by `@<name>` in the prompt. OpenCode reads shared skills from `~/.agents/skills/` and the
+  project's from `.agents/skills/`; two skills of one ID: the one from `.agents/skills/` wins over `.claude/skills/`.
+  The skill's file list may come back empty through a symlink: read a neighbouring file by its path.
 - identity: <!-- fill: author and trailer, e.g. `git -c user.name=OpenCode -c user.email=<email> commit ...` -->.
-- agent definitions: <!-- fill: where OpenCode reads them, or «none» -->.
-- permissions: `.opencode/opencode.json`.
+- agent definitions: `.opencode/agents/<id>.md` or `~/.config/opencode/agents/<id>.md` with `mode: subagent`; its
+  `model: provider/model` pins the tier, without it the subagent inherits the caller's model. Dispatch by
+  `subagent({agent: "<id>", ...})`. <!-- fill: the project's definitions, or «none» -->.
+- permissions: `.opencode/opencode.json`. A skill reads a neighbouring skill's file by path outside the repository:
+  keep `external_directory` open for `~/.agents/skills/**`. OpenCode V2 reads `AGENTS.md` only, never `CLAUDE.md`.
 <!-- /harness:opencode -->
 
 <!-- harness:codex -->
