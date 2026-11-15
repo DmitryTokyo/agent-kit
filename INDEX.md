@@ -7,7 +7,7 @@ one skill for a small script, the whole chain for a large product.
 
 ## Pick by project
 
-| Project | Take |
+| Project | Install and use |
 | --- | --- |
 | A small script or tool | `grill-one`, `git-commit-message` |
 | A landing page, a small app | `brainstorm`, `grill-one`, `recon`, `test-writer`, `git-commit-message` |
@@ -29,7 +29,7 @@ installed.
 | `integration-test` | writes one integration test: a real request through the whole path, the stored state asserted | `harness`, `stack`, `testing` |
 | `git-commit-message` | splits changes into commits, proposes messages, commits on your yes, pushes a branch already pushed | `harness`, `git`, `issue-tracker` |
 | `create-task` | files a task in the tracker | `harness`, `issue-tracker`, `product` |
-| `code-review` | reviews a diff on two axes: the project's rules and the task's plan | most of them |
+| `review-diff` | reviews a diff on two axes: the project's rules and the task's plan | most of them |
 
 ## Sets that work together
 
@@ -37,43 +37,60 @@ One skill writes files the next one reads: take a set whole.
 
 | Set | Skills | Flow |
 | --- | --- | --- |
-| Ticket chain | `create-plan`, `to-tickets`, `orchestrate`, `tdd-develop`, `develop`, `test-writer`, `integration-test`, `code-review` | plan → tickets → one commit per ticket, test first → the task's integration test → review |
+| Ticket chain | `create-plan`, `to-tickets`, `orchestrate`, `tdd-develop`, `develop`, `test-writer`, `integration-test`, `review-diff` | plan → tickets → one commit per ticket, test first → the task's integration test → review |
 | Workflow 3: research and design | `research`, `brainstorm`, `create-design`, `to-tasks`, `create-plan` | requirements → design approved by you → epic cut into tasks → plan |
 | Pull request cycle | `merge-request`, `close-merge-request` | push and open the PR, answer review threads → after the merge, close the task |
 | Business questions | `business-questions`, `create-task` | questions to the business kept as themes in the tracker |
 
 The full chain, top to bottom: `create-task` → `create-plan` (→ `research` → `create-design` → `to-tasks` for large
-tasks) → `to-tickets` → `orchestrate` → `code-review` → `merge-request` → `close-merge-request`.
+tasks) → `to-tickets` → `orchestrate` → `review-diff` → `merge-request` → `close-merge-request`.
 
-## Take skills into a project
+## Install skills (once per machine)
 
-1. Copy `skills/<name>/` to `.agents/skills/<prefix>-<name>/` in the project. `<prefix>` is a short name for the
-   project's skills, e.g. `zip`. Claude Code reads `.claude/skills/`: make it a symlink to `../.agents/skills`.
-   Named subagent definitions, if the project wants any, go to `.agents/agents/` (`contract/harness.md` «Agent
-   definitions»); the kit's skills need none.
-2. In the copied files replace `{{p}}` with the prefix and `{{work}}` with the folder for task files (`.ai`, add it to
-   `.gitignore`):
+Skills are shared: one copy in the kit, linked into the harnesses. An edit in the kit is seen by every repository at
+once. A skill has no prefix and reads project facts only from the project's own `docs/agents/`.
+
+1. For each skill you use, link it into both harnesses (`<kit>` is the checkout of this repository):
 
    ```bash
-   find .agents/skills/<prefix>-* -name '*.md' -exec perl -pi -e 's/\{\{p\}\}/<prefix>/g; s/\{\{work\}\}/.ai/g' {} +
+   for s in <name> <name>; do
+     ln -s <kit>/skills/$s ~/.claude/skills/$s    # Claude Code
+     ln -s <kit>/skills/$s ~/.agents/skills/$s    # Codex
+   done
    ```
 
-3. For each file the skill reads (the tables above), copy `contract/<file>.md` to `docs/agents/<file>.md` and fill
-   its `<!-- fill: ... -->` places from the project. `harness.md` is read by almost every skill: start with it.
-4. Write down what you took in `.agents/agent-kit.json`: `{"commit": "<kit commit>", "prefix": "<prefix>",
-   "work": ".ai", "skills": ["<name>", "..."]}`.
+2. The description of every installed skill takes room in the context of every repository: install what you use.
+3. Subagent definitions, if a project wants any, go to the project's `.agents/agents/` (`contract/harness.md`
+   «Agent definitions»); the kit's skills need none.
+
+## Set up a project
+
+1. For each file the project's skills read (the tables above), copy `contract/<file>.md` to `docs/agents/<file>.md`
+   and fill its `<!-- fill: ... -->` places from the project. `harness.md` is read by almost every skill: start
+   with it.
+2. A repository nuance of a skill goes to `docs/agents/skills/<skill>.md`, not into a copy of the skill. The skill
+   reads this file as its first step, names it (or says there is none), and its rules win over the skill's text.
+3. The chain of steps is the project's `CONTRIBUTING.md` «Feature workflow» (`repo/CONTRIBUTING.md`). Nobody reads it
+   whole at the start: `to-tickets` copies the gates into the task's ticket map, later steps hand over along the
+   map, and without a map a skill reads one line after its own step. A step is a call by exact name, `/<skill>`.
+   A skill that is not found stops the work and is reported; it is never skipped or retold. A step the project does
+   not want is cut from «Feature workflow» or switched off in the skill's rules file.
+4. A project step that works differently from the shared one is a skill of the repository,
+   `.agents/skills/<own-name>/` (`.claude/skills` links to it), with a name unlike any shared skill, and a line in
+   «Feature workflow».
+5. Write down the kit commit the contract was filled from: `.agents/agent-kit.json`, `{"commit": "<kit commit>"}`.
 
 `packs/` holds stack rules (`python`, `django`) to append to `code-rules.md`, `hygiene.md`, `testing.md`. `repo/`
 holds optional project wiring: `CONTRIBUTING.md` sections, `AGENTS.md` snippet, harness permissions, pre-commit hooks.
 
-## Update a project
+## Update
 
-1. Take `commit` from `.agents/agent-kit.json` and read «Releases» below after that version.
-2. For each skill the project has: `git -C <kit> diff <commit> HEAD -- skills/<name>`. Apply the change to the
-   project's copy, keep its local edits, replace `{{p}}` and `{{work}}` as when taking it.
-3. Set `commit` to the kit's `HEAD`.
+- Skills: `git -C <kit> pull`. Projects need nothing.
+- A project's contract: read «Releases» below after the project's `commit`, then
+  `git -C <kit> diff <commit> HEAD -- contract/ repo/`. Carry what applies into `docs/agents/`, keep the project's
+  edits, set `commit` to the kit's `HEAD`.
 
-A local edit good for every project goes back to the kit: change `skills/<name>/` here and update this file.
+A repository edit good for every project goes back to the kit: change `skills/<name>/` here and update this file.
 
 ## Releases
 
@@ -92,7 +109,7 @@ Newest first.
 - **Pull request description:** `merge-request/description.md` — only what the diff and CI cannot say (a bold summary,
   «Needs a human», «Deviations»), no PR on a red check, and «Refresh after a push». `git-commit-message` pushes a task
   branch that is already pushed and refreshes the description.
-- **Review:** `code-review` reviews inline by default, asks how to review a diff over ~800 lines, runs the hygiene scan
+- **Review:** `review-diff` reviews inline by default, asks how to review a diff over ~800 lines, runs the hygiene scan
   and a new test reviewer (`test-review.md`: red probe, refactoring probe) in the background.
 - **Tests:** `test-writer/rules.md` filters scenarios before code («Dropped scenarios» in the report), one happy path
   per function, a case must go red without its change; the main agent confirms inferred behaviours first.
@@ -112,7 +129,7 @@ Newest first.
 - **New skills:** `research`, `brainstorm`, `create-design`, `to-tasks`.
 - **Rewritten:** `create-plan` (routes workflow 2 and 3 into `research` and `create-design`; takes an epic's design as
   input).
-- **Small edits to read the new files:** `code-review`, `merge-request` (read `design.md`, the epic's design),
+- **Small edits to read the new files:** `review-diff`, `merge-request` (read `design.md`, the epic's design),
   `close-merge-request` (moves an epic with its tasks), `tdd-develop` (reads the `agent.md` items its ticket names),
   `bootstrap`.
 - **Contract:** `issue-tracker.md` gets «Document copies» and epic folders `{{work}}/epics/`; `repo/CONTRIBUTING.md`
@@ -120,7 +137,7 @@ Newest first.
 - **To take:** the whole workflow 3 set, or skip it and keep the old `create-plan` (no epics).
 
 ### v0.0.4 — Codex, test and review rules
-- **Skills:** `bootstrap` (takes install answers from the request, writes Codex deny rules), `code-review` (reviewers
+- **Skills:** `bootstrap` (takes install answers from the request, writes Codex deny rules), `review-diff` (reviewers
   end with «Declined to judge»), `create-plan` (Builder check by an explorer), `test-writer/rules.md` (every scenario
   names its break; no change-detector tests; literal expected values), `tdd-develop` (runs `unit` before `e2e`).
 - **Contract:** `harness.md` maps Codex instead of pi; new `repo/codex.rules`.

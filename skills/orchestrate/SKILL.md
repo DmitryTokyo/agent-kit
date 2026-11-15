@@ -66,6 +66,6 @@ the pull request with the review level and the consequences; the other gates are
 After each ticket — `{{p}}-tdd-develop` «Output».
 
 At the batch end: the commits in order, each with its departures, the manual checks of `no tests` tickets, then the
-section's gates in order — the first one is `/{{p}}-code-review <KEY>-N <part>` in a new session.
+section's gates in order — the first one is `/{{p}}-review-diff <KEY>-N <part>` in a new session.
 
 _Last modified: 2026-11-11_

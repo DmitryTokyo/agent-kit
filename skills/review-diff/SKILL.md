@@ -1,5 +1,5 @@
 ---
-name: {{p}}-code-review
+name: {{p}}-review-diff
 description: "Review a batch of the ticket map (<KEY>-N <part>) or a diff since a fixed point (commit, branch, HEAD~N) on two axes, Standards (this repo's rules) and Spec (the task's plan), then set the affected scope, checks and review level. Use when the user asks to review a branch, commits, or work in progress."
 ---
 
@@ -85,7 +85,7 @@ In one message, in the background:
 - an explorer (`docs/agents/harness.md` «Roles»), cheap tier, with the subagent prompt of `/{{p}}-hygiene-review`:
   the changed and new files, diff base `<base>`;
 - the diff touches test files → a reviewer, standard tier, with the subagent prompt of `harness.md` for
-  `.agents/skills/{{p}}-code-review/test-review.md` and the input `Files: <changed and new test files>`,
+  `.agents/skills/{{p}}-review-diff/test-review.md` and the input `Files: <changed and new test files>`,
   `Diff base: <base>`.
 
 Then review inline, Spec axis first, then Standards, each in its own pass with the axis text below. Whatever an axis

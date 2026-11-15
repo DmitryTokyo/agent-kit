@@ -21,7 +21,7 @@ own `docs/agents/*.md`. These files are called the contract: the kit gives templ
 
 | Folder | What | Where it lands in a project |
 | --- | --- | --- |
-| `skills/` | 20 skills | `.agents/skills/<prefix>-*` (`.claude/skills` links to it); optional subagent definitions go to `.agents/agents/` (`.claude/agents` links to it) |
+| `skills/` | 20 skills | not copied: linked into `~/.claude/skills/<name>` and `~/.agents/skills/<name>`; a project's own skills live in `.agents/skills/` (`.claude/skills` links to it), optional subagent definitions in `.agents/agents/` (`.claude/agents` links to it) |
 | `contract/` | templates of `docs/agents/*.md`; `<!-- fill: ... -->` marks what the project fills in | `docs/agents/` |
 | `packs/` | packs — stack rules: `python`, `django` | appended to `code-rules.md`, `hygiene.md`, `testing.md` |
 | `repo/` | `CONTRIBUTING.md` sections, an `AGENTS.md` snippet, `.claude/settings.json`, Codex rules, pre-commit hooks | the project root |

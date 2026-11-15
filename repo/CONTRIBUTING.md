@@ -125,7 +125,7 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
    in the map. The batch lives on its branch (see «Branches and pull requests»); nothing is pushed. One ticket alone:
    `/{{p}}-tdd-develop {{KEY}}-N <ID>` or `/{{p}}-develop` with the ticket path — left uncommitted for the developer's
    `git diff`.
-5. `/{{p}}-code-review {{KEY}}-N <part>` (or with a fixed point when there is no map) in a new session, another model
+5. `/{{p}}-review-diff {{KEY}}-N <part>` (or with a fixed point when there is no map) in a new session, another model
    welcome — the review file in `{{work}}/tasks/{{key}}-N-<slug>/reviews/`, see «Code review». The developer sets the
    decisions, `/{{p}}-develop` with the review file fixes them and ticks `Agent review`.
 6. `/{{p}}-merge-request` — pushes the branch and opens the pull request: risk, review level, deviations,
@@ -150,7 +150,7 @@ A feature is a task in the tracker (`docs/agents/issue-tracker.md`). Its working
 
 ## Code review
 
-The agent review (`/{{p}}-code-review`) writes one English file per round,
+The agent review (`/{{p}}-review-diff`) writes one English file per round,
 `{{work}}/tasks/{{key}}-N-<slug>/reviews/<BB>-<part>-review-NN.md` for a batch or `reviews/review-NN.md` otherwise. Each
 finding has a stable ID (`SPEC-n` for the plan and the task, `STD-n` for the code rules) and is either:
 

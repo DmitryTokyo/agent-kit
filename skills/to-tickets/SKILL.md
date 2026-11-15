@@ -140,7 +140,7 @@ batches in «After» is ticked.
 - «After» — the sections whose gates gate this one, by part name; `—` for none.
 - Gates, in this order, each ticked by:
   - `Agent review` — always; `/{{p}}-develop` after it closes every finding of the review file, or
-    `/{{p}}-code-review` when the review has none;
+    `/{{p}}-review-diff` when the review has none;
   - `Developer review` — only when `plan.md` «Developer review» is `yes`; the user ticks it on the pull request;
   - `Manual check` — only when the part has a check ticket; the user, once every case of it is ticked.
 

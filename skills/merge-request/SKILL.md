@@ -18,7 +18,7 @@ reaches the command line or the chat.
    - the current branch is a task or part branch of `docs/agents/git.md` «Branches», never the main branch;
    - `git status --porcelain` is empty;
    - `git log --oneline <main>..HEAD` lists commits.
-2. A batch of the ticket map → its `Agent review` gate is ticked; unticked → stop and suggest `/{{p}}-code-review`.
+2. A batch of the ticket map → its `Agent review` gate is ticked; unticked → stop and suggest `/{{p}}-review-diff`.
 3. Push only what the remote does not have yet:
    - `git rev-parse --abbrev-ref @{upstream}` fails → `git push -u origin <branch>`;
    - it resolves and `git log --oneline @{upstream}..HEAD` lists commits → `git push`;

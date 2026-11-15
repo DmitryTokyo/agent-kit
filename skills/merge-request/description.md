@@ -6,7 +6,7 @@ Every call to the host is an operation of `docs/agents/git.md` «Pull requests»
 
 1. Collect the sources from the task folder `{{work}}/tasks/<key>-N-*/`: `plan.md`, `research.md` and `design.md` if
    present (`plan.md` names an `Epic:` → the design of `{{work}}/epics/<epic-slug>/`), and the latest review file of
-   this scope (`/{{p}}-code-review` step 8). No `plan.md` → stop and ask. The review file wins over the plan for review
+   this scope (`/{{p}}-review-diff` step 8). No `plan.md` → stop and ask. The review file wins over the plan for review
    level, consequences and deviations.
 2. Run every check from the review file's consequences, else from `plan.md` «Checks». A failed check → stop and report
    it: no pull request opens on a red check.
@@ -15,7 +15,7 @@ Every call to the host is an operation of `docs/agents/git.md` «Pull requests»
    stay out. Sections in order:
    - No heading: one bold sentence on what the pull request does and why; then `Task: <tracker link>` ·
      `Risk: <plan.md «Classification» level>` · `Review: <Agent, Focused or Full>` (without a review file, derive it as
-     `/{{p}}-code-review` step 7 does).
+     `/{{p}}-review-diff` step 7 does).
    - `## Needs a human` — one bullet each: a `file:line` range or decision with the question the developer must
      answer (Focused and Full review), a check that needs the developer's access or decision phrased as the action to
      take, the part's manual check cases. None → omit the section.

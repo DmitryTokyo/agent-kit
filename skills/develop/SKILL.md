@@ -93,6 +93,6 @@ A task with a plan, also:
 5. Behaviour the plan does not describe, or a departure from it → append a check to the end of `plan.md` `Checks`:
    `- <condition → expected result> (added in development)`. Never edit or remove existing items.
 6. The task folder has `integration.md` → `/{{p}}-integration-test`.
-7. The worktree stays uncommitted: the next step is `/{{p}}-git-commit-message`, then `/{{p}}-code-review`.
+7. The worktree stays uncommitted: the next step is `/{{p}}-git-commit-message`, then `/{{p}}-review-diff`.
 
 _Last modified: 2026-11-11_
