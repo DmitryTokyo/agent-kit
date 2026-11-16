@@ -1,6 +1,6 @@
 ---
 name: create-plan
-description: Classify a tracker <KEY>-N task and write its plan into .ai/tasks/<key>-N-<slug>/ — plan.md (developer plan) + agent.md (agent instruction), or notes.md (conversation notes). Use when the user asks for a plan, notes, or a hand-off for another agent or thread.
+description: Classify a tracker <KEY>-N task and write its plan into .ai/tasks/<key>-N-<slug>/ — plan.md (developer plan) + agent.md (agent instruction). Use when the user asks for a plan or a hand-off for another agent or thread.
 ---
 
 # Create plan
@@ -25,7 +25,6 @@ A task gets two documents with two readers:
 .ai/tasks/<key>-<N>-<short-kebab-description>/plan.md
 .ai/tasks/<key>-<N>-<short-kebab-description>/agent.md
 .ai/tasks/<key>-<N>-<short-kebab-description>/integration.md
-.ai/tasks/<key>-<N>-<short-kebab-description>/notes.md
 ```
 
 Lowercase task key, 3–5 word description. One folder per task; reuse it if it exists. The key comes from the
@@ -55,14 +54,12 @@ ln -s ../../../tasks/<key>-<N>-<slug> .ai/epics/<epic-slug>/tasks/<key>-<N>-<slu
 
 Behaviour none of these settle is a product gap: ask the user. Never invent it.
 
-## Pick the mode
+## Output
 
-1. **Plan** — `plan.md` + `agent.md`, plus `integration.md` when the change alters what a request to an entry point
-   leaves in the stored state and `docs/agents/testing.md` «Integration tests» is not `none`.
-2. **Notes** — `notes.md` only.
+`plan.md` + `agent.md`, plus `integration.md` when the change alters what a request to an entry point leaves in the
+stored state and `docs/agents/testing.md` «Integration tests» is not `none`.
 
-Research is `/research`, design is `/create-design`. Ask the user when the mode isn't clear from the
-conversation.
+Research is `/research`, design is `/create-design`.
 
 ## Classify first
 
@@ -215,10 +212,6 @@ English, terse. One integration test for the task's main path, written by `/inte
 - **Goes red when** — each production line of the change whose revert turns the test red.
 - **Run** — the command for this test (`one-test` of `docs/agents/stack.md` «Commands»).
 
-## notes.md
-
-Title `# <KEY>-N: Notes`, then freeform — whatever structure the conversation had.
-
 ## Formatting
 
 All documents are English. UI texts and button labels stay verbatim in any document. Wrap at 120 characters — code
@@ -226,26 +219,25 @@ blocks, tables and URLs stay unbroken. The chat with the user stays in the user'
 
 ## Workflow
 
-1. Resolve the task key and folder, pick the mode. Mode 1: classify per «Classify first».
+1. Resolve the task key and folder. Classify per «Classify first».
 2. Read the sources. What's missing — ask the user, they'll find it faster. Every fact about data in the plan (fields,
    options, values, states) has a source read this session: the database or the code. A fact that lives in another
    repository becomes questions for that repository's agent: write them, hand them to the user, and hold the plan
    until they are answered.
-3. Mode 2: write `notes.md` and stop.
-4. Draft `plan.md` and ask the user with its full text (`docs/agents/harness.md` «Actions»). Iterate until the
+3. Draft `plan.md` and ask the user with its full text (`docs/agents/harness.md` «Actions»). Iterate until the
    developer approves; then write `plan.md` and copy it to the tracker (`docs/agents/issue-tracker.md` «Document
    copies»). The tracker task stays as it is.
-5. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found. Write
-   `integration.md` when mode 1 calls for it; `agent.md` never names it.
-6. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` (workflow 3:
+4. Write `agent.md`, then check it against «What stays out of agent.md» and cut what is found. Write
+   `integration.md` when the change calls for it; `agent.md` never names it.
+5. **Builder check** — an explorer (`docs/agents/harness.md` «Roles») reads only `plan.md` and `agent.md` (workflow 3:
    and `design.md`) and reports
    which files it would open, what it would change, which tests it would write, and every question the two files leave
    open. A question the sources settle → fix `agent.md` and run the check again; a question only the developer can
    answer → ask the user. Done when a run reports no open question.
-7. Hand over the file paths written and the next skill: `Delivery: tickets` → `/to-tickets`, commits →
+6. Hand over the file paths written and the next skill: `Delivery: tickets` → `/to-tickets`, commits →
    `/develop`.
 
 A plan changed after approval: ask the user with the changed lines before editing `plan.md`, raise `Version`, copy
 the new version to the tracker.
 
-_Last modified: 2026-11-11_
+_Last modified: 2026-11-17_

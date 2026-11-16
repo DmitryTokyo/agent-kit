@@ -14,6 +14,8 @@ Never push to `{{main}}`: stop and tell the user to do it themselves. Push only 
 
 When I ask you to write, develop, build or fix something in code, offer to invoke the `/develop` skill before starting; a task with an approved plan that says `Delivery: commits` goes there too. It covers layers and responsibility boundaries, verification commands, the layout inside an app, constant rules, Celery and code quality. Tests go through `/test-writer`, which `/develop` references. A batch of tickets from a task's map goes through `/orchestrate {{KEY}}-N`. A single ticket from `.ai/tasks/{{key}}-N-*/tickets/` is routed by its `Mode` field: `TDD` and `E2E` go through `/tdd-develop`, `no tests` goes through `/develop`.
 
+When I ask you to fix or extend a skill, a rule, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` or `docs/`, use `/edit-docs`: no plan beyond a few lines, never `/develop` for these files.
+
 Task chain and code review: `CONTRIBUTING.md` «Feature workflow» and «Code review». Pushes, pull requests and the developer's review comments go through `/merge-request`; a merged pull request goes through `/close-merge-request`.
 
 <!-- module:codegraph -->

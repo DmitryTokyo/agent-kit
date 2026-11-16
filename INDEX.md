@@ -29,6 +29,7 @@ installed.
 | `integration-test` | writes one integration test: a real request through the whole path, the stored state asserted | `harness`, `stack`, `testing` |
 | `git-commit-message` | splits changes into commits, proposes messages, commits on your yes, pushes a branch already pushed | `harness`, `git`, `issue-tracker` |
 | `create-task` | files a task in the tracker | `harness`, `issue-tracker`, `product` |
+| `edit-docs` | light path for editing skills, rules and docs: task folder, short plan, one commit | `harness`, `git`, `issue-tracker` |
 | `review-diff` | reviews a diff on two axes: the project's rules and the task's plan | most of them |
 
 ## Sets that work together

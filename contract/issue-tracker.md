@@ -14,6 +14,8 @@
 - Assignee: the current user unless the user names another person.
 - A finished task moves to <!-- fill: the Done status, e.g. `Done` -->.
 - <!-- fill: what task descriptions never carry, e.g. «no feature flags». -->
+- Tracker IDs a skill needs on every call (project, task type, statuses, labels, assignee): <!-- fill: a file of the
+  project that lists them, so a skill reads them there and does not query them again | none -->.
 - Blocking uses the tracker's native «blocks» relations.
 - A task description has three sections: Problem, Goal, Links. Scope and acceptance criteria live in `plan.md`.
 - Product Value and Work Type (`CONTRIBUTING.md` «Three axes») live in <!-- fill: label groups `Product Value` and
