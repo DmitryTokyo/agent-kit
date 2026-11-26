@@ -1,6 +1,6 @@
 ---
 name: develop
-description: Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, or a plain fix. A ticket from .ai/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /tdd-develop.
+description: "Write or modify code directly, without a TDD ticket — a task whose approved plan says `Delivery: commits`, a ticket with `Mode: no tests`, a review file, or a plain fix. A ticket from .ai/tasks/<key>-N-*/tickets/ with `Mode: TDD` goes to /tdd-develop."
 ---
 
 # Develop

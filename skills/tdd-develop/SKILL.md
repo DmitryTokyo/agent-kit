@@ -1,6 +1,6 @@
 ---
 name: tdd-develop
-description: Implement one ticket from .ai/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented.
+description: "Implement one ticket from .ai/tasks/<key>-N-*/tickets/ — test-first for `Mode: TDD`, actor scenarios for `Mode: E2E`. Use when the user gives a task key with a ticket ID and wants that ticket implemented."
 ---
 
 # TDD develop
