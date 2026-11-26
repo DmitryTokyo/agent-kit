@@ -3,7 +3,7 @@
 A set of agent skills that take a task from an idea to a merged pull request. Take only the skills a project needs:
 one skill for a small script, the whole chain for a large product.
 
-**Current version: v0.0.7** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
+**Current version: v0.0.8** (git tag; `git -C <kit> describe --tags`). `<kit>` is the checkout of this repository.
 
 ## Pick by project
 
@@ -97,6 +97,13 @@ A repository edit good for every project goes back to the kit: change `skills/<n
 ## Releases
 
 Newest first.
+
+### v0.0.8 — `develop` and `tdd-develop` load again: their frontmatter parses
+- **Fixed:** both descriptions hold a colon inside an unquoted YAML scalar (`Delivery: commits`, `Mode: no tests`,
+  `Mode: TDD`, `Mode: E2E`), so the frontmatter did not parse. pi dropped the two skills with a `[Skill warnings]`
+  line, Claude Code loaded them with every frontmatter field dropped: name from the folder, description from the first
+  body line, `allowed-tools` and `model` gone. The descriptions are quoted now; no text changed.
+- **To update a project:** nothing. `git -C <kit> pull` and a new session; the skills are links into the kit.
 
 ### v0.0.7 — shared skills: one copy, no prefix, repository rules in `docs/agents/skills/`
 - **Breaking, install:** skills are no longer copied into a project. Link them once per machine into
